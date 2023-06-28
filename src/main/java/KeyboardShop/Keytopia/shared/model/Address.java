@@ -1,8 +1,9 @@
 package KeyboardShop.Keytopia.shared.model;
 
 
-import jakarta.persistence.*;
 import lombok.*;
+
+import javax.persistence.*;
 
 @Getter
 @Setter

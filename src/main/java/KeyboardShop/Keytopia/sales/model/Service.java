@@ -1,8 +1,8 @@
 package KeyboardShop.Keytopia.sales.model;
 
-import jakarta.persistence.*;
 import lombok.*;
 
+import javax.persistence.*;
 import java.util.List;
 
 @Getter

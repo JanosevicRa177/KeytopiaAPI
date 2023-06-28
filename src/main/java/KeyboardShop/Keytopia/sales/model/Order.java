@@ -1,9 +1,9 @@
 package KeyboardShop.Keytopia.sales.model;
 
 import KeyboardShop.Keytopia.auth.model.Buyer;
-import jakarta.persistence.*;
 import lombok.*;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 

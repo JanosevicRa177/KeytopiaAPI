@@ -1,7 +1,10 @@
 package KeyboardShop.Keytopia.auth.model;
 
-import jakarta.persistence.Entity;
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.Entity;
 
 @Getter
 @Setter
