@@ -31,7 +31,7 @@ public class User {
     private String password;
     
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "idAddress", referencedColumnName = "id")
+    @JoinColumn(name = "idAddress", referencedColumnName = "idAddress")
     private Address address;
     
     public User(RegisterDto registerDto){
@@ -40,5 +40,7 @@ public class User {
         this.email = registerDto.getEmail();
         this.role = Role.BUYER;
         this.password = registerDto.getPassword();
+        this.address = registerDto.getAddress();
+        this.phone = registerDto.getPhone();
     }
 }
