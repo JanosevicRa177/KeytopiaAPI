@@ -9,7 +9,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Entity(name = "OrderEntity")
@@ -30,4 +29,6 @@ public class Order {
     @ManyToOne
     @JoinColumn(name="idDeliveryService", nullable=false)
     private DeliveryService deliveryService;
+    @OneToMany
+    private List<Product> products;
 }

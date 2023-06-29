@@ -8,7 +8,6 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Entity(name = "UserEntity")
@@ -30,7 +29,7 @@ public class User {
     @Column(name="UserPassword")
     private String password;
     
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "idAddress", referencedColumnName = "idAddress")
     private Address address;
     
