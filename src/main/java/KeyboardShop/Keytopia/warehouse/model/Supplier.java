@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,4 +23,6 @@ public class Supplier {
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "idAddress", referencedColumnName = "idAddress")
     private Address address;
+    @ManyToMany
+    private List<Brand> brands;
 }

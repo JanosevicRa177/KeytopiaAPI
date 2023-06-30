@@ -1,6 +1,8 @@
 package KeyboardShop.Keytopia.parts.model;
 
+import KeyboardShop.Keytopia.sales.model.DeliveryService;
 import KeyboardShop.Keytopia.sales.model.Product;
+import KeyboardShop.Keytopia.warehouse.model.Brand;
 import KeyboardShop.Keytopia.warehouse.model.ProcurementPart;
 import lombok.*;
 
@@ -28,4 +30,7 @@ public class Part {
     private List<ProcurementPart> procurementParts;
     @OneToMany
     private List<Product> products;
+    @ManyToOne
+    @JoinColumn(name="idBrand", nullable=false)
+    private Brand brand;
 }

@@ -20,6 +20,5 @@ public class SwitchSet extends Part {
     @Column(name="SwitchQuantity")
     private int quantity;
     @ManyToOne
-    @JoinColumn(name="SwitchName", nullable=false)
     private Switch aSwitch;
 }
