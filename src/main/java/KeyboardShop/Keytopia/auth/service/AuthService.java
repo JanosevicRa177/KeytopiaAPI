@@ -26,13 +26,12 @@ public class AuthService {
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
     
-    public UserDto register(RegisterDto registerDto){
+    public void register(RegisterDto registerDto){
         if(!registerDto.getPassword().equals(registerDto.getConfirmPassword()))
             throw new ConfirmPasswordNotEqualException();
         if(userRepository.findByEmail(registerDto.getEmail()) != null) throw new UserAlreadyExistsException();
         registerDto.setPassword(encoder.encode(registerDto.getPassword()));
         User user = userRepository.save(new User(registerDto));
-        return new UserDto(user);
     }
 
     public String login(LoginDto loginDto){
@@ -42,5 +41,19 @@ public class AuthService {
         Authentication authentication = authenticationManager.authenticate(authStrategy);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return jwtUtils.generateAccessToken(user.getEmail());
+    }
+
+    public User getUserFromHeader(String header){
+        String token = getTokenFromAuthHeader(header);
+        String email = jwtUtils.getEmailFromJwtToken(token);
+        User user = userRepository.findByEmail(email);
+        if (user == null) throw new WrongEmailOrPasswordException();
+        return user;
+    }
+    private String getTokenFromAuthHeader(String header) {
+        if(header == null) return null;
+        String[] chunks = header.split(" ");
+        if(chunks.length < 2) return null;
+        return chunks[1];
     }
 }

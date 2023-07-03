@@ -5,6 +5,7 @@ import KeyboardShop.Keytopia.auth.dto.RegisterDto;
 import KeyboardShop.Keytopia.auth.dto.UserDto;
 import KeyboardShop.Keytopia.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,12 +23,13 @@ public class AuthController {
         return ResponseEntity.ok(authService.login(loginDto));
     }
     @PostMapping("/register")
-    public ResponseEntity<UserDto> Register(@Valid @RequestBody final RegisterDto registerDto) {
-        return ResponseEntity.ok(authService.register(registerDto));
+    public ResponseEntity<Void> Register(@Valid @RequestBody final RegisterDto registerDto) {
+        authService.register(registerDto);
+        return ResponseEntity.ok().build();
     }
-    @GetMapping("/pao")
-    public ResponseEntity<String> Pao() {
-        String data = "Pao!";
-        return ResponseEntity.ok(data);
+
+    @GetMapping("/current")
+    public ResponseEntity<UserDto> CurrentUser(@RequestHeader(HttpHeaders.AUTHORIZATION) final String authHeader) {
+        return ResponseEntity.ok(new UserDto(authService.getUserFromHeader(authHeader)));
     }
 }

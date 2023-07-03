@@ -9,10 +9,10 @@ import java.util.Date;
 @Component
 public class JwtUtils {
 	private final String jwtSecret = Dotenv.load().get("JWT_SECRET");;
-	private final int accessTokenExpirationMs = 1000 * 60 * 60 * 2; //2h
 
 
 	public String generateAccessToken(String subject) {
+		int accessTokenExpirationMs = 1000 * 60 * 60 * 2; //2h
 		return generateToken(subject, accessTokenExpirationMs);
 	}
 

@@ -19,7 +19,7 @@ public class KeytopiaApplication {
 
 	@Bean
 	public BCryptPasswordEncoder encoder() {
-		return new BCryptPasswordEncoder(16, new SecureRandom());
+		return new BCryptPasswordEncoder(4, new SecureRandom());
 	}
 	
 	@Bean
