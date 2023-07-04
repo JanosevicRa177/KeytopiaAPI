@@ -22,14 +22,20 @@ public class AuthController {
     public ResponseEntity<String> login(@RequestBody final LoginDto loginDto) {
         return ResponseEntity.ok(authService.login(loginDto));
     }
-    @PostMapping("/register")
-    public ResponseEntity<Void> Register(@Valid @RequestBody final RegisterDto registerDto) {
-        authService.register(registerDto);
+    @PostMapping("/register/buyer")
+    public ResponseEntity<Void> registerBuyer(@Valid @RequestBody final RegisterDto registerDto) {
+        authService.registerBuyer(registerDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/register/admin")
+    public ResponseEntity<Void> registerAdmin(@Valid @RequestBody final RegisterDto registerDto) {
+        authService.registerAdmin(registerDto);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/current")
-    public ResponseEntity<UserDto> CurrentUser(@RequestHeader(HttpHeaders.AUTHORIZATION) final String authHeader) {
+    public ResponseEntity<UserDto> currentUser(@RequestHeader(HttpHeaders.AUTHORIZATION) final String authHeader) {
         return ResponseEntity.ok(new UserDto(authService.getUserFromHeader(authHeader)));
     }
 }

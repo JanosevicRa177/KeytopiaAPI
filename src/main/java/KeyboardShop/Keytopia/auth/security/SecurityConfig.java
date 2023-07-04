@@ -58,7 +58,8 @@ public class SecurityConfig {
 				.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.authorizeRequests().antMatchers("/auth/login").permitAll().and()
-				.authorizeRequests().antMatchers("/auth/register").permitAll()
+				.authorizeRequests().antMatchers("/auth/register/buyer").permitAll().and()
+				.authorizeRequests().antMatchers("/auth/register/admin").permitAll()
 				.anyRequest().authenticated();
 
 		http.authenticationProvider(authenticationProvider());

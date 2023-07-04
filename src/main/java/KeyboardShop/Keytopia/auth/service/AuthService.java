@@ -3,7 +3,11 @@ package KeyboardShop.Keytopia.auth.service;
 import KeyboardShop.Keytopia.auth.dto.LoginDto;
 import KeyboardShop.Keytopia.auth.dto.RegisterDto;
 import KeyboardShop.Keytopia.auth.dto.UserDto;
+import KeyboardShop.Keytopia.auth.model.Admin;
+import KeyboardShop.Keytopia.auth.model.Buyer;
 import KeyboardShop.Keytopia.auth.model.User;
+import KeyboardShop.Keytopia.auth.repository.IAdminRepository;
+import KeyboardShop.Keytopia.auth.repository.IBuyerRepository;
 import KeyboardShop.Keytopia.auth.repository.IUserRepository;
 import KeyboardShop.Keytopia.auth.security.JwtUtils;
 import KeyboardShop.Keytopia.utils.excentions.ConfirmPasswordNotEqualException;
@@ -23,15 +27,25 @@ public class AuthService {
 
     private final BCryptPasswordEncoder encoder;
     private final IUserRepository userRepository;
+    private final IBuyerRepository buyerRepository;
+    private final IAdminRepository adminRepository;
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
     
-    public void register(RegisterDto registerDto){
+    public void registerBuyer(RegisterDto registerDto){
         if(!registerDto.getPassword().equals(registerDto.getConfirmPassword()))
             throw new ConfirmPasswordNotEqualException();
         if(userRepository.findByEmail(registerDto.getEmail()) != null) throw new UserAlreadyExistsException();
         registerDto.setPassword(encoder.encode(registerDto.getPassword()));
-        User user = userRepository.save(new User(registerDto));
+        buyerRepository.save(new Buyer(registerDto));
+    }
+
+    public void registerAdmin(RegisterDto registerDto){
+        if(!registerDto.getPassword().equals(registerDto.getConfirmPassword()))
+            throw new ConfirmPasswordNotEqualException();
+        if(userRepository.findByEmail(registerDto.getEmail()) != null) throw new UserAlreadyExistsException();
+        registerDto.setPassword(encoder.encode(registerDto.getPassword()));
+        adminRepository.save(new Admin(registerDto));
     }
 
     public String login(LoginDto loginDto){

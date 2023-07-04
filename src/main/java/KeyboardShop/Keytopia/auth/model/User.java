@@ -10,6 +10,7 @@ import javax.persistence.*;
 @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
+@Inheritance(strategy = InheritanceType.JOINED)
 @Entity(name = "UserEntity")
 public class User {
     @Id

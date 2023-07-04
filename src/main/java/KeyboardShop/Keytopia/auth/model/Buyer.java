@@ -1,5 +1,6 @@
 package KeyboardShop.Keytopia.auth.model;
 
+import KeyboardShop.Keytopia.auth.dto.RegisterDto;
 import KeyboardShop.Keytopia.sales.model.Order;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,4 +19,8 @@ import java.util.List;
 public class Buyer extends User {
     @OneToMany
     private List<Order> orders;
+
+    public Buyer(RegisterDto registerDto){
+        super(registerDto);
+    }
 }
