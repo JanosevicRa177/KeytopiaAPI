@@ -1,5 +1,6 @@
 package KeyboardShop.Keytopia.parts.model;
 
+import KeyboardShop.Keytopia.parts.model.enums.KeycapMaterial;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -15,5 +16,5 @@ import javax.persistence.Entity;
 @Entity(name = "Keycap")
 public class Keycap extends Part{
     @Column(name="KeycapMaterial")
-    private String material;
+    private KeycapMaterial material;
 }

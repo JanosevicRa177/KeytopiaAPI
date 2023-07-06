@@ -23,6 +23,7 @@ public class Switch {
     @Column(name="SwitchType")
     private SwitchType switchType;
     @Column(name="PinType")
+    @Enumerated(EnumType.STRING)
     private PinType pinType;
     @Column(name="ActuationForce")
     private int actuationForce;

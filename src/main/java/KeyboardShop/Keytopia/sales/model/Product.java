@@ -21,6 +21,8 @@ public class Product {
     @ManyToOne
     @JoinColumn(name="idOrder")
     private Order order;
+    @Column(name="ProductPrice")
+    private double price;
     @ManyToOne
     @JoinColumn(name="idPart",nullable = false)
     private Part part;

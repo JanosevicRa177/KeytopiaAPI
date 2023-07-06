@@ -24,11 +24,15 @@ public class User {
     @Column(name="UserPhone")
     private String phone;
     @Column(name="Role")
+    @Enumerated(EnumType.STRING)
     private Role role;
     @Column(name="Email",unique = true)
     private String email;
     @Column(name="UserPassword")
     private String password;
+
+    @Column(name="Activated")
+    private boolean isActivated;
     
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "idAddress", referencedColumnName = "idAddress")
@@ -38,9 +42,9 @@ public class User {
         this.name = registerDto.getName();
         this.surname = registerDto.getSurname();
         this.email = registerDto.getEmail();
-        this.role = Role.BUYER;
         this.password = registerDto.getPassword();
         this.address = registerDto.getAddress();
         this.phone = registerDto.getPhone();
+        this.isActivated = false;
     }
 }

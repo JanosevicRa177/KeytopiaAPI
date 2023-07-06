@@ -22,5 +22,6 @@ public class Buyer extends User {
 
     public Buyer(RegisterDto registerDto){
         super(registerDto);
+        this.setRole(Role.BUYER);
     }
 }

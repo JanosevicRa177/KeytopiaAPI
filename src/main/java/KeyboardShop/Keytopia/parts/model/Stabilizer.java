@@ -13,7 +13,9 @@ import javax.persistence.*;
 @Entity(name = "Stabilizer")
 public class Stabilizer extends Part {
     @Column(name="StabilizerSize")
+    @Enumerated(EnumType.STRING)
     private StabilizerSize size;
     @Column(name="StabilizerType")
+    @Enumerated(EnumType.STRING)
     private StabilizerType type;
 }

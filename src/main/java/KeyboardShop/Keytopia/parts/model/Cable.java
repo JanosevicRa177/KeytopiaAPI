@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @Getter
 @Setter
@@ -22,8 +24,10 @@ public class Cable extends Part {
     @Column(name="CableLength")
     private String length;
     @Column(name="CableConnectorKeyboard")
+    @Enumerated(EnumType.STRING)
     private CableConnector keyboardConnector;
     @Column(name="CableConnectorComputer")
+    @Enumerated(EnumType.STRING)
     private CableConnector computerConnector;
     @Column(name="IsCoiled")
     private boolean isCoiled;

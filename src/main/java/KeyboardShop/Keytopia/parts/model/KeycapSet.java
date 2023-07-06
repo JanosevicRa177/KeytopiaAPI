@@ -1,5 +1,6 @@
 package KeyboardShop.Keytopia.parts.model;
 
+import KeyboardShop.Keytopia.parts.model.enums.KeycapMaterial;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class KeycapSet extends Part {
     @Column(name="KeycapQuantity")
     private int quantity;
     @Column(name="KeycapSetMaterial")
-    private String material;
+    private KeycapMaterial material;
     @Column(name="KeycapSetLanguage")
     private String language;
     @ManyToOne

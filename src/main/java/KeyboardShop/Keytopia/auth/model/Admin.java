@@ -14,5 +14,6 @@ import javax.persistence.Entity;
 public class Admin extends User {
     public Admin(RegisterDto registerDto){
         super(registerDto);
+        this.setRole(Role.ADMIN);
     }
 }

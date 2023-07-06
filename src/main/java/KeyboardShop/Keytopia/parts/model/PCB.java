@@ -2,6 +2,7 @@ package KeyboardShop.Keytopia.parts.model;
 
 import KeyboardShop.Keytopia.parts.model.enums.PCBType;
 import KeyboardShop.Keytopia.parts.model.enums.PinType;
+import KeyboardShop.Keytopia.parts.model.enums.StabilizerType;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,4 +24,6 @@ public class PCB extends Part{
     private String color;
     @Column(name="PinType")
     private PinType pinType;
+    @Column(name="StabilizerType")
+    private StabilizerType stabilizerType;
 }
