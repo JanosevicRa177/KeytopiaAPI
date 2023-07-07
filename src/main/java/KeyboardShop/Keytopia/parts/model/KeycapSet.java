@@ -24,9 +24,6 @@ public class KeycapSet extends Part {
     @ManyToOne
     @JoinColumn(name="idKeycapProfile", nullable=false)
     private KeycapProfile keycapProfile;
-    @ManyToOne
-    @JoinColumn(name="idSize", nullable=false)
-    private Size maxSize;
     @ManyToMany
     private List<Layout> supportedLayouts;
 }

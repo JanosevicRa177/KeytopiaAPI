@@ -22,4 +22,8 @@ public class Size {
     private int neededNumberOfKeys;
     @OneToMany
     private List<PCB> pcbs;
+    @OneToMany
+    private List<Plate> plates;
+    @OneToMany
+    private List<Case> cases;
 }
