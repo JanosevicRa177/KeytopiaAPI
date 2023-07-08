@@ -1,6 +1,6 @@
 package KeyboardShop.Keytopia.sales.model;
 
-import KeyboardShop.Keytopia.parts.model.Part;
+import KeyboardShop.Keytopia.parts.model.parts.Part;
 import lombok.*;
 
 import javax.persistence.*;

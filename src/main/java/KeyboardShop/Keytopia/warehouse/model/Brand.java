@@ -1,14 +1,12 @@
 package KeyboardShop.Keytopia.warehouse.model;
 
-import KeyboardShop.Keytopia.parts.model.Part;
-import KeyboardShop.Keytopia.sales.model.Service;
+import KeyboardShop.Keytopia.parts.model.parts.Part;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 
 @Getter

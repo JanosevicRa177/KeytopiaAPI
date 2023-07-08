@@ -1,7 +1,5 @@
 package KeyboardShop.Keytopia.warehouse.model;
 
-import KeyboardShop.Keytopia.parts.model.Part;
-import KeyboardShop.Keytopia.sales.model.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
