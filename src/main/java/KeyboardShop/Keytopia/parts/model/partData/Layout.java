@@ -16,13 +16,13 @@ public class Layout {
     @Id
     @Column(name="LayoutName")
     private String name;
-    @Column(name="Lozalization")
-    private String Localization;
+    @Column(name="Localization")
+    private String localization;
     @ManyToMany
     private List<KeycapSet> supportedKeycapSets;
     
     public Layout(LayoutDto layoutDto){
         this.name = layoutDto.getName();
-        this.Localization = layoutDto.getLocalization();
+        this.localization = layoutDto.getLocalization();
     }
 }

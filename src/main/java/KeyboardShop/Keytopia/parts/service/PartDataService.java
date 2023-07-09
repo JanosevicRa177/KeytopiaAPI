@@ -21,11 +21,11 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class PartDataService {
-    
-    IKeycapProfileRepository keycapProfileRepository;
-    ILayoutRepository layoutRepository;
-    ISizeRepository sizeRepository;
-    ISwitchRepository switchRepository;
+
+    private final IKeycapProfileRepository keycapProfileRepository;
+    private final ILayoutRepository layoutRepository;
+    private final ISizeRepository sizeRepository;
+    private final ISwitchRepository switchRepository;
     
     public void createKeycapProfile(KeycapProfileDto keycapProfileDto){
         Optional<KeycapProfile> keycapProfile = keycapProfileRepository.findById(keycapProfileDto.getName());

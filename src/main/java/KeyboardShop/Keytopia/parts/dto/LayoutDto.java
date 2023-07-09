@@ -9,5 +9,5 @@ import javax.persistence.Column;
 @Setter
 public class LayoutDto {
     private String name;
-    private String Localization;
+    private String localization;
 }
