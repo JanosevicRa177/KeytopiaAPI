@@ -5,7 +5,7 @@ public enum KeycapMaterial {
     PBT("PBT"),
     DOUBLESHOT_PBT("Doubleshot PBT"),
     DOUBLESHOT_ABS("Doubleshot ABS");
-    private String keycapMaterial;
+    private final String keycapMaterial;
 
     KeycapMaterial(String keycapMaterial) {
         this.keycapMaterial = keycapMaterial;

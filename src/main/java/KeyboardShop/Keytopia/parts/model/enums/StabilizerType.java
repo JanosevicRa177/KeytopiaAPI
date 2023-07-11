@@ -3,7 +3,7 @@ package KeyboardShop.Keytopia.parts.model.enums;
 public enum StabilizerType {
     CLAMPED("Clamped"),
     SCREW_IN("Screw-in");
-    private String type;
+    private final String type;
 
     StabilizerType(String type) {
         this.type = type;

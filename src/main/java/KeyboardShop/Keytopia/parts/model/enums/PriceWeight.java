@@ -5,7 +5,7 @@ public enum PriceWeight {
     MEDIUM("Medium"),
     HEAVY("Heavy");
     
-    private String priceWeight;
+    private final String priceWeight;
 
     PriceWeight(String priceWeight) {
         this.priceWeight = priceWeight;

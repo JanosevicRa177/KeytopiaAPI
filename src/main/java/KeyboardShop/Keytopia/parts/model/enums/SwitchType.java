@@ -4,7 +4,7 @@ public enum SwitchType {
     CLICKY("Clicky"),
     TACTILE("Tactile"),
     LINEAR("Linear");
-    private String type;
+    private final String type;
 
     SwitchType(String type) {
         this.type = type;

@@ -1,5 +1,6 @@
 package KeyboardShop.Keytopia.parts.model.parts;
 
+import KeyboardShop.Keytopia.parts.model.enums.PartType;
 import KeyboardShop.Keytopia.parts.model.enums.PriceWeight;
 import KeyboardShop.Keytopia.sales.model.DeliveryService;
 import KeyboardShop.Keytopia.sales.model.Product;
@@ -29,6 +30,9 @@ public class Part {
     private String name;
     @Column(name="PartPrice")
     private double price;
+    @Column(name="PartType")
+    @Enumerated(EnumType.STRING)
+    private PartType partType;
     @Column(name="PartPriceWeight")
     @Enumerated(EnumType.STRING)
     private PriceWeight priceWeight;
