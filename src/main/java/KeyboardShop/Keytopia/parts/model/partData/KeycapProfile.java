@@ -1,7 +1,6 @@
 package KeyboardShop.Keytopia.parts.model.partData;
 
-import KeyboardShop.Keytopia.parts.dto.KeycapProfileDto;
-import KeyboardShop.Keytopia.parts.model.enums.SwitchType;
+import KeyboardShop.Keytopia.parts.dto.partData.KeycapProfileDto;
 import KeyboardShop.Keytopia.parts.model.parts.Case;
 import KeyboardShop.Keytopia.parts.model.parts.Keycap;
 import KeyboardShop.Keytopia.parts.model.parts.KeycapSet;

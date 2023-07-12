@@ -8,7 +8,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 
 @Getter
-@Setter
 public class RegisterDto {
     private String name;
     private String surname;

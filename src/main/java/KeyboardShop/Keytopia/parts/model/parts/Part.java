@@ -19,15 +19,10 @@ import java.util.List;
 @Entity(name = "Part")
 public class Part {
     @Id
-    @Column(name="idPart")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(name="PartQuantity")
-    private int quantity;
-    @Column(name="NeededPart")
-    private boolean isNeeded;
     @Column(name="PartName")
     private String name;
+    @Column(name="PartQuantity")
+    private int quantity;
     @Column(name="PartPrice")
     private double price;
     @Column(name="PartType")

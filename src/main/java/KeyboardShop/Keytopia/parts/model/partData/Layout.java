@@ -1,6 +1,6 @@
 package KeyboardShop.Keytopia.parts.model.partData;
 
-import KeyboardShop.Keytopia.parts.dto.LayoutDto;
+import KeyboardShop.Keytopia.parts.dto.partData.LayoutDto;
 import KeyboardShop.Keytopia.parts.model.parts.KeycapSet;
 import lombok.*;
 

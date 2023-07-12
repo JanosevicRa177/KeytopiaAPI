@@ -1,4 +1,4 @@
-package KeyboardShop.Keytopia.utils.excentions.partExceptions;
+package KeyboardShop.Keytopia.utils.excentions.partExceptions.partData;
 
 import KeyboardShop.Keytopia.utils.excentions.BaseException;
 import org.springframework.http.HttpStatus;

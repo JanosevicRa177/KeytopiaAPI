@@ -1,9 +1,9 @@
 package KeyboardShop.Keytopia.parts.service;
 
-import KeyboardShop.Keytopia.parts.dto.KeycapProfileDto;
-import KeyboardShop.Keytopia.parts.dto.LayoutDto;
-import KeyboardShop.Keytopia.parts.dto.SizeDto;
-import KeyboardShop.Keytopia.parts.dto.SwitchDto;
+import KeyboardShop.Keytopia.parts.dto.partData.KeycapProfileDto;
+import KeyboardShop.Keytopia.parts.dto.partData.LayoutDto;
+import KeyboardShop.Keytopia.parts.dto.partData.SizeDto;
+import KeyboardShop.Keytopia.parts.dto.partData.SwitchDto;
 import KeyboardShop.Keytopia.parts.model.partData.KeycapProfile;
 import KeyboardShop.Keytopia.parts.model.partData.Layout;
 import KeyboardShop.Keytopia.parts.model.partData.Size;
@@ -12,9 +12,9 @@ import KeyboardShop.Keytopia.parts.repository.partData.IKeycapProfileRepository;
 import KeyboardShop.Keytopia.parts.repository.partData.ILayoutRepository;
 import KeyboardShop.Keytopia.parts.repository.partData.ISizeRepository;
 import KeyboardShop.Keytopia.parts.repository.partData.ISwitchRepository;
-import KeyboardShop.Keytopia.utils.excentions.partExceptions.PartDataAlreadyExistsException;
-import KeyboardShop.Keytopia.utils.excentions.partExceptions.PartDataCantBeDeletedException;
-import KeyboardShop.Keytopia.utils.excentions.partExceptions.PartDataNotFoundException;
+import KeyboardShop.Keytopia.utils.excentions.partExceptions.partData.PartDataAlreadyExistsException;
+import KeyboardShop.Keytopia.utils.excentions.partExceptions.partData.PartDataCantBeDeletedException;
+import KeyboardShop.Keytopia.utils.excentions.partExceptions.partData.PartDataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

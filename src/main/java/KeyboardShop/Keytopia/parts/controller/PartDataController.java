@@ -1,6 +1,9 @@
 package KeyboardShop.Keytopia.parts.controller;
 
-import KeyboardShop.Keytopia.parts.dto.*;
+import KeyboardShop.Keytopia.parts.dto.partData.KeycapProfileDto;
+import KeyboardShop.Keytopia.parts.dto.partData.LayoutDto;
+import KeyboardShop.Keytopia.parts.dto.partData.SizeDto;
+import KeyboardShop.Keytopia.parts.dto.partData.SwitchDto;
 import KeyboardShop.Keytopia.parts.model.partData.KeycapProfile;
 import KeyboardShop.Keytopia.parts.model.partData.Layout;
 import KeyboardShop.Keytopia.parts.model.partData.Size;

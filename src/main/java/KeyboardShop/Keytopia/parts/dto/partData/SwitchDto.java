@@ -1,4 +1,4 @@
-package KeyboardShop.Keytopia.parts.dto;
+package KeyboardShop.Keytopia.parts.dto.partData;
 
 import KeyboardShop.Keytopia.parts.model.enums.PinType;
 import KeyboardShop.Keytopia.parts.model.enums.SwitchType;
@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
 public class SwitchDto {
     private String name;
     private SwitchType switchType;

@@ -1,6 +1,6 @@
 package KeyboardShop.Keytopia.parts.model.partData;
 
-import KeyboardShop.Keytopia.parts.dto.SwitchDto;
+import KeyboardShop.Keytopia.parts.dto.partData.SwitchDto;
 import KeyboardShop.Keytopia.parts.model.enums.PinType;
 import KeyboardShop.Keytopia.parts.model.enums.SwitchType;
 import KeyboardShop.Keytopia.parts.model.parts.SwitchSet;

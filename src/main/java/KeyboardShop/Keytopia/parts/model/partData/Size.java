@@ -1,6 +1,6 @@
 package KeyboardShop.Keytopia.parts.model.partData;
 
-import KeyboardShop.Keytopia.parts.dto.SizeDto;
+import KeyboardShop.Keytopia.parts.dto.partData.SizeDto;
 import KeyboardShop.Keytopia.parts.model.parts.Case;
 import KeyboardShop.Keytopia.parts.model.parts.PCB;
 import KeyboardShop.Keytopia.parts.model.parts.Plate;
