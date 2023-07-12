@@ -1,6 +1,5 @@
 package KeyboardShop.Keytopia.warehouse.controller;
 
-import KeyboardShop.Keytopia.utils.EntityDtoMapper;
 import KeyboardShop.Keytopia.warehouse.dto.BrandDto;
 import KeyboardShop.Keytopia.warehouse.model.Brand;
 import KeyboardShop.Keytopia.warehouse.service.BrandService;
@@ -29,8 +28,9 @@ public class BrandController {
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
     public ResponseEntity<List<BrandDto>> findAll() {
         List<Brand> brands = brandService.findAll();
-        List<BrandDto> dto = new ArrayList<>(EntityDtoMapper.mapAll(brands,BrandDto.class));
-        return ResponseEntity.ok(dto);
+        List<BrandDto> brandDtos = new ArrayList<>();
+        brands.forEach((brand)-> brandDtos.add(new BrandDto(brand)));
+        return ResponseEntity.ok(brandDtos);
     }
     @DeleteMapping ("/{name}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")

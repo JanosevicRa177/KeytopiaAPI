@@ -1,23 +1,18 @@
-﻿package KeyboardShop.Keytopia.parts.dto.part;
+package KeyboardShop.Keytopia.parts.dto.part;
 
-import KeyboardShop.Keytopia.parts.model.enums.PartType;
 import KeyboardShop.Keytopia.parts.model.enums.PriceWeight;
 import KeyboardShop.Keytopia.parts.model.parts.Part;
-import KeyboardShop.Keytopia.sales.model.Product;
-import KeyboardShop.Keytopia.warehouse.model.Brand;
-import KeyboardShop.Keytopia.warehouse.model.ProcurementPart;
 import lombok.Getter;
-
-import javax.persistence.*;
-import java.util.List;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class PartDto {
-    private final String name;
-    private final int quantity;
-    private final double price;
-    private final PriceWeight priceWeight;
-    private final String brandName;
+    private String name;
+    private int quantity;
+    private double price;
+    private PriceWeight priceWeight;
+    private String brandName;
     public PartDto(Part part){
         this.brandName = part.getBrand().getName();
         this.name = part.getName();

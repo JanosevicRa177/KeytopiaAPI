@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.List;
@@ -34,7 +36,8 @@ public class Switch {
     @Column(name="SwitchPriceWeight")
     @Enumerated(EnumType.STRING)
     private PriceWeight priceWeight;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<SwitchSet> switchSets;
     
     public Switch(SwitchDto switchDto){

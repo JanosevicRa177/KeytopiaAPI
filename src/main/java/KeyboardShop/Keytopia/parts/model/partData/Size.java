@@ -5,6 +5,8 @@ import KeyboardShop.Keytopia.parts.model.parts.Case;
 import KeyboardShop.Keytopia.parts.model.parts.PCB;
 import KeyboardShop.Keytopia.parts.model.parts.Plate;
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.List;
@@ -20,11 +22,14 @@ public class Size {
     private String name;
     @Column(name = "NeededNumberOfKeys")
     private int neededNumberOfKeys;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<PCB> pcbs;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Plate> plates;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Case> cases;
     
     public Size(SizeDto sizeDto){

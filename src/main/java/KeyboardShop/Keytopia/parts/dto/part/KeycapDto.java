@@ -3,8 +3,10 @@ package KeyboardShop.Keytopia.parts.dto.part;
 import KeyboardShop.Keytopia.parts.model.enums.KeycapMaterial;
 import KeyboardShop.Keytopia.parts.model.enums.PriceWeight;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class KeycapDto {
     private PriceWeight priceWeight;
     private String name;

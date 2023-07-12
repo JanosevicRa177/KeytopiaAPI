@@ -1,5 +1,6 @@
 package KeyboardShop.Keytopia.parts.controller;
 
+import KeyboardShop.Keytopia.parts.dto.part.PartDto;
 import KeyboardShop.Keytopia.parts.dto.partData.KeycapProfileDto;
 import KeyboardShop.Keytopia.parts.dto.partData.LayoutDto;
 import KeyboardShop.Keytopia.parts.dto.partData.SizeDto;
@@ -9,7 +10,6 @@ import KeyboardShop.Keytopia.parts.model.partData.Layout;
 import KeyboardShop.Keytopia.parts.model.partData.Size;
 import KeyboardShop.Keytopia.parts.model.partData.Switch;
 import KeyboardShop.Keytopia.parts.service.PartDataService;
-import KeyboardShop.Keytopia.utils.EntityDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -18,6 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -55,32 +56,36 @@ public class PartDataController {
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
     public ResponseEntity<Page<KeycapProfileDto>> findAllKeycapProfiles(@Valid @PathVariable int pageSize, @Valid @PathVariable int pageNumber) {
         Page<KeycapProfile> keycapProfilePage = partDataService.findAllKeycapProfiles(pageSize, pageNumber);
-        Page<KeycapProfileDto> keycapProfilePageDto = new PageImpl<>(EntityDtoMapper.mapAll(keycapProfilePage.getContent(), KeycapProfileDto.class),
-                keycapProfilePage.getPageable(),keycapProfilePage.getTotalElements());
+        List<KeycapProfileDto> keycapProfileDtos = new ArrayList<>();
+        keycapProfilePage.getContent().forEach((keycapProfile)-> keycapProfileDtos.add(new KeycapProfileDto(keycapProfile)));
+        Page<KeycapProfileDto> keycapProfilePageDto = new PageImpl<>(keycapProfileDtos, keycapProfilePage.getPageable(),keycapProfilePage.getTotalElements());
         return ResponseEntity.ok(keycapProfilePageDto);
     }
     @GetMapping("/size/{pageSize}/{pageNumber}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
     public ResponseEntity<Page<SizeDto>> findAllSizes(@Valid @PathVariable int pageSize, @Valid @PathVariable int pageNumber) {
         Page<Size> sizePage = partDataService.findAllSizes(pageSize, pageNumber);
-        Page<SizeDto> sizePageDto = new PageImpl<>(EntityDtoMapper.mapAll(sizePage.getContent(), SizeDto.class),
-                sizePage.getPageable(),sizePage.getTotalElements());
+        List<SizeDto> sizeDtos = new ArrayList<>();
+        sizePage.getContent().forEach((size)-> sizeDtos.add(new SizeDto(size)));
+        Page<SizeDto> sizePageDto = new PageImpl<>(sizeDtos, sizePage.getPageable(),sizePage.getTotalElements());
         return ResponseEntity.ok(sizePageDto);
     }
     @GetMapping("/layout/{pageSize}/{pageNumber}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
     public ResponseEntity<Page<LayoutDto>> findAllLayouts(@Valid @PathVariable int pageSize, @Valid @PathVariable int pageNumber) {
         Page<Layout> layoutPage = partDataService.findAllLayouts(pageSize, pageNumber);
-        Page<LayoutDto> layoutPageDto = new PageImpl<>(EntityDtoMapper.mapAll(layoutPage.getContent(), LayoutDto.class),
-                layoutPage.getPageable(),layoutPage.getTotalElements());
+        List<LayoutDto> layoutDtos = new ArrayList<>();
+        layoutPage.getContent().forEach((layout)-> layoutDtos.add(new LayoutDto(layout)));
+        Page<LayoutDto> layoutPageDto = new PageImpl<>(layoutDtos,layoutPage.getPageable(),layoutPage.getTotalElements());
         return ResponseEntity.ok(layoutPageDto);
     }
     @GetMapping("/switch/{pageSize}/{pageNumber}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
     public ResponseEntity<Page<SwitchDto>> findAllSwitches(@Valid @PathVariable int pageSize, @Valid @PathVariable int pageNumber) {
         Page<Switch> switchPage = partDataService.findAllSwitches(pageSize, pageNumber);
-        Page<SwitchDto> switchPageDto = new PageImpl<>(EntityDtoMapper.mapAll(switchPage.getContent(), SwitchDto.class),
-                switchPage.getPageable(),switchPage.getTotalElements());
+        List<SwitchDto> switchDtos = new ArrayList<>();
+        switchPage.getContent().forEach((aSwitch)-> switchDtos.add(new SwitchDto(aSwitch)));
+        Page<SwitchDto> switchPageDto = new PageImpl<>(switchDtos,switchPage.getPageable(),switchPage.getTotalElements());
         return ResponseEntity.ok(switchPageDto);
     }
     @DeleteMapping ("/keycap-profile/{name}")

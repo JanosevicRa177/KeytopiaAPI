@@ -5,8 +5,10 @@ import KeyboardShop.Keytopia.parts.model.enums.PinType;
 import KeyboardShop.Keytopia.parts.model.enums.PriceWeight;
 import KeyboardShop.Keytopia.parts.model.enums.StabilizerType;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class PCBDto {
     private PriceWeight priceWeight;
     private String name;

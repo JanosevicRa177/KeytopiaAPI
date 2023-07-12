@@ -1,13 +1,9 @@
 package KeyboardShop.Keytopia.parts.controller;
 
 import KeyboardShop.Keytopia.parts.dto.part.*;
-import KeyboardShop.Keytopia.parts.dto.partData.SwitchDto;
 import KeyboardShop.Keytopia.parts.model.enums.PartType;
-import KeyboardShop.Keytopia.parts.model.partData.Layout;
-import KeyboardShop.Keytopia.parts.model.partData.Switch;
 import KeyboardShop.Keytopia.parts.model.parts.*;
 import KeyboardShop.Keytopia.parts.service.PartService;
-import KeyboardShop.Keytopia.utils.EntityDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -127,8 +123,7 @@ public class PartController {
         Page<Part> partPage = partService.findAllParts(partType, pageSize, pageNumber);
         List<PartDto> partDtos = new ArrayList<>();
         partPage.getContent().forEach((part)-> partDtos.add(new PartDto(part)));
-        Page<PartDto> cablePageDto = new PageImpl<>(EntityDtoMapper.mapAll(partDtos, PartDto.class),
-                partPage.getPageable(),partPage.getTotalElements());
+        Page<PartDto> cablePageDto = new PageImpl<>(partDtos, partPage.getPageable(),partPage.getTotalElements());
         return ResponseEntity.ok(cablePageDto);
     }
 }
