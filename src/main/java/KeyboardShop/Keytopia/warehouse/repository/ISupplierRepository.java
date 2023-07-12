@@ -1,4 +1,4 @@
-﻿package KeyboardShop.Keytopia.warehouse.repository;
+package KeyboardShop.Keytopia.warehouse.repository;
 
 import KeyboardShop.Keytopia.warehouse.model.Supplier;
 import org.springframework.data.jpa.repository.JpaRepository;

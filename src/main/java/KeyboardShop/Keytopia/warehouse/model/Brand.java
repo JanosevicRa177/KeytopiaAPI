@@ -10,7 +10,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "Brand")

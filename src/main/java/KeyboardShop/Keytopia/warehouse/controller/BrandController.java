@@ -1,14 +1,10 @@
-﻿package KeyboardShop.Keytopia.warehouse.controller;
+package KeyboardShop.Keytopia.warehouse.controller;
 
-import KeyboardShop.Keytopia.parts.dto.partData.KeycapProfileDto;
-import KeyboardShop.Keytopia.parts.model.partData.KeycapProfile;
 import KeyboardShop.Keytopia.utils.EntityDtoMapper;
 import KeyboardShop.Keytopia.warehouse.dto.BrandDto;
 import KeyboardShop.Keytopia.warehouse.model.Brand;
 import KeyboardShop.Keytopia.warehouse.service.BrandService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;

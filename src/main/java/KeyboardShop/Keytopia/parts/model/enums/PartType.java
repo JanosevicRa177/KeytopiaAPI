@@ -5,6 +5,7 @@ public enum PartType {
     KEYCAP("Keycap"),
     KEYCAP_SET("Keycap set"),
     PCB("PCB"),
+    PLATE("Plate"),
     STABILIZER("Stabilizer"),
     SWITCH_SET("Switch set"),
     CASE("Case");

@@ -1,15 +1,15 @@
-﻿package KeyboardShop.Keytopia.parts.dto.part;
+package KeyboardShop.Keytopia.parts.dto.part;
 
-import KeyboardShop.Keytopia.parts.model.enums.KeycapMaterial;
 import KeyboardShop.Keytopia.parts.model.enums.PriceWeight;
+import lombok.Getter;
 
-import javax.persistence.Column;
-
+@Getter
 public class CaseDto {
     private PriceWeight priceWeight;
     private String name;
     private double price;
-    private Long brandId;
+    private String brandName;
     private String material;
     private String color;
+    private String sizeName;
 }

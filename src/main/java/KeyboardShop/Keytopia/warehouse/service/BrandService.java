@@ -1,5 +1,6 @@
-﻿package KeyboardShop.Keytopia.warehouse.service;
+package KeyboardShop.Keytopia.warehouse.service;
 
+import KeyboardShop.Keytopia.parts.model.partData.Layout;
 import KeyboardShop.Keytopia.utils.excentions.partExceptions.partData.PartDataAlreadyExistsException;
 import KeyboardShop.Keytopia.utils.excentions.partExceptions.partData.PartDataCantBeDeletedException;
 import KeyboardShop.Keytopia.utils.excentions.partExceptions.partData.PartDataNotFoundException;
@@ -33,5 +34,10 @@ public class BrandService {
         if (brand == null) throw new WarehouseEntityNotFoundException("Brand does not exists!");
         if(!brand.getParts().isEmpty()) throw new WarehouseEntityCantBeDeletedException("Brand cant be deleted because it has parts connected to it!");
         brandRepository.delete(brand);
+    }
+    public Brand find(String name){
+        Optional<Brand> brandOptional = brandRepository.findById(name);
+        if(brandOptional.isEmpty()) throw new WarehouseEntityNotFoundException("Brand with name" + name + "does not exists");
+        return brandOptional.get();
     }
 }

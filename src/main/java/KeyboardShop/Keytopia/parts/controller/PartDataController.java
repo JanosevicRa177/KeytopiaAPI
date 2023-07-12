@@ -18,6 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/part-data")
@@ -105,5 +106,37 @@ public class PartDataController {
     public ResponseEntity<Void> deleteSwitch(@Valid @PathVariable String name) {
         partDataService.deleteSwitch(name);
         return ResponseEntity.ok().build();
+    }
+    @GetMapping("/keycap-profile")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
+    public ResponseEntity<List<String>> findAllKeycapProfile() {
+        List<KeycapProfile> keycapProfiles = partDataService.findAllKeycapProfile();
+        List<String> keycapProfileNames = keycapProfiles.stream()
+                .map(KeycapProfile::getName).toList();
+        return ResponseEntity.ok(keycapProfileNames);
+    }
+    @GetMapping("/size")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
+    public ResponseEntity<List<String>> findAllSize() {
+        List<Size> sizes = partDataService.findAllSize();
+        List<String> sizeNames = sizes.stream()
+                .map(Size::getName).toList();
+        return ResponseEntity.ok(sizeNames);
+    }
+    @GetMapping("/layout")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
+    public ResponseEntity<List<String>> findAllLayout() {
+        List<Layout> layouts = partDataService.findAllLayout();
+        List<String> layoutNames = layouts.stream()
+                .map(Layout::getName).toList();
+        return ResponseEntity.ok(layoutNames);
+    }
+    @GetMapping("/switch")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
+    public ResponseEntity<List<String>> findAllSwitch() {
+        List<Switch> switches = partDataService.findAllSwitch();
+        List<String> switchNames = switches.stream()
+                .map(Switch::getName).toList();
+        return ResponseEntity.ok(switchNames);
     }
 }

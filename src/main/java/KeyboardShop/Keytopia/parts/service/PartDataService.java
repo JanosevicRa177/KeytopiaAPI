@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -95,5 +96,37 @@ public class PartDataService {
     }
     public Page<Switch> findAllSwitch(int pageSize, int pageNumber){
         return switchRepository.findAll(PageRequest.of(pageNumber, pageSize));
+    }
+    public List<KeycapProfile> findAllKeycapProfile(){
+        return keycapProfileRepository.findAll();
+    }
+    public List<Size> findAllSize(){
+        return sizeRepository.findAll();
+    }
+    public List<Layout> findAllLayout(){
+        return layoutRepository.findAll();
+    }
+    public List<Switch> findAllSwitch(){
+        return switchRepository.findAll();
+    }
+    public KeycapProfile findKeycapProfile(String name){
+        Optional<KeycapProfile> keycapProfileOptional = keycapProfileRepository.findById(name);
+        if(keycapProfileOptional.isEmpty()) throw new PartDataNotFoundException("Keycap profile with name" + name + "does not exists");
+        return keycapProfileOptional.get();
+    }
+    public Size findSize(String name){
+        Optional<Size> sizeOptional = sizeRepository.findById(name);
+        if(sizeOptional.isEmpty()) throw new PartDataNotFoundException("Size with name" + name + "does not exists");
+        return sizeOptional.get();
+    }
+    public Layout findLayout(String name){
+        Optional<Layout> layoutOptional = layoutRepository.findById(name);
+        if(layoutOptional.isEmpty()) throw new PartDataNotFoundException("Layout with name" + name + "does not exists");
+        return layoutOptional.get();
+    }
+    public Switch findSwitch(String name){
+        Optional<Switch> switchOptional = switchRepository.findById(name);
+        if(switchOptional.isEmpty()) throw new PartDataNotFoundException("Switch with name" + name + "does not exists");
+        return switchOptional.get();
     }
 }

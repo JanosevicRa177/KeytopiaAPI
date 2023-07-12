@@ -1,4 +1,7 @@
-﻿package KeyboardShop.Keytopia.parts.repository.part;
+package KeyboardShop.Keytopia.parts.repository.part;
 
-public interface IPlateRepository {
+import KeyboardShop.Keytopia.parts.model.parts.Plate;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface IPlateRepository extends JpaRepository<Plate,String> {
 }

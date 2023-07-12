@@ -2,6 +2,7 @@ package KeyboardShop.Keytopia.parts.model.partData;
 
 import KeyboardShop.Keytopia.parts.dto.partData.SwitchDto;
 import KeyboardShop.Keytopia.parts.model.enums.PinType;
+import KeyboardShop.Keytopia.parts.model.enums.PriceWeight;
 import KeyboardShop.Keytopia.parts.model.enums.SwitchType;
 import KeyboardShop.Keytopia.parts.model.parts.SwitchSet;
 import lombok.AllArgsConstructor;
@@ -30,6 +31,9 @@ public class Switch {
     private int actuationForce;
     @Column(name="ActuationPoint")
     private double actuationPoint;
+    @Column(name="SwitchPriceWeight")
+    @Enumerated(EnumType.STRING)
+    private PriceWeight priceWeight;
     @OneToMany
     private List<SwitchSet> switchSets;
     
@@ -39,5 +43,6 @@ public class Switch {
         this.actuationPoint = switchDto.getActuationPoint();
         this.pinType = switchDto.getPinType();
         this.switchType = switchDto.getSwitchType();
+        this.priceWeight = switchDto.getPriceWeight();
     }
 }
