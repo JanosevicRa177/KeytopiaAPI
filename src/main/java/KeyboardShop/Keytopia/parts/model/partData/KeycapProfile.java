@@ -21,12 +21,10 @@ public class KeycapProfile {
     @Id
     @Column(name="KeycapProfileName")
     private String name;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<KeycapSet> keycapSets;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Keycap> keycaps;
-    @OneToMany
-    private List<Case> cases;
     
     public KeycapProfile(KeycapProfileDto keycapProfileDto){
         this.name = keycapProfileDto.getName();   

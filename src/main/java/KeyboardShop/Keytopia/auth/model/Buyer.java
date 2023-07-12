@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.util.List;
 
@@ -17,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity(name = "Buyer")
 public class Buyer extends User {
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Order> orders;
 
     public Buyer(RegisterDto registerDto){

@@ -18,7 +18,7 @@ public class Layout {
     private String name;
     @Column(name="Localization")
     private String localization;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<KeycapSet> supportedKeycapSets;
     
     public Layout(LayoutDto layoutDto){

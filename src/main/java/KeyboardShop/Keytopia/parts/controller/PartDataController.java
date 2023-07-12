@@ -53,35 +53,35 @@ public class PartDataController {
     }
     @GetMapping("/keycap-profile/{pageSize}/{pageNumber}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Page<KeycapProfileDto>> findAllKeycapProfile(@Valid @PathVariable int pageSize, @Valid @PathVariable int pageNumber) {
-        Page<KeycapProfile> keycapProfilePage = partDataService.findAllKeycapProfile(pageSize, pageNumber);
-        Page<KeycapProfileDto> dto = new PageImpl<>(EntityDtoMapper.mapAll(keycapProfilePage.getContent(), KeycapProfileDto.class),
+    public ResponseEntity<Page<KeycapProfileDto>> findAllKeycapProfiles(@Valid @PathVariable int pageSize, @Valid @PathVariable int pageNumber) {
+        Page<KeycapProfile> keycapProfilePage = partDataService.findAllKeycapProfiles(pageSize, pageNumber);
+        Page<KeycapProfileDto> keycapProfilePageDto = new PageImpl<>(EntityDtoMapper.mapAll(keycapProfilePage.getContent(), KeycapProfileDto.class),
                 keycapProfilePage.getPageable(),keycapProfilePage.getTotalElements());
-        return ResponseEntity.ok(dto);
+        return ResponseEntity.ok(keycapProfilePageDto);
     }
     @GetMapping("/size/{pageSize}/{pageNumber}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Page<SizeDto>> findAllSize(@Valid @PathVariable int pageSize, @Valid @PathVariable int pageNumber) {
-        Page<Size> sizePage = partDataService.findAllSize(pageSize, pageNumber);
-        Page<SizeDto> dto = new PageImpl<>(EntityDtoMapper.mapAll(sizePage.getContent(), SizeDto.class),
+    public ResponseEntity<Page<SizeDto>> findAllSizes(@Valid @PathVariable int pageSize, @Valid @PathVariable int pageNumber) {
+        Page<Size> sizePage = partDataService.findAllSizes(pageSize, pageNumber);
+        Page<SizeDto> sizePageDto = new PageImpl<>(EntityDtoMapper.mapAll(sizePage.getContent(), SizeDto.class),
                 sizePage.getPageable(),sizePage.getTotalElements());
-        return ResponseEntity.ok(dto);
+        return ResponseEntity.ok(sizePageDto);
     }
     @GetMapping("/layout/{pageSize}/{pageNumber}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Page<LayoutDto>> findAllLayout(@Valid @PathVariable int pageSize, @Valid @PathVariable int pageNumber) {
-        Page<Layout> layoutPage = partDataService.findAllLayout(pageSize, pageNumber);
-        Page<LayoutDto> dto = new PageImpl<>(EntityDtoMapper.mapAll(layoutPage.getContent(), LayoutDto.class),
+    public ResponseEntity<Page<LayoutDto>> findAllLayouts(@Valid @PathVariable int pageSize, @Valid @PathVariable int pageNumber) {
+        Page<Layout> layoutPage = partDataService.findAllLayouts(pageSize, pageNumber);
+        Page<LayoutDto> layoutPageDto = new PageImpl<>(EntityDtoMapper.mapAll(layoutPage.getContent(), LayoutDto.class),
                 layoutPage.getPageable(),layoutPage.getTotalElements());
-        return ResponseEntity.ok(dto);
+        return ResponseEntity.ok(layoutPageDto);
     }
     @GetMapping("/switch/{pageSize}/{pageNumber}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Page<SwitchDto>> findAllSwitch(@Valid @PathVariable int pageSize, @Valid @PathVariable int pageNumber) {
-        Page<Switch> switchPage = partDataService.findAllSwitch(pageSize, pageNumber);
-        Page<SwitchDto> dto = new PageImpl<>(EntityDtoMapper.mapAll(switchPage.getContent(), SwitchDto.class),
+    public ResponseEntity<Page<SwitchDto>> findAllSwitches(@Valid @PathVariable int pageSize, @Valid @PathVariable int pageNumber) {
+        Page<Switch> switchPage = partDataService.findAllSwitches(pageSize, pageNumber);
+        Page<SwitchDto> switchPageDto = new PageImpl<>(EntityDtoMapper.mapAll(switchPage.getContent(), SwitchDto.class),
                 switchPage.getPageable(),switchPage.getTotalElements());
-        return ResponseEntity.ok(dto);
+        return ResponseEntity.ok(switchPageDto);
     }
     @DeleteMapping ("/keycap-profile/{name}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
@@ -109,32 +109,32 @@ public class PartDataController {
     }
     @GetMapping("/keycap-profile")
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<List<String>> findAllKeycapProfile() {
-        List<KeycapProfile> keycapProfiles = partDataService.findAllKeycapProfile();
+    public ResponseEntity<List<String>> findAllKeycapProfiles() {
+        List<KeycapProfile> keycapProfiles = partDataService.findAllKeycapProfiles();
         List<String> keycapProfileNames = keycapProfiles.stream()
                 .map(KeycapProfile::getName).toList();
         return ResponseEntity.ok(keycapProfileNames);
     }
     @GetMapping("/size")
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<List<String>> findAllSize() {
-        List<Size> sizes = partDataService.findAllSize();
+    public ResponseEntity<List<String>> findAllSizes() {
+        List<Size> sizes = partDataService.findAllSizes();
         List<String> sizeNames = sizes.stream()
                 .map(Size::getName).toList();
         return ResponseEntity.ok(sizeNames);
     }
     @GetMapping("/layout")
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<List<String>> findAllLayout() {
-        List<Layout> layouts = partDataService.findAllLayout();
+    public ResponseEntity<List<String>> findAllLayouts() {
+        List<Layout> layouts = partDataService.findAllLayouts();
         List<String> layoutNames = layouts.stream()
                 .map(Layout::getName).toList();
         return ResponseEntity.ok(layoutNames);
     }
     @GetMapping("/switch")
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<List<String>> findAllSwitch() {
-        List<Switch> switches = partDataService.findAllSwitch();
+    public ResponseEntity<List<String>> findAllSwitches() {
+        List<Switch> switches = partDataService.findAllSwitches();
         List<String> switchNames = switches.stream()
                 .map(Switch::getName).toList();
         return ResponseEntity.ok(switchNames);

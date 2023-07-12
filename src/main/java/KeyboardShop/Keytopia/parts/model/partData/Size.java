@@ -20,11 +20,11 @@ public class Size {
     private String name;
     @Column(name = "NeededNumberOfKeys")
     private int neededNumberOfKeys;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<PCB> pcbs;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Plate> plates;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Case> cases;
     
     public Size(SizeDto sizeDto){

@@ -34,7 +34,7 @@ public class Switch {
     @Column(name="SwitchPriceWeight")
     @Enumerated(EnumType.STRING)
     private PriceWeight priceWeight;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<SwitchSet> switchSets;
     
     public Switch(SwitchDto switchDto){

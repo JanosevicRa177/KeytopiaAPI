@@ -1,6 +1,7 @@
 package KeyboardShop.Keytopia.parts.service;
 
 import KeyboardShop.Keytopia.parts.dto.part.*;
+import KeyboardShop.Keytopia.parts.model.enums.PartType;
 import KeyboardShop.Keytopia.parts.model.partData.KeycapProfile;
 import KeyboardShop.Keytopia.parts.model.partData.Layout;
 import KeyboardShop.Keytopia.parts.model.partData.Size;
@@ -8,16 +9,16 @@ import KeyboardShop.Keytopia.parts.model.partData.Switch;
 import KeyboardShop.Keytopia.parts.model.parts.*;
 import KeyboardShop.Keytopia.parts.repository.part.*;
 import KeyboardShop.Keytopia.utils.excentions.partExceptions.part.PartAlreadyExistsException;
-import KeyboardShop.Keytopia.utils.excentions.partExceptions.partData.PartDataNotFoundException;
+import KeyboardShop.Keytopia.utils.excentions.partExceptions.part.PartCantBeDeletedException;
 import KeyboardShop.Keytopia.warehouse.model.Brand;
-import KeyboardShop.Keytopia.warehouse.repository.IBrandRepository;
 import KeyboardShop.Keytopia.warehouse.service.BrandService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,8 +36,7 @@ public class PartService {
     private final PartDataService partDataService;
 
     public void createKeycap(KeycapDto keycapDto){
-        Optional<Keycap> keycapOptional = keycapRepository.findById(keycapDto.getName());
-        Keycap keycap = keycapOptional.orElse(null);
+        Keycap keycap  = keycapRepository.findById(keycapDto.getName()).orElse(null);
         if (keycap != null) throw new PartAlreadyExistsException("Keycap with this name already exists.");
         
         Brand brand = brandService.find(keycapDto.getBrandName());
@@ -45,8 +45,7 @@ public class PartService {
         keycapRepository.save(new Keycap(keycapDto,brand,keycapProfile));
     }
     public void createKeycapSet(KeycapSetDto keycapSetDto) {
-        Optional<KeycapSet> keycapSetOptional = keycapSetRepository.findById(keycapSetDto.getName());
-        KeycapSet keycapSet = keycapSetOptional.orElse(null);
+        KeycapSet keycapSet = keycapSetRepository.findById(keycapSetDto.getName()).orElse(null);
         if (keycapSet != null) throw new PartAlreadyExistsException("Keycap set with this name already exists.");
 
         Brand brand = brandService.find(keycapSetDto.getBrandName());
@@ -58,8 +57,7 @@ public class PartService {
     }
 
     public void createCable(CableDto cableDto) {
-        Optional<Cable> cableOptional = cableRepository.findById(cableDto.getName());
-        Cable cable = cableOptional.orElse(null);
+        Cable cable = cableRepository.findById(cableDto.getName()).orElse(null);
         if (cable != null) throw new PartAlreadyExistsException("Cable with this name already exists.");
 
         Brand brand = brandService.find(cableDto.getBrandName());
@@ -67,8 +65,7 @@ public class PartService {
         cableRepository.save(new Cable(cableDto,brand));
     }
     public void createCase(CaseDto caseDto) {
-        Optional<Case> caseOptional = caseRepository.findById(caseDto.getName());
-        Case aCase = caseOptional.orElse(null);
+        Case aCase = caseRepository.findById(caseDto.getName()).orElse(null);
         if (aCase != null) throw new PartAlreadyExistsException("Case with this name already exists.");
 
         Brand brand = brandService.find(caseDto.getBrandName());
@@ -77,8 +74,7 @@ public class PartService {
         caseRepository.save(new Case(caseDto,brand,size));
     }
     public void createPCB(PCBDto pcbDto) {
-        Optional<PCB> pcbOptional = pcbRepository.findById(pcbDto.getName());
-        PCB pcb = pcbOptional.orElse(null);
+        PCB pcb = pcbRepository.findById(pcbDto.getName()).orElse(null);
         if (pcb != null) throw new PartAlreadyExistsException("PCB with this name already exists.");
 
         Brand brand = brandService.find(pcbDto.getBrandName());
@@ -87,8 +83,7 @@ public class PartService {
         pcbRepository.save(new PCB(pcbDto,brand,size));
     }
     public void createPlate(PlateDto plateDto) {
-        Optional<Plate> plateOptional = plateRepository.findById(plateDto.getName());
-        Plate plate = plateOptional.orElse(null);
+        Plate plate = plateRepository.findById(plateDto.getName()).orElse(null);
         if (plate != null) throw new PartAlreadyExistsException("Plate with this name already exists.");
 
         Brand brand = brandService.find(plateDto.getBrandName());
@@ -97,8 +92,7 @@ public class PartService {
         plateRepository.save(new Plate(plateDto,brand,size));
     }
     public void createStabilizer(StabilizerDto stabilizerDto) {
-        Optional<Stabilizer> stabilizerOptional = stabilizerRepository.findById(stabilizerDto.getName());
-        Stabilizer stabilizer = stabilizerOptional.orElse(null);
+        Stabilizer stabilizer = stabilizerRepository.findById(stabilizerDto.getName()).orElse(null);
         if (stabilizer != null) throw new PartAlreadyExistsException("Stabilizer with this name already exists.");
 
         Brand brand = brandService.find(stabilizerDto.getBrandName());
@@ -107,8 +101,7 @@ public class PartService {
     }
 
     public void createSwitchSet(SwitchSetDto switchSetDto) {
-        Optional<SwitchSet> switchSetOptional = switchSetRepository.findById(switchSetDto.getName());
-        SwitchSet switchSet = switchSetOptional.orElse(null);
+        SwitchSet switchSet = switchSetRepository.findById(switchSetDto.getName()).orElse(null);
         if (switchSet != null) throw new PartAlreadyExistsException("Switch set with this name already exists.");
 
         Brand brand = brandService.find(switchSetDto.getBrandName());
@@ -116,4 +109,81 @@ public class PartService {
         
         switchSetRepository.save(new SwitchSet(switchSetDto,brand,aSwitch));
     }
+
+    public void deleteCable(String name){
+        Cable cable = cableRepository.findById(name).orElse(null);
+        if (cable == null) throw new PartAlreadyExistsException("Cable with this name already exists.");
+        
+        if(!cable.getProcurementParts().isEmpty()) throw new PartCantBeDeletedException("Cable cant be deleted because it has procurements connected to it!");
+        if(!cable.getProducts().isEmpty()) throw new PartCantBeDeletedException("Cable cant be deleted because it has products connected to it!");
+
+        cableRepository.delete(cable);
+    }
+    public void deleteCase(String name){
+        Case aCase = caseRepository.findById(name).orElse(null);
+        if (aCase == null) throw new PartAlreadyExistsException("Case with this name already exists.");
+
+        if(!aCase.getProcurementParts().isEmpty()) throw new PartCantBeDeletedException("Case cant be deleted because it has procurements connected to it!");
+        if(!aCase.getProducts().isEmpty()) throw new PartCantBeDeletedException("Case cant be deleted because it has products connected to it!");
+
+        caseRepository.delete(aCase);
+    }
+    public void deleteKeycap(String name){
+        Keycap keycap = keycapRepository.findById(name).orElse(null);
+        if (keycap == null) throw new PartAlreadyExistsException("Keycap with this name already exists.");
+
+        if(!keycap.getProcurementParts().isEmpty()) throw new PartCantBeDeletedException("Keycap cant be deleted because it has procurements connected to it!");
+        if(!keycap.getProducts().isEmpty()) throw new PartCantBeDeletedException("Keycap cant be deleted because it has products connected to it!");
+
+        keycapRepository.delete(keycap);
+    }
+    public void deleteKeycapSet(String name){
+        KeycapSet keycapSet = keycapSetRepository.findById(name).orElse(null);
+        if (keycapSet == null) throw new PartAlreadyExistsException("Keycap set with this name already exists.");
+
+        if(!keycapSet.getProcurementParts().isEmpty()) throw new PartCantBeDeletedException("Keycap set cant be deleted because it has procurements connected to it!");
+        if(!keycapSet.getProducts().isEmpty()) throw new PartCantBeDeletedException("Keycap set cant be deleted because it has products connected to it!");
+
+        keycapSetRepository.delete(keycapSet);
+    }
+    public void deletePCB(String name){
+        PCB pcb = pcbRepository.findById(name).orElse(null);
+        if (pcb == null) throw new PartAlreadyExistsException("PCB with this name already exists.");
+
+        if(!pcb.getProcurementParts().isEmpty()) throw new PartCantBeDeletedException("PCB cant be deleted because it has procurements connected to it!");
+        if(!pcb.getProducts().isEmpty()) throw new PartCantBeDeletedException("PCB cant be deleted because it has products connected to it!");
+
+        pcbRepository.delete(pcb);
+    }
+    public void deletePlate(String name){
+        Plate plate = plateRepository.findById(name).orElse(null);
+        if (plate == null) throw new PartAlreadyExistsException("Plate with this name already exists.");
+
+        if(!plate.getProcurementParts().isEmpty()) throw new PartCantBeDeletedException("Plate cant be deleted because it has procurements connected to it!");
+        if(!plate.getProducts().isEmpty()) throw new PartCantBeDeletedException("Plate cant be deleted because it has products connected to it!");
+
+        plateRepository.delete(plate);
+    }
+    public void deleteStabilizer(String name){
+        Stabilizer stabilizer = stabilizerRepository.findById(name).orElse(null);
+        if (stabilizer == null) throw new PartAlreadyExistsException("Stabilizer with this name already exists.");
+
+        if(!stabilizer.getProcurementParts().isEmpty()) throw new PartCantBeDeletedException("Stabilizer cant be deleted because it has procurements connected to it!");
+        if(!stabilizer.getProducts().isEmpty()) throw new PartCantBeDeletedException("Stabilizer cant be deleted because it has products connected to it!");
+
+        stabilizerRepository.delete(stabilizer);
+    }
+    public void deleteSwitchSet(String name){
+        SwitchSet switchSet = switchSetRepository.findById(name).orElse(null);
+        if (switchSet == null) throw new PartAlreadyExistsException("Switch set with this name already exists.");
+
+        if(!switchSet.getProcurementParts().isEmpty()) throw new PartCantBeDeletedException("Switch set cant be deleted because it has procurements connected to it!");
+        if(!switchSet.getProducts().isEmpty()) throw new PartCantBeDeletedException("Switch set cant be deleted because it has products connected to it!");
+
+        switchSetRepository.delete(switchSet);
+    }
+    public Page<Part> findAllParts(PartType partType, int pageSize, int pageNumber){
+        return partRepository.findAllByPartType(partType, PageRequest.of(pageNumber, pageSize));
+    }
+    
 }

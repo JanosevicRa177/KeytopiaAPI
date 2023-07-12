@@ -21,7 +21,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,19 +30,16 @@ public class PartDataService {
     private final ILayoutRepository layoutRepository;
     private final ISizeRepository sizeRepository;
     private final ISwitchRepository switchRepository;
-
-
+    
     public void deleteKeycapProfile(String name){
-        Optional<KeycapProfile> keycapProfileOptional = keycapProfileRepository.findById(name);
-        KeycapProfile keycapProfile = keycapProfileOptional.orElse(null);
+        KeycapProfile keycapProfile = keycapProfileRepository.findById(name).orElse(null);
         if (keycapProfile == null) throw new PartDataNotFoundException("KeycapProfile does not exists!");
         if(!keycapProfile.getKeycaps().isEmpty()) throw new PartDataCantBeDeletedException("Keycap profile cant be deleted because it has \"Keycap\" parts connected to it!");
         if(!keycapProfile.getKeycapSets().isEmpty()) throw new PartDataCantBeDeletedException("Keycap profile cant be deleted because it has \"Keycap set\" parts connected to it!");
         keycapProfileRepository.delete(keycapProfile);
     }
     public void deleteSize(String name){
-        Optional<Size> sizeOptional = sizeRepository.findById(name);
-        Size size = sizeOptional.orElse(null);
+        Size size = sizeRepository.findById(name).orElse(null);
         if (size == null) throw new PartDataNotFoundException("Size does not exists!");
         if(!size.getCases().isEmpty()) throw new PartDataCantBeDeletedException("Size cant be deleted because it has \"Case\" parts connected to it!");
         if(!size.getPcbs().isEmpty()) throw new PartDataCantBeDeletedException("Size cant be deleted because it has \"Pcb\" parts connected to it!");
@@ -51,82 +47,79 @@ public class PartDataService {
         sizeRepository.delete(size);
     }
     public void deleteLayout(String name){
-        Optional<Layout> layoutOptional= layoutRepository.findById(name);
-        Layout layout = layoutOptional.orElse(null);
+        Layout layout = layoutRepository.findById(name).orElse(null);
         if (layout == null) throw new PartDataNotFoundException("Layout does not exists!");
         if(!layout.getSupportedKeycapSets().isEmpty()) throw new PartDataCantBeDeletedException("Size cant be deleted because it has \"Case\" parts connected to it!");
         layoutRepository.delete(layout);
     }
     public void deleteSwitch(String name){
-        Optional<Switch> switchOptional= switchRepository.findById(name);
-        Switch aSwitch = switchOptional.orElse(null);
+        Switch aSwitch = switchRepository.findById(name).orElse(null);
         if (aSwitch == null) throw new PartDataNotFoundException("Switch does not exists!");
         if(!aSwitch.getSwitchSets().isEmpty()) throw new PartDataCantBeDeletedException("Switch cant be deleted because it has \"Switch set\" parts connected to it!");
         switchRepository.delete(aSwitch);
     }
-    
     public void createKeycapProfile(KeycapProfileDto keycapProfileDto){
-        Optional<KeycapProfile> keycapProfile = keycapProfileRepository.findById(keycapProfileDto.getName());
-        if (keycapProfile.isPresent()) throw new PartDataAlreadyExistsException("Keycap profile with this name already exists.");
+        KeycapProfile keycapProfile = keycapProfileRepository.findById(keycapProfileDto.getName()).orElse(null);
+        if (keycapProfile != null) throw new PartDataAlreadyExistsException("Keycap profile with this name already exists.");
         keycapProfileRepository.save(new KeycapProfile(keycapProfileDto));
     }
     public void createSize(SizeDto sizeDto){
-        Optional<Size> size = sizeRepository.findById(sizeDto.getName());
-        if (size.isPresent()) throw new PartDataAlreadyExistsException("Size with this name already exists.");
+        Size size = sizeRepository.findById(sizeDto.getName()).orElse(null);
+        if (size != null) throw new PartDataAlreadyExistsException("Size with this name already exists.");
         sizeRepository.save(new Size(sizeDto));
     }
     public void createLayout(LayoutDto layoutDto){
-        Optional<Layout> layout = layoutRepository.findById(layoutDto.getName());
-        if (layout.isPresent()) throw new PartDataAlreadyExistsException("Layout with this name already exists.");
+        Layout layout = layoutRepository.findById(layoutDto.getName()).orElse(null);;
+        if (layout != null) throw new PartDataAlreadyExistsException("Layout with this name already exists.");
         layoutRepository.save(new Layout(layoutDto));
     }
     public void createSwitch(SwitchDto switchDto){
-        Optional<Switch> aSwitch = switchRepository.findById(switchDto.getName());
-        if (aSwitch.isPresent()) throw new PartDataAlreadyExistsException("Switch with this name already exists.");
+        Switch aSwitch = switchRepository.findById(switchDto.getName()).orElse(null);
+        if (aSwitch != null) throw new PartDataAlreadyExistsException("Switch with this name already exists.");
         switchRepository.save(new Switch(switchDto));
     }
-    public Page<KeycapProfile> findAllKeycapProfile(int pageSize, int pageNumber){
+    public Page<KeycapProfile> findAllKeycapProfiles(int pageSize, int pageNumber){
         return keycapProfileRepository.findAll(PageRequest.of(pageNumber, pageSize));
     }
-    public Page<Size> findAllSize(int pageSize, int pageNumber){
+    public Page<Size> findAllSizes(int pageSize, int pageNumber){
         return sizeRepository.findAll(PageRequest.of(pageNumber, pageSize));
     }
-    public Page<Layout> findAllLayout(int pageSize, int pageNumber){
+    public Page<Layout> findAllLayouts(int pageSize, int pageNumber){
         return layoutRepository.findAll(PageRequest.of(pageNumber, pageSize));
     }
-    public Page<Switch> findAllSwitch(int pageSize, int pageNumber){
+    public Page<Switch> findAllSwitches(int pageSize, int pageNumber){
         return switchRepository.findAll(PageRequest.of(pageNumber, pageSize));
     }
-    public List<KeycapProfile> findAllKeycapProfile(){
+    public List<KeycapProfile> findAllKeycapProfiles(){
         return keycapProfileRepository.findAll();
     }
-    public List<Size> findAllSize(){
+    public List<Size> findAllSizes(){
         return sizeRepository.findAll();
     }
-    public List<Layout> findAllLayout(){
+    public List<Layout> findAllLayouts(){
         return layoutRepository.findAll();
     }
-    public List<Switch> findAllSwitch(){
+    public List<Switch> findAllSwitches(){
         return switchRepository.findAll();
     }
     public KeycapProfile findKeycapProfile(String name){
-        Optional<KeycapProfile> keycapProfileOptional = keycapProfileRepository.findById(name);
-        if(keycapProfileOptional.isEmpty()) throw new PartDataNotFoundException("Keycap profile with name" + name + "does not exists");
-        return keycapProfileOptional.get();
+        KeycapProfile keycapProfile = keycapProfileRepository.findById(name).orElse(null);
+        if(keycapProfile == null) throw new PartDataNotFoundException("Keycap profile with name" + name + "does not exists");
+        return keycapProfile;
     }
     public Size findSize(String name){
-        Optional<Size> sizeOptional = sizeRepository.findById(name);
-        if(sizeOptional.isEmpty()) throw new PartDataNotFoundException("Size with name" + name + "does not exists");
-        return sizeOptional.get();
+        Size size = sizeRepository.findById(name).orElse(null);
+        if(size == null) throw new PartDataNotFoundException("Size with name" + name + "does not exists");
+        return size;
     }
     public Layout findLayout(String name){
-        Optional<Layout> layoutOptional = layoutRepository.findById(name);
-        if(layoutOptional.isEmpty()) throw new PartDataNotFoundException("Layout with name" + name + "does not exists");
-        return layoutOptional.get();
+        Layout layout = layoutRepository.findById(name).orElse(null);
+        if(layout == null) throw new PartDataNotFoundException("Layout with name" + name + "does not exists");
+        return layout;
     }
     public Switch findSwitch(String name){
-        Optional<Switch> switchOptional = switchRepository.findById(name);
-        if(switchOptional.isEmpty()) throw new PartDataNotFoundException("Switch with name" + name + "does not exists");
-        return switchOptional.get();
+        Switch aSwitch = switchRepository.findById(name).orElse(null);
+        if(aSwitch == null) throw new PartDataNotFoundException("Switch with name" + name + "does not exists");
+        return aSwitch;
     }
 }

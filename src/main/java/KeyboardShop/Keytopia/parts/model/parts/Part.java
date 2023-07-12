@@ -31,9 +31,9 @@ public class Part {
     @Column(name="PartPriceWeight")
     @Enumerated(EnumType.STRING)
     private PriceWeight priceWeight;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<ProcurementPart> procurementParts;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Product> products;
     @ManyToOne
     @JoinColumn(name="idBrand", nullable=false)

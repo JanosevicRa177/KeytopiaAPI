@@ -31,7 +31,7 @@ public class KeycapSet extends Part {
     @ManyToOne
     @JoinColumn(name="KeycapProfileName", nullable=false)
     private KeycapProfile keycapProfile;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Layout> supportedLayouts;
     public KeycapSet(KeycapSetDto keycapSetDto, Brand brand, KeycapProfile keycapProfile, List<Layout> layouts){
         super(keycapSetDto.getName(), 0, keycapSetDto.getPrice(), PartType.KEYCAP_SET, keycapSetDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand);
