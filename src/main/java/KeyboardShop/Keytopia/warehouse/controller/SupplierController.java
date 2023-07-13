@@ -1,8 +1,7 @@
 package KeyboardShop.Keytopia.warehouse.controller;
 
-import KeyboardShop.Keytopia.warehouse.dto.BrandDto;
 import KeyboardShop.Keytopia.warehouse.dto.SupplierDto;
-import KeyboardShop.Keytopia.warehouse.model.Brand;
+import KeyboardShop.Keytopia.warehouse.dto.SupplierWithBrandsDto;
 import KeyboardShop.Keytopia.warehouse.model.Supplier;
 import KeyboardShop.Keytopia.warehouse.service.SupplierService;
 import lombok.RequiredArgsConstructor;
@@ -39,11 +38,15 @@ public class SupplierController {
     }
     @GetMapping("/{pageSize}/{pageNumber}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Page<SupplierDto>> findAll(@Valid @PathVariable int pageSize, @Valid @PathVariable int pageNumber) {
+    public ResponseEntity<Page<SupplierWithBrandsDto>> findAll(@Valid @PathVariable int pageSize, @Valid @PathVariable int pageNumber) {
         Page<Supplier> supplierPage = supplierService.findAll(pageSize, pageNumber);
-        List<SupplierDto> supplierDtos = new ArrayList<>();
-        supplierPage.getContent().forEach((supplier)-> supplierDtos.add(new SupplierDto(supplier)));
-        Page<SupplierDto> supplierDtoPage = new PageImpl<>(supplierDtos,supplierPage.getPageable(),supplierPage.getTotalElements());
+        List<SupplierWithBrandsDto> supplierDtos = new ArrayList<>();
+        supplierPage.getContent().forEach((supplier)-> {
+            List<String> brands = new ArrayList<>();
+            supplier.getBrands().forEach((brand)-> brands.add(brand.getName()));
+            supplierDtos.add(new SupplierWithBrandsDto(supplier,brands)); 
+        });
+        Page<SupplierWithBrandsDto> supplierDtoPage = new PageImpl<>(supplierDtos,supplierPage.getPageable(),supplierPage.getTotalElements());
         return ResponseEntity.ok(supplierDtoPage);
     }
     @DeleteMapping ("/{name}")

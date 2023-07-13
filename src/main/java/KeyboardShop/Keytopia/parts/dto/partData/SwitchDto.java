@@ -6,7 +6,6 @@ import KeyboardShop.Keytopia.parts.model.enums.SwitchType;
 import KeyboardShop.Keytopia.parts.model.partData.Switch;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @NoArgsConstructor

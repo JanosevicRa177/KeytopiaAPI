@@ -23,6 +23,7 @@ public class Brand {
     @Column(name="BrandSlogan")
     private String slogan;
     @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Supplier> suppliers;
     @OneToMany
     @LazyCollection(LazyCollectionOption.FALSE)

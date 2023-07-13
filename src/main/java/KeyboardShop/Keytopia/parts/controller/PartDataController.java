@@ -1,6 +1,5 @@
 package KeyboardShop.Keytopia.parts.controller;
 
-import KeyboardShop.Keytopia.parts.dto.part.PartDto;
 import KeyboardShop.Keytopia.parts.dto.partData.KeycapProfileDto;
 import KeyboardShop.Keytopia.parts.dto.partData.LayoutDto;
 import KeyboardShop.Keytopia.parts.dto.partData.SizeDto;

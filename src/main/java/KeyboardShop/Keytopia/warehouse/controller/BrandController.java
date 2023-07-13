@@ -1,7 +1,5 @@
 package KeyboardShop.Keytopia.warehouse.controller;
 
-import KeyboardShop.Keytopia.parts.dto.partData.SwitchDto;
-import KeyboardShop.Keytopia.parts.model.partData.Switch;
 import KeyboardShop.Keytopia.warehouse.dto.BrandDto;
 import KeyboardShop.Keytopia.warehouse.model.Brand;
 import KeyboardShop.Keytopia.warehouse.service.BrandService;
