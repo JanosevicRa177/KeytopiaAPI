@@ -1,12 +1,14 @@
 package KeyboardShop.Keytopia.warehouse.model;
 
 import KeyboardShop.Keytopia.shared.model.Address;
+import KeyboardShop.Keytopia.warehouse.dto.SupplierDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -25,4 +27,10 @@ public class Supplier {
     private Address address;
     @ManyToMany
     private List<Brand> brands;
+    public Supplier(SupplierDto supplierDto){
+        this.name = supplierDto.getName();
+        this.phone = supplierDto.getPhone();
+        this.address = supplierDto.getAddress();
+        this.brands = new ArrayList<>();
+    }
 }

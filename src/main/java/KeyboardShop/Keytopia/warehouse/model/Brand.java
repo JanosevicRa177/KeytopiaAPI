@@ -3,6 +3,8 @@ package KeyboardShop.Keytopia.warehouse.model;
 import KeyboardShop.Keytopia.parts.model.parts.Part;
 import KeyboardShop.Keytopia.warehouse.dto.BrandDto;
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class Brand {
     @ManyToMany
     private List<Supplier> suppliers;
     @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Part> parts;
     public Brand(BrandDto brandDto){
         this.name = brandDto.getName();
