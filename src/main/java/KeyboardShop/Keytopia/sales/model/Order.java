@@ -2,6 +2,8 @@ package KeyboardShop.Keytopia.sales.model;
 
 import KeyboardShop.Keytopia.auth.model.Buyer;
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -22,6 +24,11 @@ public class Order {
     @Column(name="OrderDeadline")
     private Date deadline;
     @ManyToMany
+    @JoinTable(name="order_service",
+            joinColumns=@JoinColumn(name="idOrder"),
+            inverseJoinColumns=@JoinColumn(name="idService")
+    )
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Service> services;
     @ManyToOne
     @JoinColumn(name="idUser", nullable=false)
@@ -30,5 +37,6 @@ public class Order {
     @JoinColumn(name="idDeliveryService", nullable=false)
     private DeliveryService deliveryService;
     @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Product> products;
 }

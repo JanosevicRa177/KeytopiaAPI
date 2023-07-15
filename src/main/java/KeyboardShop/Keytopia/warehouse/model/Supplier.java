@@ -30,13 +30,17 @@ public class Supplier {
     @JoinColumn(name = "idAddress", referencedColumnName = "idAddress")
     private Address address;
     @ManyToMany
+    @JoinTable(name="brand_supplier",
+            joinColumns=@JoinColumn(name="SupplierName"),
+            inverseJoinColumns=@JoinColumn(name="BrandName")
+    )
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Brand> brands;
     public Supplier(SupplierDto supplierDto,List<Brand> brands){
         this.name = supplierDto.getName();
         this.phone = supplierDto.getPhone();
         this.address = supplierDto.getAddress();
-        this.brands = new ArrayList<>();
+        this.brands = brands;
         this.penals = 0;
     }
 }

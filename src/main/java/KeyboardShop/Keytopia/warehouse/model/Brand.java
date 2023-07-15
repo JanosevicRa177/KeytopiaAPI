@@ -22,8 +22,7 @@ public class Brand {
     private String name;
     @Column(name="BrandSlogan")
     private String slogan;
-    @ManyToMany
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToMany(mappedBy = "brands")
     private List<Supplier> suppliers;
     @OneToMany
     @LazyCollection(LazyCollectionOption.FALSE)

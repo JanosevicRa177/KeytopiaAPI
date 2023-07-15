@@ -17,6 +17,6 @@ public class Service {
     private Long id;
     @Column(name="ServiceName")
     private String name;
-    @ManyToMany
+    @ManyToMany(mappedBy = "services")
     private List<Order> orders;
 }

@@ -28,6 +28,7 @@ public class KeycapProfile {
     private List<KeycapSet> keycapSets;
     @OneToMany
     @LazyCollection(LazyCollectionOption.FALSE)
+    
     private List<Keycap> keycaps;
     
     public KeycapProfile(KeycapProfileDto keycapProfileDto){
