@@ -32,7 +32,7 @@ public class Supplier {
     @ManyToMany
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Brand> brands;
-    public Supplier(SupplierDto supplierDto){
+    public Supplier(SupplierDto supplierDto,List<Brand> brands){
         this.name = supplierDto.getName();
         this.phone = supplierDto.getPhone();
         this.address = supplierDto.getAddress();

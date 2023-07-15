@@ -3,13 +3,16 @@ package KeyboardShop.Keytopia.warehouse.service;
 import KeyboardShop.Keytopia.utils.excentions.partExceptions.partData.PartDataAlreadyExistsException;
 import KeyboardShop.Keytopia.utils.excentions.warehouse.WarehouseEntityNotFoundException;
 import KeyboardShop.Keytopia.warehouse.dto.SupplierDto;
+import KeyboardShop.Keytopia.warehouse.model.Brand;
 import KeyboardShop.Keytopia.warehouse.model.Supplier;
+import KeyboardShop.Keytopia.warehouse.repository.IBrandRepository;
 import KeyboardShop.Keytopia.warehouse.repository.ISupplierRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,11 +21,14 @@ import java.util.Optional;
 public class SupplierService {
 
     private final ISupplierRepository supplierRepository;
+    private final BrandService brandService;
     
     public void create(SupplierDto supplierDto){
         Supplier supplier = supplierRepository.findById(supplierDto.getName()).orElse(null);
         if (supplier != null) throw new PartDataAlreadyExistsException("Supplier with this name already exists.");
-        supplierRepository.save(new Supplier(supplierDto));
+        List<Brand> brands = new ArrayList<>();
+        supplierDto.getBrands().forEach((brandName) -> brands.add(brandService.find(brandName)));
+        supplierRepository.save(new Supplier(supplierDto,brands));
     }
     public List<Supplier> findAll(){
         return supplierRepository.findAll();

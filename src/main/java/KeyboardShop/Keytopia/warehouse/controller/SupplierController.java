@@ -1,7 +1,6 @@
 package KeyboardShop.Keytopia.warehouse.controller;
 
 import KeyboardShop.Keytopia.warehouse.dto.SupplierDto;
-import KeyboardShop.Keytopia.warehouse.dto.SupplierWithBrandsDto;
 import KeyboardShop.Keytopia.warehouse.model.Supplier;
 import KeyboardShop.Keytopia.warehouse.service.SupplierService;
 import lombok.RequiredArgsConstructor;
@@ -33,20 +32,24 @@ public class SupplierController {
     public ResponseEntity<List<SupplierDto>> findAll() {
         List<Supplier> suppliers = supplierService.findAll();
         List<SupplierDto> supplierDtos = new ArrayList<>();
-        suppliers.forEach((supplier)-> supplierDtos.add(new SupplierDto(supplier)));
+        suppliers.forEach((supplier)-> {
+            List<String> brands = new ArrayList<>();
+            supplier.getBrands().forEach((brand)-> brands.add(brand.getName()));
+            supplierDtos.add(new SupplierDto(supplier,brands));
+        });
         return ResponseEntity.ok(supplierDtos);
     }
     @GetMapping("/{pageSize}/{pageNumber}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Page<SupplierWithBrandsDto>> findAll(@Valid @PathVariable int pageSize, @Valid @PathVariable int pageNumber) {
+    public ResponseEntity<Page<SupplierDto>> findAll(@Valid @PathVariable int pageSize, @Valid @PathVariable int pageNumber) {
         Page<Supplier> supplierPage = supplierService.findAll(pageSize, pageNumber);
-        List<SupplierWithBrandsDto> supplierDtos = new ArrayList<>();
+        List<SupplierDto> supplierDtos = new ArrayList<>();
         supplierPage.getContent().forEach((supplier)-> {
             List<String> brands = new ArrayList<>();
             supplier.getBrands().forEach((brand)-> brands.add(brand.getName()));
-            supplierDtos.add(new SupplierWithBrandsDto(supplier,brands)); 
+            supplierDtos.add(new SupplierDto(supplier,brands)); 
         });
-        Page<SupplierWithBrandsDto> supplierDtoPage = new PageImpl<>(supplierDtos,supplierPage.getPageable(),supplierPage.getTotalElements());
+        Page<SupplierDto> supplierDtoPage = new PageImpl<>(supplierDtos,supplierPage.getPageable(),supplierPage.getTotalElements());
         return ResponseEntity.ok(supplierDtoPage);
     }
     @DeleteMapping ("/{name}")
