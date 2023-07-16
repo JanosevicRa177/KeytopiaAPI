@@ -37,8 +37,8 @@ public class Cable extends Part {
     private boolean isCoiled;
     @Column(name="IsQuickRelease")
     private boolean isQuickRelease;
-    public Cable(CableDto cableDto, Brand brand){
-        super(cableDto.getName(), 0, cableDto.getPrice(), PartType.CABLE, cableDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand);
+    public Cable(CableDto cableDto, Brand brand,String imageUrl){
+        super(cableDto.getName(), 0, cableDto.getPrice(), PartType.CABLE, cableDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand, imageUrl);
         this.material = cableDto.getMaterial();
         this.color = cableDto.getColor();
         this.length = cableDto.getLength();

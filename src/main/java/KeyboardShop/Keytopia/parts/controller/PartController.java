@@ -7,9 +7,11 @@ import KeyboardShop.Keytopia.parts.service.PartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -21,52 +23,52 @@ import java.util.List;
 public class PartController {
     private final PartService partService;
     
-    @PostMapping("/cable")
+    @PostMapping(value ="/cable", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> createCable(@Valid @RequestBody final CableDto cableDto) {
-        partService.createCable(cableDto);
+    public ResponseEntity<Void> createCable(@Valid @RequestParam("json") final CableDto cableDto, @RequestParam("file") MultipartFile file) {
+        partService.createCable(cableDto,file);
         return ResponseEntity.ok().build();
     }
-    @PostMapping("/case")
+    @PostMapping(value ="/case", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> createCable(@Valid @RequestBody final CaseDto caseDto) {
-        partService.createCase(caseDto);
+    public ResponseEntity<Void> createCable(@Valid @RequestParam("json") final CaseDto caseDto, @RequestParam("file") MultipartFile file) {
+        partService.createCase(caseDto,file);
         return ResponseEntity.ok().build();
     }
-    @PostMapping("/keycap")
+    @PostMapping(value ="/keycap", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> createKeycap(@Valid @RequestBody final KeycapDto keycapDto) {
-        partService.createKeycap(keycapDto);
+    public ResponseEntity<Void> createKeycap(@Valid @RequestParam("json")final KeycapDto keycapDto, @RequestParam("file") MultipartFile file) {
+        partService.createKeycap(keycapDto,file);
         return ResponseEntity.ok().build();
     }
-    @PostMapping("/keycap-set")
+    @PostMapping(value ="/keycap-set", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> createKeycap(@Valid @RequestBody final KeycapSetDto keycapSetDto) {
-        partService.createKeycapSet(keycapSetDto);
+    public ResponseEntity<Void> createKeycap(@Valid @RequestParam("json") final KeycapSetDto keycapSetDto, @RequestParam("file") MultipartFile file) {
+        partService.createKeycapSet(keycapSetDto,file);
         return ResponseEntity.ok().build();
     }
-    @PostMapping("/pcb")
+    @PostMapping(value ="/pcb", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> createPCB(@Valid @RequestBody final PCBDto pcbDto) {
-        partService.createPCB(pcbDto);
+    public ResponseEntity<Void> createPCB(@Valid @RequestParam("json") final PCBDto pcbDto, @RequestParam("file") MultipartFile file) {
+        partService.createPCB(pcbDto,file);
         return ResponseEntity.ok().build();
     }
-    @PostMapping("/plate")
+    @PostMapping(value ="/plate", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> createPlate(@Valid @RequestBody final PlateDto plateDto) {
-        partService.createPlate(plateDto);
+    public ResponseEntity<Void> createPlate(@Valid @RequestParam("json") final PlateDto plateDto, @RequestParam("file") MultipartFile file) {
+        partService.createPlate(plateDto,file);
         return ResponseEntity.ok().build();
     }
-    @PostMapping("/stabilizer")
+    @PostMapping(value ="/stabilizer", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> createStabilizer(@Valid @RequestBody final StabilizerDto stabilizerDto) {
-        partService.createStabilizer(stabilizerDto);
+    public ResponseEntity<Void> createStabilizer(@Valid @RequestParam("json") final StabilizerDto stabilizerDto, @RequestParam("file") MultipartFile file) {
+        partService.createStabilizer(stabilizerDto,file);
         return ResponseEntity.ok().build();
     }
-    @PostMapping("/switch-set")
+    @PostMapping(value ="/switch-set", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> createStabilizer(@Valid @RequestBody final SwitchSetDto switchSetDto) {
-        partService.createSwitchSet(switchSetDto);
+    public ResponseEntity<Void> createStabilizer(@Valid @RequestParam("json") final SwitchSetDto switchSetDto, @RequestParam("file") MultipartFile file) {
+        partService.createSwitchSet(switchSetDto,file);
         return ResponseEntity.ok().build();
     }
     @DeleteMapping("/cable/{name}")

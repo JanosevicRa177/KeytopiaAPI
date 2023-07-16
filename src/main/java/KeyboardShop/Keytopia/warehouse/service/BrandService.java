@@ -1,8 +1,8 @@
 package KeyboardShop.Keytopia.warehouse.service;
 
 import KeyboardShop.Keytopia.utils.excentions.partExceptions.partData.PartDataAlreadyExistsException;
-import KeyboardShop.Keytopia.utils.excentions.warehouse.WarehouseEntityCantBeDeletedException;
-import KeyboardShop.Keytopia.utils.excentions.warehouse.WarehouseEntityNotFoundException;
+import KeyboardShop.Keytopia.utils.excentions.warehouseExceptions.WarehouseEntityCantBeDeletedException;
+import KeyboardShop.Keytopia.utils.excentions.warehouseExceptions.WarehouseEntityNotFoundException;
 import KeyboardShop.Keytopia.warehouse.dto.BrandDto;
 import KeyboardShop.Keytopia.warehouse.model.Brand;
 import KeyboardShop.Keytopia.warehouse.repository.IBrandRepository;

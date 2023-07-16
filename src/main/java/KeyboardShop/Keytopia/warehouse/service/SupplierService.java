@@ -1,11 +1,10 @@
 package KeyboardShop.Keytopia.warehouse.service;
 
 import KeyboardShop.Keytopia.utils.excentions.partExceptions.partData.PartDataAlreadyExistsException;
-import KeyboardShop.Keytopia.utils.excentions.warehouse.WarehouseEntityNotFoundException;
+import KeyboardShop.Keytopia.utils.excentions.warehouseExceptions.WarehouseEntityNotFoundException;
 import KeyboardShop.Keytopia.warehouse.dto.SupplierDto;
 import KeyboardShop.Keytopia.warehouse.model.Brand;
 import KeyboardShop.Keytopia.warehouse.model.Supplier;
-import KeyboardShop.Keytopia.warehouse.repository.IBrandRepository;
 import KeyboardShop.Keytopia.warehouse.repository.ISupplierRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

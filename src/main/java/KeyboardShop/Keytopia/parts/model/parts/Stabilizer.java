@@ -22,8 +22,8 @@ public class Stabilizer extends Part {
     @Column(name="StabilizerType")
     @Enumerated(EnumType.STRING)
     private StabilizerType type;
-    public Stabilizer(StabilizerDto stabilizerDto, Brand brand){
-        super(stabilizerDto.getName(), 0, stabilizerDto.getPrice(), PartType.STABILIZER, stabilizerDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand);
+    public Stabilizer(StabilizerDto stabilizerDto, Brand brand,String imageUrl){
+        super(stabilizerDto.getName(), 0, stabilizerDto.getPrice(), PartType.STABILIZER, stabilizerDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand, imageUrl);
         this.type = stabilizerDto.getType();
         this.size = stabilizerDto.getSize();
     }

@@ -33,8 +33,8 @@ public class KeycapSet extends Part {
     private KeycapProfile keycapProfile;
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Layout> supportedLayouts;
-    public KeycapSet(KeycapSetDto keycapSetDto, Brand brand, KeycapProfile keycapProfile, List<Layout> layouts){
-        super(keycapSetDto.getName(), 0, keycapSetDto.getPrice(), PartType.KEYCAP_SET, keycapSetDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand);
+    public KeycapSet(KeycapSetDto keycapSetDto, Brand brand, KeycapProfile keycapProfile, List<Layout> layouts,String imageUrl){
+        super(keycapSetDto.getName(), 0, keycapSetDto.getPrice(), PartType.KEYCAP_SET, keycapSetDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand,imageUrl);
         this.material = keycapSetDto.getMaterial();
         this.language = keycapSetDto.getLanguage();
         this.quantity = keycapSetDto.getQuantity();

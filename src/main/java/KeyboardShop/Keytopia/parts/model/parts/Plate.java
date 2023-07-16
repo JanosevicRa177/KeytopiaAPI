@@ -25,8 +25,8 @@ public class Plate extends Part {
     @ManyToOne
     @JoinColumn(name="SizeName", nullable=false)
     private Size size;
-    public Plate(PlateDto plateDto, Brand brand, Size size){
-        super(plateDto.getName(), 0, plateDto.getPrice(), PartType.PLATE, plateDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand);
+    public Plate(PlateDto plateDto, Brand brand, Size size,String imageUrl){
+        super(plateDto.getName(), 0, plateDto.getPrice(), PartType.PLATE, plateDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand, imageUrl);
         this.size = size;
         this.material = plateDto.getMaterial();
         this.color = plateDto.getColor();

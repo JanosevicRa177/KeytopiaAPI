@@ -31,8 +31,8 @@ public class PCB extends Part{
     private PinType pinType;
     @Column(name="StabilizerType")
     private StabilizerType stabilizerType;
-    public PCB(PCBDto pcbDto, Brand brand, Size size){
-        super(pcbDto.getName(), 0, pcbDto.getPrice(), PartType.PCB, pcbDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand);
+    public PCB(PCBDto pcbDto, Brand brand, Size size,String imageUrl){
+        super(pcbDto.getName(), 0, pcbDto.getPrice(), PartType.PCB, pcbDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand, imageUrl);
         this.type = pcbDto.getType();
         this.btConnect = pcbDto.isBtConnect();
         this.color = pcbDto.getColor();

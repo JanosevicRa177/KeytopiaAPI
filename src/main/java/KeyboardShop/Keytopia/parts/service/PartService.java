@@ -10,13 +10,17 @@ import KeyboardShop.Keytopia.parts.model.parts.*;
 import KeyboardShop.Keytopia.parts.repository.part.*;
 import KeyboardShop.Keytopia.utils.excentions.partExceptions.part.PartAlreadyExistsException;
 import KeyboardShop.Keytopia.utils.excentions.partExceptions.part.PartCantBeDeletedException;
+import KeyboardShop.Keytopia.utils.excentions.utilExceptions.FileUploadException;
+import KeyboardShop.Keytopia.utils.storage.IStorageService;
 import KeyboardShop.Keytopia.warehouse.model.Brand;
 import KeyboardShop.Keytopia.warehouse.service.BrandService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,17 +38,25 @@ public class PartService {
     private final IPCBRepository pcbRepository;
     private final BrandService brandService;
     private final PartDataService partDataService;
+    private final IStorageService storageService;
 
-    public void createKeycap(KeycapDto keycapDto){
+    public void createKeycap(KeycapDto keycapDto, MultipartFile file){
         Keycap keycap  = keycapRepository.findById(keycapDto.getName()).orElse(null);
         if (keycap != null) throw new PartAlreadyExistsException("Keycap with this name already exists.");
         
         Brand brand = brandService.find(keycapDto.getBrandName());
         KeycapProfile keycapProfile = partDataService.findKeycapProfile(keycapDto.getKeycapProfileName());
         
-        keycapRepository.save(new Keycap(keycapDto,brand,keycapProfile));
+        String imageUrl;
+        try {
+            imageUrl = storageService.uploadFile(file);
+        } catch (IOException e) {
+            throw new FileUploadException();
+        }
+        
+        keycapRepository.save(new Keycap(keycapDto,brand,keycapProfile,imageUrl));
     }
-    public void createKeycapSet(KeycapSetDto keycapSetDto) {
+    public void createKeycapSet(KeycapSetDto keycapSetDto, MultipartFile file) {
         KeycapSet keycapSet = keycapSetRepository.findById(keycapSetDto.getName()).orElse(null);
         if (keycapSet != null) throw new PartAlreadyExistsException("Keycap set with this name already exists.");
 
@@ -52,62 +64,111 @@ public class PartService {
         KeycapProfile keycapProfile = partDataService.findKeycapProfile(keycapSetDto.getKeycapProfileName());
         List<Layout> layouts = new ArrayList<>();
         keycapSetDto.getLayouts().forEach((name)-> layouts.add(partDataService.findLayout(name)));
+
+        String imageUrl;
+        try {
+            imageUrl = storageService.uploadFile(file);
+        } catch (IOException e) {
+            throw new FileUploadException();
+        }
         
-        keycapSetRepository.save(new KeycapSet(keycapSetDto,brand,keycapProfile,layouts));
+        keycapSetRepository.save(new KeycapSet(keycapSetDto,brand,keycapProfile,layouts,imageUrl));
     }
 
-    public void createCable(CableDto cableDto) {
+    public void createCable(CableDto cableDto, MultipartFile file) {
         Cable cable = cableRepository.findById(cableDto.getName()).orElse(null);
         if (cable != null) throw new PartAlreadyExistsException("Cable with this name already exists.");
 
         Brand brand = brandService.find(cableDto.getBrandName());
 
-        cableRepository.save(new Cable(cableDto,brand));
+        String imageUrl;
+        try {
+            imageUrl = storageService.uploadFile(file);
+        } catch (IOException e) {
+            throw new FileUploadException();
+        }
+        
+        cableRepository.save(new Cable(cableDto,brand,imageUrl));
     }
-    public void createCase(CaseDto caseDto) {
+    public void createCase(CaseDto caseDto, MultipartFile file) {
         Case aCase = caseRepository.findById(caseDto.getName()).orElse(null);
         if (aCase != null) throw new PartAlreadyExistsException("Case with this name already exists.");
 
         Brand brand = brandService.find(caseDto.getBrandName());
         Size size = partDataService.findSize(caseDto.getSizeName());
 
-        caseRepository.save(new Case(caseDto,brand,size));
+        String imageUrl;
+        try {
+            imageUrl = storageService.uploadFile(file);
+        } catch (IOException e) {
+            throw new FileUploadException();
+        }
+        
+        caseRepository.save(new Case(caseDto,brand,size,imageUrl));
     }
-    public void createPCB(PCBDto pcbDto) {
+    public void createPCB(PCBDto pcbDto, MultipartFile file) {
         PCB pcb = pcbRepository.findById(pcbDto.getName()).orElse(null);
         if (pcb != null) throw new PartAlreadyExistsException("PCB with this name already exists.");
 
         Brand brand = brandService.find(pcbDto.getBrandName());
         Size size = partDataService.findSize(pcbDto.getSizeName());
 
-        pcbRepository.save(new PCB(pcbDto,brand,size));
+        String imageUrl;
+        try {
+            imageUrl = storageService.uploadFile(file);
+        } catch (IOException e) {
+            throw new FileUploadException();
+        }
+        
+        pcbRepository.save(new PCB(pcbDto,brand,size,imageUrl));
     }
-    public void createPlate(PlateDto plateDto) {
+    public void createPlate(PlateDto plateDto, MultipartFile file) {
         Plate plate = plateRepository.findById(plateDto.getName()).orElse(null);
         if (plate != null) throw new PartAlreadyExistsException("Plate with this name already exists.");
 
         Brand brand = brandService.find(plateDto.getBrandName());
         Size size = partDataService.findSize(plateDto.getSizeName());
 
-        plateRepository.save(new Plate(plateDto,brand,size));
+        String imageUrl;
+        try {
+            imageUrl = storageService.uploadFile(file);
+        } catch (IOException e) {
+            throw new FileUploadException();
+        }
+        
+        plateRepository.save(new Plate(plateDto,brand,size,imageUrl));
     }
-    public void createStabilizer(StabilizerDto stabilizerDto) {
+    public void createStabilizer(StabilizerDto stabilizerDto, MultipartFile file) {
         Stabilizer stabilizer = stabilizerRepository.findById(stabilizerDto.getName()).orElse(null);
         if (stabilizer != null) throw new PartAlreadyExistsException("Stabilizer with this name already exists.");
 
         Brand brand = brandService.find(stabilizerDto.getBrandName());
 
-        stabilizerRepository.save(new Stabilizer(stabilizerDto,brand));
+        String imageUrl;
+        try {
+            imageUrl = storageService.uploadFile(file);
+        } catch (IOException e) {
+            throw new FileUploadException();
+        }
+        
+        stabilizerRepository.save(new Stabilizer(stabilizerDto,brand,imageUrl));
     }
 
-    public void createSwitchSet(SwitchSetDto switchSetDto) {
+    public void createSwitchSet(SwitchSetDto switchSetDto, MultipartFile file) {
         SwitchSet switchSet = switchSetRepository.findById(switchSetDto.getName()).orElse(null);
         if (switchSet != null) throw new PartAlreadyExistsException("Switch set with this name already exists.");
 
         Brand brand = brandService.find(switchSetDto.getBrandName());
         Switch aSwitch = partDataService.findSwitch(switchSetDto.getSwitchName());
+
+        String imageUrl;
+        try {
+            imageUrl = storageService.uploadFile(file);
+        } catch (IOException e) {
+            throw new FileUploadException();
+        }
         
-        switchSetRepository.save(new SwitchSet(switchSetDto,brand,aSwitch));
+        switchSetRepository.save(new SwitchSet(switchSetDto,brand,aSwitch,imageUrl));
     }
 
     public void deleteCable(String name){
@@ -116,7 +177,7 @@ public class PartService {
         
         if(!cable.getProcurementParts().isEmpty()) throw new PartCantBeDeletedException("Cable cant be deleted because it has procurements connected to it!");
         if(!cable.getProducts().isEmpty()) throw new PartCantBeDeletedException("Cable cant be deleted because it has products connected to it!");
-
+        
         cableRepository.delete(cable);
     }
     public void deleteCase(String name){

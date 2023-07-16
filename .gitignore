@@ -85,6 +85,7 @@ fabric.properties
 # that are supposed to be shared within teams.
 
 .idea/*
+src/main/resources/keytopia.json
 
 !.idea/codeStyles
 !.idea/runConfigurations

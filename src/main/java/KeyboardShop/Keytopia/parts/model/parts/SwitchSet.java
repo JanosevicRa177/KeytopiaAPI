@@ -24,8 +24,8 @@ public class SwitchSet extends Part {
     private int quantity;
     @ManyToOne
     private Switch aSwitch;
-    public SwitchSet(SwitchSetDto switchSetDto, Brand brand, Switch aSwitch){
-        super(switchSetDto.getName(), 0, switchSetDto.getPrice(), PartType.SWITCH_SET, aSwitch.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand);
+    public SwitchSet(SwitchSetDto switchSetDto, Brand brand, Switch aSwitch,String imageUrl){
+        super(switchSetDto.getName(), 0, switchSetDto.getPrice(), PartType.SWITCH_SET, aSwitch.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand, imageUrl);
         this.quantity = switchSetDto.getQuantity();
         this.aSwitch = aSwitch;
     }

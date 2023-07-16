@@ -42,4 +42,6 @@ public class Part {
     @ManyToOne
     @JoinColumn(name="idBrand", nullable=false)
     private Brand brand;
+    @Column(name="PartImage")
+    private String image;
 }

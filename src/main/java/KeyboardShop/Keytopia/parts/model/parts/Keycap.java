@@ -28,8 +28,8 @@ public class Keycap extends Part{
     @ManyToOne
     @JoinColumn(name="KeycapProfileName", nullable=false)
     private KeycapProfile keycapProfile;
-    public Keycap(KeycapDto keycapDto, Brand brand,KeycapProfile keycapProfile){
-        super(keycapDto.getName(), 0, keycapDto.getPrice(), PartType.KEYCAP, keycapDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand);
+    public Keycap(KeycapDto keycapDto, Brand brand,KeycapProfile keycapProfile, String imageUrl){
+        super(keycapDto.getName(), 0, keycapDto.getPrice(), PartType.KEYCAP, keycapDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand,imageUrl);
         this.material = keycapDto.getMaterial();
         this.keycapProfile = keycapProfile;
     }
