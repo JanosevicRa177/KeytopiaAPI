@@ -23,10 +23,10 @@ public class KeycapProfile {
     @Id
     @Column(name="KeycapProfileName")
     private String name;
-    @OneToMany
+    @OneToMany(mappedBy = "keycapProfile")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<KeycapSet> keycapSets;
-    @OneToMany
+    @OneToMany(mappedBy = "keycapProfile")
     @LazyCollection(LazyCollectionOption.FALSE)
     
     private List<Keycap> keycaps;

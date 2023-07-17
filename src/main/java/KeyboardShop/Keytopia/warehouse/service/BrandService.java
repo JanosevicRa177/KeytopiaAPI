@@ -5,18 +5,26 @@ import KeyboardShop.Keytopia.utils.excentions.warehouseExceptions.WarehouseEntit
 import KeyboardShop.Keytopia.utils.excentions.warehouseExceptions.WarehouseEntityNotFoundException;
 import KeyboardShop.Keytopia.warehouse.dto.BrandDto;
 import KeyboardShop.Keytopia.warehouse.model.Brand;
+import KeyboardShop.Keytopia.warehouse.model.Supplier;
 import KeyboardShop.Keytopia.warehouse.repository.IBrandRepository;
+import KeyboardShop.Keytopia.warehouse.repository.ISupplierRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.StyledEditorKit;
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class BrandService {
     private final IBrandRepository brandRepository;
+    private final ISupplierRepository supplierRepository;
     
     public void create(BrandDto brandDto){
         Brand brand = brandRepository.findById(brandDto.getName()).orElse(null);
@@ -33,6 +41,12 @@ public class BrandService {
         Brand brand = brandRepository.findById(name).orElse(null);
         if (brand == null) throw new WarehouseEntityNotFoundException("Brand does not exists!");
         if(!brand.getParts().isEmpty()) throw new WarehouseEntityCantBeDeletedException("Brand cant be deleted because it has parts connected to it!");
+        List<Supplier> suppliers = new ArrayList<>(brand.getSuppliers());
+        suppliers.forEach((supplier) -> {
+                    supplier.removeBrand(brand);
+                    brand.removeSupplier(supplier);
+                    supplierRepository.save(supplier);
+        });
         brandRepository.delete(brand);
     }
     public Brand find(String name){

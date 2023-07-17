@@ -43,4 +43,7 @@ public class Supplier {
         this.brands = brands;
         this.penals = 0;
     }
+    public void removeBrand(Brand brand){
+        this.brands.remove(brand);
+    }
 }

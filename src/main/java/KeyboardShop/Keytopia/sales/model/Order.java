@@ -36,7 +36,7 @@ public class Order {
     @ManyToOne
     @JoinColumn(name="idDeliveryService", nullable=false)
     private DeliveryService deliveryService;
-    @OneToMany
+    @OneToMany(mappedBy = "order")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Product> products;
 }

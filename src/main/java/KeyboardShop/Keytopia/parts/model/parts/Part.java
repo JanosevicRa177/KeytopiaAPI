@@ -33,15 +33,15 @@ public class Part {
     @Column(name="PartPriceWeight")
     @Enumerated(EnumType.STRING)
     private PriceWeight priceWeight;
-    @OneToMany
+    @OneToMany(mappedBy = "part")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<ProcurementPart> procurementParts;
-    @OneToMany
+    @OneToMany(mappedBy = "part")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Product> products;
     @ManyToOne
     @JoinColumn(name="idBrand", nullable=false)
     private Brand brand;
-    @Column(name="PartImage")
-    private String image;
+    @Column(name="PartImage", length = 2048)
+    private String imageUrl;
 }

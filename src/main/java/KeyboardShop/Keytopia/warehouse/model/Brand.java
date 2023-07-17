@@ -23,8 +23,9 @@ public class Brand {
     @Column(name="BrandSlogan")
     private String slogan;
     @ManyToMany(mappedBy = "brands")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Supplier> suppliers;
-    @OneToMany
+    @OneToMany(mappedBy = "brand")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Part> parts;
     public Brand(BrandDto brandDto){
@@ -32,5 +33,8 @@ public class Brand {
         this.slogan = brandDto.getSlogan();
         this.suppliers = new ArrayList<>();
         this.parts = new ArrayList<>();
+    }
+    public void removeSupplier(Supplier supplier){
+        this.suppliers.remove(supplier);
     }
 }

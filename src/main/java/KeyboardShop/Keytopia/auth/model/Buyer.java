@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity(name = "Buyer")
 public class Buyer extends User {
-    @OneToMany
+    @OneToMany(mappedBy = "buyer")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Order> orders;
 

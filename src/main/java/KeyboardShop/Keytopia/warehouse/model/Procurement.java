@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -23,7 +25,8 @@ public class Procurement {
     private Date date;
     @Column(name="ProcurementDeadline")
     private Date deadline;
-    @OneToMany
+    @OneToMany(mappedBy = "procurement")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<ProcurementPart> procurementParts;
     @ManyToOne
     @JoinColumn(name="SupplierName", nullable=false)

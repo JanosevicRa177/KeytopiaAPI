@@ -11,6 +11,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -31,7 +33,8 @@ public class KeycapSet extends Part {
     @ManyToOne
     @JoinColumn(name="KeycapProfileName", nullable=false)
     private KeycapProfile keycapProfile;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "supportedKeycapSets")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Layout> supportedLayouts;
     public KeycapSet(KeycapSetDto keycapSetDto, Brand brand, KeycapProfile keycapProfile, List<Layout> layouts,String imageUrl){
         super(keycapSetDto.getName(), 0, keycapSetDto.getPrice(), PartType.KEYCAP_SET, keycapSetDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand,imageUrl);

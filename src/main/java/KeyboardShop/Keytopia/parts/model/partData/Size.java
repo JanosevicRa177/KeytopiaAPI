@@ -22,13 +22,13 @@ public class Size {
     private String name;
     @Column(name = "NeededNumberOfKeys")
     private int neededNumberOfKeys;
-    @OneToMany
+    @OneToMany(mappedBy = "size")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<PCB> pcbs;
-    @OneToMany
+    @OneToMany(mappedBy = "size")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Plate> plates;
-    @OneToMany
+    @OneToMany(mappedBy = "size")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Case> cases;
     

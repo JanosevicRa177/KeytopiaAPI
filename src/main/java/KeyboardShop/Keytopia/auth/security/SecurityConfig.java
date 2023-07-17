@@ -59,6 +59,7 @@ public class SecurityConfig {
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.authorizeRequests().antMatchers("/user/activate/**").permitAll().and()
 				.authorizeRequests().antMatchers("/auth/login").permitAll().and()
+				.authorizeRequests().antMatchers("/part").permitAll().and()
 				.authorizeRequests().antMatchers("/auth/register/buyer").permitAll().and()
 				.authorizeRequests().antMatchers("/auth/register/admin").permitAll()
 				.anyRequest().authenticated();

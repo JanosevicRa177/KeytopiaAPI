@@ -34,7 +34,6 @@ public class StorageService implements IStorageService {
         storage.create(blobInfo, file.getBytes());
 
         URL url = storage.get(blobId).signUrl(365, TimeUnit.DAYS);
-        System.out.println(url);
         return url.toString();
     }
 }

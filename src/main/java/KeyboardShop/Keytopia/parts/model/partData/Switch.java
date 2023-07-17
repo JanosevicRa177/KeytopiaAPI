@@ -36,7 +36,7 @@ public class Switch {
     @Column(name="SwitchPriceWeight")
     @Enumerated(EnumType.STRING)
     private PriceWeight priceWeight;
-    @OneToMany
+    @OneToMany(mappedBy = "aSwitch")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<SwitchSet> switchSets;
     

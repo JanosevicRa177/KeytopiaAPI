@@ -19,6 +19,6 @@ public class DeliveryService {
     private String name;
     @Column(name="DeliveryServicePhone")
     private String phone;
-    @OneToMany
+    @OneToMany(mappedBy = "deliveryService")
     private List<Order> orders;
 }

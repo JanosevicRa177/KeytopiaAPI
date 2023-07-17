@@ -27,6 +27,4 @@ public class ProcurementPart {
     @ManyToOne
     @JoinColumn(name="idPart", nullable=false)
     private Part part;
-    @OneToMany
-    private List<Procurement> procurements;
 }

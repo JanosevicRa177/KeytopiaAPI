@@ -1,6 +1,7 @@
 package KeyboardShop.Keytopia.parts.service;
 
 import KeyboardShop.Keytopia.parts.dto.part.*;
+import KeyboardShop.Keytopia.parts.dto.part.createDto.CreateCableDto;
 import KeyboardShop.Keytopia.parts.model.enums.PartType;
 import KeyboardShop.Keytopia.parts.model.partData.KeycapProfile;
 import KeyboardShop.Keytopia.parts.model.partData.Layout;
@@ -10,6 +11,7 @@ import KeyboardShop.Keytopia.parts.model.parts.*;
 import KeyboardShop.Keytopia.parts.repository.part.*;
 import KeyboardShop.Keytopia.utils.excentions.partExceptions.part.PartAlreadyExistsException;
 import KeyboardShop.Keytopia.utils.excentions.partExceptions.part.PartCantBeDeletedException;
+import KeyboardShop.Keytopia.utils.excentions.partExceptions.part.PartNotFoundException;
 import KeyboardShop.Keytopia.utils.excentions.utilExceptions.FileUploadException;
 import KeyboardShop.Keytopia.utils.storage.IStorageService;
 import KeyboardShop.Keytopia.warehouse.model.Brand;
@@ -75,7 +77,7 @@ public class PartService {
         keycapSetRepository.save(new KeycapSet(keycapSetDto,brand,keycapProfile,layouts,imageUrl));
     }
 
-    public void createCable(CableDto cableDto, MultipartFile file) {
+    public void createCable(CreateCableDto cableDto) {
         Cable cable = cableRepository.findById(cableDto.getName()).orElse(null);
         if (cable != null) throw new PartAlreadyExistsException("Cable with this name already exists.");
 
@@ -83,7 +85,7 @@ public class PartService {
 
         String imageUrl;
         try {
-            imageUrl = storageService.uploadFile(file);
+            imageUrl = storageService.uploadFile(cableDto.getImage());
         } catch (IOException e) {
             throw new FileUploadException();
         }
@@ -245,6 +247,12 @@ public class PartService {
     }
     public Page<Part> findAllParts(PartType partType, int pageSize, int pageNumber){
         return partRepository.findAllByPartType(partType, PageRequest.of(pageNumber, pageSize));
+    }
+
+    public Cable findOneCable(String name){
+        Cable cable = cableRepository.findById(name).orElse(null);
+        if (cable == null) throw new PartNotFoundException("Cable not found!.");
+        return cable;
     }
     
 }
