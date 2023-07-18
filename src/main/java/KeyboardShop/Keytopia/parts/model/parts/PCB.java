@@ -34,7 +34,7 @@ public class PCB extends Part{
     public PCB(PCBDto pcbDto, Brand brand, Size size,String imageUrl){
         super(pcbDto.getName(), 0, pcbDto.getPrice(), PartType.PCB, pcbDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand, imageUrl);
         this.type = pcbDto.getType();
-        this.btConnect = pcbDto.isBtConnect();
+        this.btConnect = pcbDto.getBtConnect();
         this.color = pcbDto.getColor();
         this.pinType = pcbDto.getPinType();
         this.stabilizerType = pcbDto.getStabilizerType();

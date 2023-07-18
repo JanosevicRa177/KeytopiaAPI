@@ -25,7 +25,7 @@ import java.util.List;
 @Entity(name = "KeycapSet")
 public class KeycapSet extends Part {
     @Column(name="KeycapQuantity")
-    private int quantity;
+    private int keycapQuantity;
     @Column(name="KeycapSetMaterial")
     private KeycapMaterial material;
     @Column(name="KeycapSetLanguage")
@@ -40,7 +40,7 @@ public class KeycapSet extends Part {
         super(keycapSetDto.getName(), 0, keycapSetDto.getPrice(), PartType.KEYCAP_SET, keycapSetDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand,imageUrl);
         this.material = keycapSetDto.getMaterial();
         this.language = keycapSetDto.getLanguage();
-        this.quantity = keycapSetDto.getQuantity();
+        this.keycapQuantity = keycapSetDto.getKeycapQuantity();
         this.keycapProfile = keycapProfile;
         this.supportedLayouts = layouts;
     }

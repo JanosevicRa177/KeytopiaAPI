@@ -1,11 +1,11 @@
 package KeyboardShop.Keytopia.parts.controller;
 
 import KeyboardShop.Keytopia.parts.dto.part.*;
-import KeyboardShop.Keytopia.parts.dto.part.createDto.CreateCableDto;
-import KeyboardShop.Keytopia.parts.dto.part.getDto.CableDto;
+import KeyboardShop.Keytopia.parts.dto.part.CableDto;
 import KeyboardShop.Keytopia.parts.model.enums.PartType;
 import KeyboardShop.Keytopia.parts.model.parts.*;
 import KeyboardShop.Keytopia.parts.service.PartService;
+import KeyboardShop.Keytopia.utils.excentions.UnsupportedPartTypeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -13,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -27,50 +26,50 @@ public class PartController {
     
     @PostMapping(value ="/cable", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> createCable(@ModelAttribute final CreateCableDto cableDto) {
+    public ResponseEntity<Void> createCable(@ModelAttribute final CableDto cableDto) {
             partService.createCable(cableDto);
             return ResponseEntity.ok().build();
     }
     @PostMapping(value ="/case", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> createCable(@Valid @RequestParam("json") final CaseDto caseDto, @RequestParam("file") MultipartFile file) {
-        partService.createCase(caseDto,file);
+    public ResponseEntity<Void> createCase(@ModelAttribute final CaseDto caseDto) {
+        partService.createCase(caseDto);
         return ResponseEntity.ok().build();
     }
     @PostMapping(value ="/keycap", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> createKeycap(@Valid @RequestParam("json")final KeycapDto keycapDto, @RequestParam("file") MultipartFile file) {
-        partService.createKeycap(keycapDto,file);
+    public ResponseEntity<Void> createKeycap(@ModelAttribute final KeycapDto keycapDto) {
+        partService.createKeycap(keycapDto);
         return ResponseEntity.ok().build();
     }
     @PostMapping(value ="/keycap-set", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> createKeycap(@Valid @RequestParam("json") final KeycapSetDto keycapSetDto, @RequestParam("file") MultipartFile file) {
-        partService.createKeycapSet(keycapSetDto,file);
+    public ResponseEntity<Void> createKeycap(@ModelAttribute final KeycapSetDto keycapSetDto) {
+        partService.createKeycapSet(keycapSetDto);
         return ResponseEntity.ok().build();
     }
     @PostMapping(value ="/pcb", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> createPCB(@Valid @RequestParam("json") final PCBDto pcbDto, @RequestParam("file") MultipartFile file) {
-        partService.createPCB(pcbDto,file);
+    public ResponseEntity<Void> createPCB(@ModelAttribute final PCBDto pcbDto) {
+        partService.createPCB(pcbDto);
         return ResponseEntity.ok().build();
     }
     @PostMapping(value ="/plate", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> createPlate(@Valid @RequestParam("json") final PlateDto plateDto, @RequestParam("file") MultipartFile file) {
-        partService.createPlate(plateDto,file);
+    public ResponseEntity<Void> createPlate(@ModelAttribute final PlateDto plateDto) {
+        partService.createPlate(plateDto);
         return ResponseEntity.ok().build();
     }
     @PostMapping(value ="/stabilizer", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> createStabilizer(@Valid @RequestParam("json") final StabilizerDto stabilizerDto, @RequestParam("file") MultipartFile file) {
-        partService.createStabilizer(stabilizerDto,file);
+    public ResponseEntity<Void> createStabilizer(@ModelAttribute final StabilizerDto stabilizerDto) {
+        partService.createStabilizer(stabilizerDto);
         return ResponseEntity.ok().build();
     }
     @PostMapping(value ="/switch-set", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> createStabilizer(@Valid @RequestParam("json") final SwitchSetDto switchSetDto, @RequestParam("file") MultipartFile file) {
-        partService.createSwitchSet(switchSetDto,file);
+    public ResponseEntity<Void> createStabilizer(@ModelAttribute final SwitchSetDto switchSetDto) {
+        partService.createSwitchSet(switchSetDto);
         return ResponseEntity.ok().build();
     }
     @DeleteMapping("/cable/{name}")
@@ -134,7 +133,29 @@ public class PartController {
         if(partType == PartType.CABLE){
             Cable cable = partService.findOneCable(name);
             return ResponseEntity.ok(new CableDto(cable));   
+        } else if(partType == PartType.CASE){
+            Case aCase = partService.findOneCase(name);
+            return ResponseEntity.ok(new CaseDto(aCase));
+        } else if(partType == PartType.KEYCAP){
+            Keycap keycap = partService.findOneKeycap(name);
+            return ResponseEntity.ok(new KeycapDto(keycap));
+        }else if(partType == PartType.KEYCAP_SET){
+            KeycapSet keycapSet = partService.findOneKeycapSet(name);
+            return ResponseEntity.ok(new KeycapSetDto(keycapSet));
+        }else if(partType == PartType.PCB){
+            PCB pcb = partService.findOnePCB(name);
+            return ResponseEntity.ok(new PCBDto(pcb));
+        }else if(partType == PartType.PLATE){
+            Plate plate = partService.findOnePlate(name);
+            return ResponseEntity.ok(new PlateDto(plate));
+        }else if(partType == PartType.STABILIZER){
+            Stabilizer stabilizer = partService.findOneStabilizer(name);
+            return ResponseEntity.ok(new StabilizerDto(stabilizer));
+        }else if(partType == PartType.SWITCH_SET){
+            SwitchSet switchSet = partService.findOneSwitchSet(name);
+            return ResponseEntity.ok(new SwitchSetDto(switchSet));
+        }else{
+            throw new UnsupportedPartTypeException();
         }
-        return ResponseEntity.ok(new CableDto());
     }
 }

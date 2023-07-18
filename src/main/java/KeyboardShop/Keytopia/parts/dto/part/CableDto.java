@@ -1,8 +1,6 @@
-package KeyboardShop.Keytopia.parts.dto.part.getDto;
+package KeyboardShop.Keytopia.parts.dto.part;
 
-import KeyboardShop.Keytopia.parts.dto.part.PartDto;
 import KeyboardShop.Keytopia.parts.model.enums.CableConnector;
-import KeyboardShop.Keytopia.parts.model.enums.PriceWeight;
 import KeyboardShop.Keytopia.parts.model.parts.Cable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +18,7 @@ public class CableDto extends PartDto {
     private CableConnector computerConnector;
     private Boolean isCoiled;
     private Boolean isQuickRelease;
+    private MultipartFile image;
     
     public CableDto(Cable cable){
         super(cable.getName(),cable.getQuantity(),cable.getPrice(),cable.getPriceWeight(),cable.getBrand().getName(),cable.getImageUrl());
