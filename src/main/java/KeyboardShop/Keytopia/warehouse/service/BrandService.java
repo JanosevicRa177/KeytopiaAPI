@@ -50,8 +50,6 @@ public class BrandService {
         brandRepository.delete(brand);
     }
     public Brand find(String name){
-        Brand brand = brandRepository.findById(name).orElse(null);
-        if(brand == null) throw new WarehouseEntityNotFoundException("Brand with name" + name + "does not exists");
-        return brand;
+        return brandRepository.findById(name).orElse(null);
     }
 }

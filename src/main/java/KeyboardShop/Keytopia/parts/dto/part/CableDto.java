@@ -21,7 +21,7 @@ public class CableDto extends PartDto {
     private MultipartFile image;
     
     public CableDto(Cable cable){
-        super(cable.getName(),cable.getQuantity(),cable.getPrice(),cable.getPriceWeight(),cable.getBrand().getName(),cable.getImageUrl());
+        super(cable);
         this.material = cable.getMaterial();
         this.color = cable.getColor();
         this.length = cable.getLength();

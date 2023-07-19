@@ -1,6 +1,7 @@
 package KeyboardShop.Keytopia.warehouse.service;
 
 import KeyboardShop.Keytopia.utils.excentions.partExceptions.partData.PartDataAlreadyExistsException;
+import KeyboardShop.Keytopia.utils.excentions.warehouseExceptions.WarehouseEntityCantBeDeletedException;
 import KeyboardShop.Keytopia.utils.excentions.warehouseExceptions.WarehouseEntityNotFoundException;
 import KeyboardShop.Keytopia.warehouse.dto.SupplierDto;
 import KeyboardShop.Keytopia.warehouse.model.Brand;
@@ -25,7 +26,11 @@ public class SupplierService {
         Supplier supplier = supplierRepository.findById(supplierDto.getName()).orElse(null);
         if (supplier != null) throw new PartDataAlreadyExistsException("Supplier with this name already exists.");
         List<Brand> brands = new ArrayList<>();
-        supplierDto.getBrands().forEach((brandName) -> brands.add(brandService.find(brandName)));
+        supplierDto.getBrands().forEach((brandName) -> {
+            Brand brand = brandService.find(brandName);
+            if(brand == null) throw new WarehouseEntityNotFoundException("Brand with name" + brandName + "does not exists");
+            brands.add(brand);
+        });
         supplierRepository.save(new Supplier(supplierDto,brands));
     }
     public List<Supplier> findAll(){
@@ -38,6 +43,11 @@ public class SupplierService {
     public void delete(String name){
         Supplier supplier = supplierRepository.findById(name).orElse(null);
         if (supplier == null) throw new WarehouseEntityNotFoundException("Supplier does not exists!");
+        if(!supplier.getParts().isEmpty()) throw new WarehouseEntityCantBeDeletedException("Supplier cant be deleted because it has parts connected to it!");
+
         supplierRepository.delete(supplier);
+    }
+    public Supplier find(String name){
+        return supplierRepository.findById(name).orElse(null);
     }
 }

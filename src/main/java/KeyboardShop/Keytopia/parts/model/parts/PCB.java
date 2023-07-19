@@ -7,6 +7,7 @@ import KeyboardShop.Keytopia.parts.model.enums.PCBType;
 import KeyboardShop.Keytopia.parts.model.enums.PinType;
 import KeyboardShop.Keytopia.parts.model.enums.StabilizerType;
 import KeyboardShop.Keytopia.warehouse.model.Brand;
+import KeyboardShop.Keytopia.warehouse.model.Supplier;
 import lombok.*;
 
 import javax.persistence.*;
@@ -31,8 +32,8 @@ public class PCB extends Part{
     private PinType pinType;
     @Column(name="StabilizerType")
     private StabilizerType stabilizerType;
-    public PCB(PCBDto pcbDto, Brand brand, Size size,String imageUrl){
-        super(pcbDto.getName(), 0, pcbDto.getPrice(), PartType.PCB, pcbDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand, imageUrl);
+    public PCB(PCBDto pcbDto, Brand brand, Size size,String imageUrl,Supplier supplier){
+        super(pcbDto.getName(), 0, pcbDto.getPrice(), PartType.PCB, pcbDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand, imageUrl, supplier);
         this.type = pcbDto.getType();
         this.btConnect = pcbDto.getBtConnect();
         this.color = pcbDto.getColor();

@@ -16,7 +16,6 @@ import java.util.List;
 @NoArgsConstructor
 @Entity(name = "Brand")
 public class Brand {
-    
     @Id
     @Column(name="BrandName")
     private String name;

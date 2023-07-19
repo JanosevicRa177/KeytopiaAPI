@@ -15,7 +15,7 @@ public class KeycapDto extends PartDto{
     private String keycapProfile;
     private MultipartFile image;
     public KeycapDto(Keycap keycap){
-        super(keycap.getName(),keycap.getQuantity(),keycap.getPrice(),keycap.getPriceWeight(),keycap.getBrand().getName(),keycap.getImageUrl());
+        super(keycap);
         this.material = keycap.getMaterial();
         this.keycapProfile = keycap.getKeycapProfile().getName();
     }

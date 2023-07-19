@@ -6,6 +6,7 @@ import KeyboardShop.Keytopia.sales.model.DeliveryService;
 import KeyboardShop.Keytopia.sales.model.Product;
 import KeyboardShop.Keytopia.warehouse.model.Brand;
 import KeyboardShop.Keytopia.warehouse.model.ProcurementPart;
+import KeyboardShop.Keytopia.warehouse.model.Supplier;
 import lombok.*;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -40,8 +41,11 @@ public class Part {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Product> products;
     @ManyToOne
-    @JoinColumn(name="idBrand", nullable=false)
+    @JoinColumn(name="BrandName", nullable=true)
     private Brand brand;
     @Column(name="PartImage", length = 2048)
     private String imageUrl;
+    @ManyToOne
+    @JoinColumn(name="SupplierName", nullable=true)
+    private Supplier supplier;
 }

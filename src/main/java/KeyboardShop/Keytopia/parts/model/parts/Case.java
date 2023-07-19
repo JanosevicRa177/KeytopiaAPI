@@ -4,6 +4,7 @@ import KeyboardShop.Keytopia.parts.dto.part.CaseDto;
 import KeyboardShop.Keytopia.parts.model.enums.PartType;
 import KeyboardShop.Keytopia.parts.model.partData.Size;
 import KeyboardShop.Keytopia.warehouse.model.Brand;
+import KeyboardShop.Keytopia.warehouse.model.Supplier;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +26,8 @@ public class Case extends Part {
     @ManyToOne
     @JoinColumn(name="SizeName", nullable=false)
     private Size size;
-    public Case(CaseDto caseDto, Brand brand, Size size,String imageUrl){
-        super(caseDto.getName(), 0, caseDto.getPrice(), PartType.CASE, caseDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand, imageUrl);
+    public Case(CaseDto caseDto, Brand brand, Size size,String imageUrl,Supplier supplier){
+        super(caseDto.getName(), 0, caseDto.getPrice(), PartType.CASE, caseDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand, imageUrl, supplier);
         this.material = caseDto.getMaterial();
         this.color = caseDto.getColor();
         this.size = size;

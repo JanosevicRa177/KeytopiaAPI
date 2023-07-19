@@ -15,7 +15,7 @@ public class CaseDto extends  PartDto{
     private String size;
     private MultipartFile image;
     public CaseDto(Case aCase){
-        super(aCase.getName(),aCase.getQuantity(),aCase.getPrice(),aCase.getPriceWeight(),aCase.getBrand().getName(),aCase.getImageUrl());
+        super(aCase);
         this.material = aCase.getMaterial();
         this.color = aCase.getColor();
         this.size = aCase.getSize().getName();

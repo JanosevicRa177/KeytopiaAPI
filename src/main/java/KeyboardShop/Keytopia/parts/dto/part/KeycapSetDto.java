@@ -14,14 +14,14 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class KeycapSetDto extends  PartDto {
-    private int keycapQuantity;
+    private Integer keycapQuantity;
     private KeycapMaterial material;
     private String language;
     private String keycapProfile;
     private List<String> layouts;
     private MultipartFile image;
     public KeycapSetDto(KeycapSet keycapSet){
-        super(keycapSet.getName(),keycapSet.getQuantity(),keycapSet.getPrice(),keycapSet.getPriceWeight(),keycapSet.getBrand().getName(),keycapSet.getImageUrl());
+        super(keycapSet);
         this.material = keycapSet.getMaterial();
         this.keycapProfile = keycapSet.getKeycapProfile().getName();
         this.language = keycapSet.getLanguage();

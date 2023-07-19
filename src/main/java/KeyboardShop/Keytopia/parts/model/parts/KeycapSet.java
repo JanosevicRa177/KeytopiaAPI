@@ -7,6 +7,7 @@ import KeyboardShop.Keytopia.parts.model.partData.KeycapProfile;
 import KeyboardShop.Keytopia.parts.model.partData.Layout;
 import KeyboardShop.Keytopia.parts.model.enums.KeycapMaterial;
 import KeyboardShop.Keytopia.warehouse.model.Brand;
+import KeyboardShop.Keytopia.warehouse.model.Supplier;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -33,11 +34,15 @@ public class KeycapSet extends Part {
     @ManyToOne
     @JoinColumn(name="KeycapProfileName", nullable=false)
     private KeycapProfile keycapProfile;
-    @ManyToMany(mappedBy = "supportedKeycapSets")
+    @ManyToMany
+    @JoinTable(name="layout_keycap_set",
+            joinColumns=@JoinColumn(name="PartName"),
+            inverseJoinColumns=@JoinColumn(name="LayoutName")
+    )
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Layout> supportedLayouts;
-    public KeycapSet(KeycapSetDto keycapSetDto, Brand brand, KeycapProfile keycapProfile, List<Layout> layouts,String imageUrl){
-        super(keycapSetDto.getName(), 0, keycapSetDto.getPrice(), PartType.KEYCAP_SET, keycapSetDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand,imageUrl);
+    public KeycapSet(KeycapSetDto keycapSetDto, Brand brand, KeycapProfile keycapProfile, List<Layout> layouts,String imageUrl,Supplier supplier){
+        super(keycapSetDto.getName(), 0, keycapSetDto.getPrice(), PartType.KEYCAP_SET, keycapSetDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand,imageUrl,supplier);
         this.material = keycapSetDto.getMaterial();
         this.language = keycapSetDto.getLanguage();
         this.keycapQuantity = keycapSetDto.getKeycapQuantity();

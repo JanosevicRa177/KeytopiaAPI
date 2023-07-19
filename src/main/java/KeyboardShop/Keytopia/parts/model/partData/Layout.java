@@ -20,11 +20,7 @@ public class Layout {
     private String name;
     @Column(name="Localization")
     private String localization;
-    @ManyToMany
-    @JoinTable(name="layout_keycap_set",
-            joinColumns=@JoinColumn(name="LayoutName"),
-            inverseJoinColumns=@JoinColumn(name="PartName")
-    )
+    @ManyToMany(mappedBy = "supportedLayouts")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<KeycapSet> supportedKeycapSets;
     

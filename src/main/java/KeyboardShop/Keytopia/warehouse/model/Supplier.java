@@ -1,5 +1,6 @@
 package KeyboardShop.Keytopia.warehouse.model;
 
+import KeyboardShop.Keytopia.parts.model.parts.Part;
 import KeyboardShop.Keytopia.shared.model.Address;
 import KeyboardShop.Keytopia.warehouse.dto.SupplierDto;
 import lombok.AllArgsConstructor;
@@ -36,6 +37,9 @@ public class Supplier {
     )
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Brand> brands;
+    @OneToMany(mappedBy = "supplier")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Part> parts;
     public Supplier(SupplierDto supplierDto,List<Brand> brands){
         this.name = supplierDto.getName();
         this.phone = supplierDto.getPhone();

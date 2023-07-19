@@ -21,7 +21,7 @@ public class PCBDto extends PartDto{
     private StabilizerType stabilizerType;
     private MultipartFile image;
     public PCBDto(PCB pcb){
-        super(pcb.getName(),pcb.getQuantity(),pcb.getPrice(),pcb.getPriceWeight(),pcb.getBrand().getName(),pcb.getImageUrl());
+        super(pcb);
         this.type = pcb.getType();
         this.btConnect = pcb.isBtConnect();
         this.size = pcb.getSize().getName();

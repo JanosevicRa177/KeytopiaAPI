@@ -4,6 +4,7 @@ import KeyboardShop.Keytopia.parts.dto.part.SwitchSetDto;
 import KeyboardShop.Keytopia.parts.model.enums.PartType;
 import KeyboardShop.Keytopia.parts.model.partData.Switch;
 import KeyboardShop.Keytopia.warehouse.model.Brand;
+import KeyboardShop.Keytopia.warehouse.model.Supplier;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -24,14 +25,14 @@ import java.util.ArrayList;
 @Entity(name = "SwitchSet")
 public class SwitchSet extends Part {
     @Column(name="SwitchQuantity")
-    private int quantity;
+    private int switchQuantity;
     @ManyToOne
     @JoinColumn(name="SwitchName", nullable=false)
     @LazyCollection(LazyCollectionOption.FALSE)
     private Switch aSwitch;
-    public SwitchSet(SwitchSetDto switchSetDto, Brand brand, Switch aSwitch,String imageUrl){
-        super(switchSetDto.getName(), 0, switchSetDto.getPrice(), PartType.SWITCH_SET, aSwitch.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand, imageUrl);
-        this.quantity = switchSetDto.getQuantity();
+    public SwitchSet(SwitchSetDto switchSetDto, Brand brand, Switch aSwitch,String imageUrl,Supplier supplier){
+        super(switchSetDto.getName(), 0, switchSetDto.getPrice(), PartType.SWITCH_SET, aSwitch.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand, imageUrl,supplier);
+        this.switchQuantity = switchSetDto.getSwitchQuantity();
         this.aSwitch = aSwitch;
     }
 }

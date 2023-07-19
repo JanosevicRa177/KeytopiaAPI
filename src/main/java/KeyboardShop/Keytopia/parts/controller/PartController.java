@@ -60,10 +60,10 @@ public class PartController {
         partService.createPlate(plateDto);
         return ResponseEntity.ok().build();
     }
-    @PostMapping(value ="/stabilizer", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value ="/stabilizers", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> createStabilizer(@ModelAttribute final StabilizerDto stabilizerDto) {
-        partService.createStabilizer(stabilizerDto);
+    public ResponseEntity<Void> createStabilizer(@ModelAttribute final StabilizersDto stabilizersDto) {
+        partService.createStabilizers(stabilizersDto);
         return ResponseEntity.ok().build();
     }
     @PostMapping(value ="/switch-set", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -72,53 +72,36 @@ public class PartController {
         partService.createSwitchSet(switchSetDto);
         return ResponseEntity.ok().build();
     }
-    @DeleteMapping("/cable/{name}")
+    @DeleteMapping("/{partType}/{name}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> deleteCable(@Valid @PathVariable String name) {
-        partService.deleteCable(name);
-        return ResponseEntity.ok().build();
-    }
-    @DeleteMapping("/case/{name}")
-    @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> deleteCase(@Valid @PathVariable String name) {
-        partService.deleteCase(name);
-        return ResponseEntity.ok().build();
-    }
-    @DeleteMapping("/keycap/{name}")
-    @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> deleteKeycap(@Valid @PathVariable String name) {
-        partService.deleteKeycap(name);
-        return ResponseEntity.ok().build();
-    }
-    @DeleteMapping("/keycap-set/{name}")
-    @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> deleteKeycapSet(@Valid @PathVariable String name) {
-        partService.deleteKeycapSet(name);
-        return ResponseEntity.ok().build();
-    }
-    @DeleteMapping("/pcb/{name}")
-    @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> deletePCB(@Valid @PathVariable String name) {
-        partService.deletePCB(name);
-        return ResponseEntity.ok().build();
-    }
-    @DeleteMapping("/plate/{name}")
-    @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> deletePlate(@Valid @PathVariable String name) {
-        partService.deletePlate(name);
-        return ResponseEntity.ok().build();
-    }
-    @DeleteMapping("/stabilizer/{name}")
-    @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> deleteStabilizer(@Valid @PathVariable String name) {
-        partService.deleteStabilizer(name);
-        return ResponseEntity.ok().build();
-    }
-    @DeleteMapping("/switch-set/{name}")
-    @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> deleteSwitchSet(@Valid @PathVariable String name) {
-        partService.deleteSwitchSet(name);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Void> deletePart(@PathVariable PartType partType, @Valid @PathVariable String name) {
+        if(partType == PartType.CABLE){
+            partService.deleteCable(name);
+            return ResponseEntity.ok().build();
+        } else if(partType == PartType.CASE){
+            partService.deleteCase(name);
+            return ResponseEntity.ok().build();
+        } else if(partType == PartType.KEYCAP){
+            partService.deleteKeycap(name);
+            return ResponseEntity.ok().build();
+        }else if(partType == PartType.KEYCAP_SET){
+            partService.deleteKeycapSet(name);
+            return ResponseEntity.ok().build();
+        }else if(partType == PartType.PCB){
+            partService.deletePCB(name);
+            return ResponseEntity.ok().build();
+        }else if(partType == PartType.PLATE){
+            partService.deletePlate(name);
+            return ResponseEntity.ok().build();
+        }else if(partType == PartType.STABILIZER){
+            partService.deleteStabilizers(name);
+            return ResponseEntity.ok().build();
+        }else if(partType == PartType.SWITCH_SET){
+            partService.deleteSwitchSet(name);
+            return ResponseEntity.ok().build();
+        }else{
+            throw new UnsupportedPartTypeException();
+        }
     }
     @GetMapping("/{partType}/{pageSize}/{pageNumber}")
     public ResponseEntity<Page<PartDto>> findAllParts(@Valid @PathVariable PartType partType, @PathVariable int pageSize, @PathVariable int pageNumber) {
@@ -129,7 +112,7 @@ public class PartController {
         return ResponseEntity.ok(cablePageDto);
     }
     @GetMapping("/{partType}/{name}")
-    public ResponseEntity<PartDto> findOneCable(@PathVariable PartType partType, @PathVariable String name) {
+    public ResponseEntity<PartDto> findOnePart(@PathVariable PartType partType, @PathVariable String name) {
         if(partType == PartType.CABLE){
             Cable cable = partService.findOneCable(name);
             return ResponseEntity.ok(new CableDto(cable));   
@@ -149,8 +132,8 @@ public class PartController {
             Plate plate = partService.findOnePlate(name);
             return ResponseEntity.ok(new PlateDto(plate));
         }else if(partType == PartType.STABILIZER){
-            Stabilizer stabilizer = partService.findOneStabilizer(name);
-            return ResponseEntity.ok(new StabilizerDto(stabilizer));
+            Stabilizer stabilizer = partService.findOneStabilizers(name);
+            return ResponseEntity.ok(new StabilizersDto(stabilizer));
         }else if(partType == PartType.SWITCH_SET){
             SwitchSet switchSet = partService.findOneSwitchSet(name);
             return ResponseEntity.ok(new SwitchSetDto(switchSet));

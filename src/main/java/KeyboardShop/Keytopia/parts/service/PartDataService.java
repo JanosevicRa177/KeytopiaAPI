@@ -49,7 +49,7 @@ public class PartDataService {
     public void deleteLayout(String name){
         Layout layout = layoutRepository.findById(name).orElse(null);
         if (layout == null) throw new PartDataNotFoundException("Layout does not exists!");
-        if(!layout.getSupportedKeycapSets().isEmpty()) throw new PartDataCantBeDeletedException("Size cant be deleted because it has \"Case\" parts connected to it!");
+        if(!layout.getSupportedKeycapSets().isEmpty()) throw new PartDataCantBeDeletedException("Layout cant be deleted because it has \"Keycap set\" parts connected to it!");
         layoutRepository.delete(layout);
     }
     public void deleteSwitch(String name){
