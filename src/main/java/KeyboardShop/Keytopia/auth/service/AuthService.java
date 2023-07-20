@@ -22,6 +22,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Random;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -46,10 +48,8 @@ public class AuthService {
     }
 
     public void registerAdmin(RegisterDto registerDto){
-        if(!registerDto.getPassword().equals(registerDto.getConfirmPassword()))
-            throw new ConfirmPasswordNotEqualException();
         if(userRepository.findByEmail(registerDto.getEmail()) != null) throw new UserAlreadyExistsException();
-        registerDto.setPassword(encoder.encode(registerDto.getPassword()));
+        registerDto.setPassword(encoder.encode(generateRandomPassword()));
         adminRepository.save(new Admin(registerDto));
         
         String activationToken = jwtUtils.generateRegisterToken(registerDto.getEmail());
@@ -78,5 +78,19 @@ public class AuthService {
         String[] chunks = header.split(" ");
         if(chunks.length < 2) return null;
         return chunks[1];
+    }
+    
+    private String generateRandomPassword() {
+        int leftLimit = 97; //a
+        int rightLimit = 122; //z
+        int targetStringLength = 10;
+        Random random = new Random();
+        StringBuilder buffer = new StringBuilder(targetStringLength);
+        for (int i = 0; i < targetStringLength; i++) {
+            int randomLimitedInt = leftLimit + (int)
+                    (random.nextFloat() * (rightLimit - leftLimit + 1));
+            buffer.append((char) randomLimitedInt);
+        }
+        return buffer.toString();
     }
 }

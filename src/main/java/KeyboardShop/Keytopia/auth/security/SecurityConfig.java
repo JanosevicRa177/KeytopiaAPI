@@ -60,8 +60,7 @@ public class SecurityConfig {
 				.authorizeRequests().antMatchers("/user/activate/**").permitAll().and()
 				.authorizeRequests().antMatchers("/auth/login").permitAll().and()
 				.authorizeRequests().antMatchers("/part").permitAll().and()
-				.authorizeRequests().antMatchers("/auth/register/buyer").permitAll().and()
-				.authorizeRequests().antMatchers("/auth/register/admin").permitAll()
+				.authorizeRequests().antMatchers("/auth/register/buyer").permitAll()
 				.anyRequest().authenticated();
 
 		http.authenticationProvider(authenticationProvider());

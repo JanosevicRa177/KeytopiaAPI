@@ -22,8 +22,20 @@ public class EmailService implements IEmailService{
         EmailDetails details = new EmailDetails();
         details.setRecipient(email);
         details.setMsgBody("Welcome to keytopia!<br/>" +
-                "You can <a href=\"http://localhost:3000/user/activation/"+hmacToken+"\">Activate your account here!<a/></h2> <br/>");
+                "You can <a href=\"http://localhost:3000/user/activation/"+hmacToken+"\">Activate your account here!<a/><br/>");
         details.setSubject("Welcome email from your ultimate keyboard guide!");
+        sendEmail(details);
+    }
+
+    @Async
+    public void sendAdminRegistrationEmail(String email,String password)
+    {
+        EmailDetails details = new EmailDetails();
+        details.setRecipient(email);
+        details.setMsgBody("Welcome to keytopia!<br/>" +
+                "You can temporary login password is: "+password+"</h2> <br/>"+
+                "<a href=\"http://localhost:3000\">Access site here<a/><br/>");
+        details.setSubject("Welcome our new admin!");
         sendEmail(details);
     }
     private void sendEmail(EmailDetails details){

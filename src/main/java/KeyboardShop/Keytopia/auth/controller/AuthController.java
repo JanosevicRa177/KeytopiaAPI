@@ -7,6 +7,7 @@ import KeyboardShop.Keytopia.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,6 +30,7 @@ public class AuthController {
     }
 
     @PostMapping("/register/admin")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
     public ResponseEntity<Void> registerAdmin(@Valid @RequestBody final RegisterDto registerDto) {
         authService.registerAdmin(registerDto);
         return ResponseEntity.ok().build();

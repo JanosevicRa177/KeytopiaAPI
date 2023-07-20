@@ -45,6 +45,5 @@ public class User {
         this.password = registerDto.getPassword();
         this.address = registerDto.getAddress();
         this.phone = registerDto.getPhone();
-        this.isActivated = false;
     }
 }
