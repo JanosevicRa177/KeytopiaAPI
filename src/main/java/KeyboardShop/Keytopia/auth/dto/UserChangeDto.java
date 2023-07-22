@@ -9,15 +9,11 @@ import javax.validation.constraints.Pattern;
 
 @Getter
 @Setter
-public class RegisterDto {
+public class UserChangeDto {
     private String name;
     private String surname;
     private String phone;
-    @Email
-    private String email;
     @Pattern(regexp = "^[0-9a-zA-Z!?]{9}[0-9a-zA-Z!?]*")
     private String password;
-    @Pattern(regexp = "^[0-9a-zA-Z!?]{9}[0-9a-zA-Z!?]*")
-    private String confirmPassword;
-    private Address address; 
+    private Address address;
 }

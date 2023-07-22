@@ -1,7 +1,8 @@
 package KeyboardShop.Keytopia.auth.controller;
 
 import KeyboardShop.Keytopia.auth.dto.LoginDto;
-import KeyboardShop.Keytopia.auth.dto.RegisterDto;
+import KeyboardShop.Keytopia.auth.dto.RegisterAdminDto;
+import KeyboardShop.Keytopia.auth.dto.RegisterBuyerDto;
 import KeyboardShop.Keytopia.auth.dto.UserDto;
 import KeyboardShop.Keytopia.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -24,15 +25,15 @@ public class AuthController {
         return ResponseEntity.ok(authService.login(loginDto));
     }
     @PostMapping("/register/buyer")
-    public ResponseEntity<Void> registerBuyer(@Valid @RequestBody final RegisterDto registerDto) {
-        authService.registerBuyer(registerDto);
+    public ResponseEntity<Void> registerBuyer(@Valid @RequestBody final RegisterBuyerDto registerBuyerDto) {
+        authService.registerBuyer(registerBuyerDto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/register/admin")
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> registerAdmin(@Valid @RequestBody final RegisterDto registerDto) {
-        authService.registerAdmin(registerDto);
+    public ResponseEntity<Void> registerAdmin(@Valid @RequestBody final RegisterAdminDto registerAdminDto) {
+        authService.registerAdmin(registerAdminDto);
         return ResponseEntity.ok().build();
     }
 

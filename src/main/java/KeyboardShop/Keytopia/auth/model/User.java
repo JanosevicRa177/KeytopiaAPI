@@ -1,6 +1,8 @@
 package KeyboardShop.Keytopia.auth.model;
 
-import KeyboardShop.Keytopia.auth.dto.RegisterDto;
+import KeyboardShop.Keytopia.auth.dto.RegisterAdminDto;
+import KeyboardShop.Keytopia.auth.dto.RegisterBuyerDto;
+import KeyboardShop.Keytopia.auth.dto.UserChangeDto;
 import KeyboardShop.Keytopia.shared.model.Address;
 import lombok.*;
 
@@ -38,12 +40,25 @@ public class User {
     @JoinColumn(name = "idAddress", referencedColumnName = "idAddress")
     private Address address;
     
-    public User(RegisterDto registerDto){
+    public User(RegisterBuyerDto registerDto){
         this.name = registerDto.getName();
         this.surname = registerDto.getSurname();
         this.email = registerDto.getEmail();
         this.password = registerDto.getPassword();
         this.address = registerDto.getAddress();
         this.phone = registerDto.getPhone();
+    }
+    public User(RegisterAdminDto registerDto){
+        this.name = registerDto.getName();
+        this.surname = registerDto.getSurname();
+        this.email = registerDto.getEmail();
+        this.address = registerDto.getAddress();
+        this.phone = registerDto.getPhone();
+    }
+    public void updateUser(UserChangeDto userChangeDto){
+        this.name = userChangeDto.getName();
+        this.surname = userChangeDto.getSurname();
+        this.address = userChangeDto.getAddress();
+        this.phone = userChangeDto.getPhone();
     }
 }

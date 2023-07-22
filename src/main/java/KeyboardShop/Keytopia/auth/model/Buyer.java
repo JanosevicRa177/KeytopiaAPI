@@ -1,6 +1,6 @@
 package KeyboardShop.Keytopia.auth.model;
 
-import KeyboardShop.Keytopia.auth.dto.RegisterDto;
+import KeyboardShop.Keytopia.auth.dto.RegisterBuyerDto;
 import KeyboardShop.Keytopia.sales.model.Order;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +10,6 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class Buyer extends User {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Order> orders;
 
-    public Buyer(RegisterDto registerDto){
+    public Buyer(RegisterBuyerDto registerDto){
         super(registerDto);
         this.setRole(Role.BUYER);
         this.setActivated(false);

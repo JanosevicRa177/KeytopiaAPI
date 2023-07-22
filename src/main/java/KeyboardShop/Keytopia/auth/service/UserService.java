@@ -1,6 +1,7 @@
 package KeyboardShop.Keytopia.auth.service;
 
 import KeyboardShop.Keytopia.auth.dto.PasswordChangeDto;
+import KeyboardShop.Keytopia.auth.dto.UserChangeDto;
 import KeyboardShop.Keytopia.auth.model.User;
 import KeyboardShop.Keytopia.auth.repository.IUserRepository;
 import KeyboardShop.Keytopia.auth.security.JwtUtils;
@@ -50,6 +51,13 @@ public class UserService {
             throw new InvalidConfirmPasswordException();
         }
         user.setPassword(encoder.encode(passwordChangeDto.getNewPassword()));
+        userRepository.save(user);
+    }
+    public void updateUser(final User user, final UserChangeDto userChangeDto) {
+        if (!encoder.matches(userChangeDto.getPassword(), user.getPassword())) {
+            throw new IncorrectPasswordException();
+        }
+        user.updateUser(userChangeDto);
         userRepository.save(user);
     }
 }

@@ -1,7 +1,8 @@
 package KeyboardShop.Keytopia.auth.service;
 
 import KeyboardShop.Keytopia.auth.dto.LoginDto;
-import KeyboardShop.Keytopia.auth.dto.RegisterDto;
+import KeyboardShop.Keytopia.auth.dto.RegisterAdminDto;
+import KeyboardShop.Keytopia.auth.dto.RegisterBuyerDto;
 import KeyboardShop.Keytopia.auth.model.Admin;
 import KeyboardShop.Keytopia.auth.model.Buyer;
 import KeyboardShop.Keytopia.auth.model.User;
@@ -36,7 +37,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final IEmailService emailService;
     
-    public void registerBuyer(RegisterDto registerDto){
+    public void registerBuyer(RegisterBuyerDto registerDto){
         if(!registerDto.getPassword().equals(registerDto.getConfirmPassword()))
             throw new ConfirmPasswordNotEqualException();
         if(userRepository.findByEmail(registerDto.getEmail()) != null) throw new UserAlreadyExistsException();
@@ -47,13 +48,14 @@ public class AuthService {
         emailService.sendActivationMail(registerDto.getEmail(),activationToken);
     }
 
-    public void registerAdmin(RegisterDto registerDto){
+    public void registerAdmin(RegisterAdminDto registerDto){
         if(userRepository.findByEmail(registerDto.getEmail()) != null) throw new UserAlreadyExistsException();
-        registerDto.setPassword(encoder.encode(generateRandomPassword()));
-        adminRepository.save(new Admin(registerDto));
+        Admin admin = new Admin(registerDto);
+        String password = generateRandomPassword();
+        admin.setPassword(encoder.encode(password));
+        adminRepository.save(admin);
         
-        String activationToken = jwtUtils.generateRegisterToken(registerDto.getEmail());
-        emailService.sendActivationMail(registerDto.getEmail(),activationToken);
+        emailService.sendAdminRegistrationEmail(registerDto.getEmail(),password);
     }
 
     public String login(LoginDto loginDto){

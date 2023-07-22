@@ -1,6 +1,6 @@
 package KeyboardShop.Keytopia.auth.model;
 
-import KeyboardShop.Keytopia.auth.dto.RegisterDto;
+import KeyboardShop.Keytopia.auth.dto.RegisterAdminDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -12,7 +12,7 @@ import javax.persistence.Entity;
 @RequiredArgsConstructor
 @Entity(name = "Admin")
 public class Admin extends User {
-    public Admin(RegisterDto registerDto){
+    public Admin(RegisterAdminDto registerDto){
         super(registerDto);
         this.setRole(Role.ADMIN);
         this.setActivated(true);

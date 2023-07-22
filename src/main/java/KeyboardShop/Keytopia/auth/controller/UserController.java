@@ -1,6 +1,7 @@
 package KeyboardShop.Keytopia.auth.controller;
 
 import KeyboardShop.Keytopia.auth.dto.PasswordChangeDto;
+import KeyboardShop.Keytopia.auth.dto.UserChangeDto;
 import KeyboardShop.Keytopia.auth.model.User;
 import KeyboardShop.Keytopia.auth.service.AuthService;
 import KeyboardShop.Keytopia.auth.service.UserService;
@@ -9,8 +10,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/user")
@@ -29,6 +28,13 @@ public class UserController {
     public ResponseEntity<Void> changePassword(@RequestBody PasswordChangeDto passwordChangeDto, @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
         final User user = authService.getUserFromHeader(authHeader);
         userService.changePassword(user, passwordChangeDto);
+        return ResponseEntity.ok().build();
+    }
+    @PutMapping("/update")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Void> changeAccount(@RequestBody UserChangeDto userChangeDto, @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
+        final User user = authService.getUserFromHeader(authHeader);
+        userService.updateUser(user, userChangeDto);
         return ResponseEntity.ok().build();
     }
 }
