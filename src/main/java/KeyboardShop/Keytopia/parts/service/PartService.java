@@ -14,14 +14,14 @@ import KeyboardShop.Keytopia.utils.excentions.partExceptions.part.PartCantBeDele
 import KeyboardShop.Keytopia.utils.excentions.partExceptions.part.PartNotFoundException;
 import KeyboardShop.Keytopia.utils.excentions.partExceptions.part.SupplierNorBrandChosenException;
 import KeyboardShop.Keytopia.utils.excentions.utilExceptions.FileUploadException;
+import KeyboardShop.Keytopia.utils.model.SortDirection;
 import KeyboardShop.Keytopia.utils.storage.IStorageService;
 import KeyboardShop.Keytopia.warehouse.model.Brand;
 import KeyboardShop.Keytopia.warehouse.model.Supplier;
 import KeyboardShop.Keytopia.warehouse.service.BrandService;
 import KeyboardShop.Keytopia.warehouse.service.SupplierService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -271,8 +271,15 @@ public class PartService {
 
         switchSetRepository.delete(switchSet);
     }
-    public Page<Part> findAllParts(PartType partType, int pageSize, int pageNumber){
-        return partRepository.findAllByPartType(partType, PageRequest.of(pageNumber, pageSize));
+    public Page<Part> findAllParts(PartType partType, int pageSize, int pageNumber, String name, SortDirection direction){
+        Sort sort = Sort.unsorted();
+        if(direction == SortDirection.ASC)
+            sort = Sort.by("quantity").ascending();
+        else if(direction == SortDirection.DESC)
+            sort = Sort.by("quantity").descending();
+        if(partType == null)
+            return partRepository.findAllByNameContainingIgnoreCase(name,PageRequest.of(pageNumber, pageSize,sort));
+        return partRepository.findAllByNameContainingIgnoreCaseAndPartType(name,partType,PageRequest.of(pageNumber, pageSize,sort));
     }
 
     public Cable findOneCable(String name){

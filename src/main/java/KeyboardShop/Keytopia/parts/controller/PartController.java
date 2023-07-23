@@ -6,6 +6,7 @@ import KeyboardShop.Keytopia.parts.model.enums.PartType;
 import KeyboardShop.Keytopia.parts.model.parts.*;
 import KeyboardShop.Keytopia.parts.service.PartService;
 import KeyboardShop.Keytopia.utils.excentions.UnsupportedPartTypeException;
+import KeyboardShop.Keytopia.utils.model.SortDirection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -103,9 +104,10 @@ public class PartController {
             throw new UnsupportedPartTypeException();
         }
     }
-    @GetMapping("/{partType}/{pageSize}/{pageNumber}")
-    public ResponseEntity<Page<PartDto>> findAllParts(@Valid @PathVariable PartType partType, @PathVariable int pageSize, @PathVariable int pageNumber) {
-        Page<Part> partPage = partService.findAllParts(partType, pageSize, pageNumber);
+    @GetMapping("/page")
+    public ResponseEntity<Page<PartDto>> findAllParts(@RequestParam PartType partType, @RequestParam int pageSize, @RequestParam int pageNumber,
+                                                      @RequestParam String name,@RequestParam SortDirection sortDirection) {
+        Page<Part> partPage = partService.findAllParts(partType, pageSize, pageNumber,name,sortDirection);
         List<PartDto> partDtos = new ArrayList<>();
         partPage.getContent().forEach((part)-> partDtos.add(new PartDto(part)));
         Page<PartDto> cablePageDto = new PageImpl<>(partDtos, partPage.getPageable(),partPage.getTotalElements());

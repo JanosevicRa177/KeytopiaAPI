@@ -7,5 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface IPartRepository extends JpaRepository<Part, String> {
-    Page<Part> findAllByPartType(PartType partType, Pageable pageable);
+    Page<Part> findAllByNameContainingIgnoreCase(String name, Pageable pageable);
+    Page<Part> findAllByNameContainingIgnoreCaseAndPartType(String name, PartType partType, Pageable pageable);
 }
