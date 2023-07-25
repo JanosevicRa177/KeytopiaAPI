@@ -22,12 +22,12 @@ import java.util.ArrayList;
 @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
-@Entity(name = "SwitchSet")
+@Entity(name = "switch_set")
 public class SwitchSet extends Part {
-    @Column(name="SwitchQuantity")
+    @Column(name="switch_quantity")
     private int switchQuantity;
     @ManyToOne
-    @JoinColumn(name="SwitchName", nullable=false)
+    @JoinColumn(name="switch_name", nullable=false)
     @LazyCollection(LazyCollectionOption.FALSE)
     private Switch aSwitch;
     public SwitchSet(SwitchSetDto switchSetDto, Brand brand, Switch aSwitch,String imageUrl,Supplier supplier){

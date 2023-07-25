@@ -13,20 +13,20 @@ import java.util.List;
 @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
-@Entity(name = "OrderEntity")
+@Entity(name = "order_entity")
 public class Order {
     @Id
-    @Column(name="idOrder")
+    @Column(name="id_order")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name="OrderDate")
+    @Column(name="order_date")
     private Date date;
-    @Column(name="OrderDeadline")
+    @Column(name="order_deadline")
     private Date deadline;
     @ManyToMany
     @JoinTable(name="order_service",
-            joinColumns=@JoinColumn(name="idOrder"),
-            inverseJoinColumns=@JoinColumn(name="idService")
+            joinColumns=@JoinColumn(name="id_order"),
+            inverseJoinColumns=@JoinColumn(name="id_service")
     )
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Service> services;

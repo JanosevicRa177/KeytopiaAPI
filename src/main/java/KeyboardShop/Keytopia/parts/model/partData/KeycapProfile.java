@@ -1,7 +1,6 @@
 package KeyboardShop.Keytopia.parts.model.partData;
 
 import KeyboardShop.Keytopia.parts.dto.partData.KeycapProfileDto;
-import KeyboardShop.Keytopia.parts.model.parts.Case;
 import KeyboardShop.Keytopia.parts.model.parts.Keycap;
 import KeyboardShop.Keytopia.parts.model.parts.KeycapSet;
 import lombok.AllArgsConstructor;
@@ -18,10 +17,10 @@ import java.util.List;
 @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
-@Entity(name = "KeycapProfile")
+@Entity(name = "keycap_profile")
 public class KeycapProfile {
     @Id
-    @Column(name="KeycapProfileName")
+    @Column(name="keycap_profile_name")
     private String name;
     @OneToMany(mappedBy = "keycapProfile")
     @LazyCollection(LazyCollectionOption.FALSE)

@@ -284,42 +284,47 @@ public class PartService {
 
     public Cable findOneCable(String name){
         Cable cable = cableRepository.findById(name).orElse(null);
-        if (cable == null) throw new PartNotFoundException("Cable not found!.");
+        if (cable == null) throw new PartNotFoundException("Cable with name " + name + " not found!.");
         return cable;
     }
     public Case findOneCase(String name){
         Case aCase = caseRepository.findById(name).orElse(null);
-        if (aCase == null) throw new PartNotFoundException("Case not found!.");
+        if (aCase == null) throw new PartNotFoundException("Case with name " + name + " not found!.");
         return aCase;
     }
     public Keycap findOneKeycap(String name){
         Keycap keycap = keycapRepository.findById(name).orElse(null);
-        if (keycap == null) throw new PartNotFoundException("Keycap not found!.");
+        if (keycap == null) throw new PartNotFoundException("Keycap with name " + name + "  not found!.");
         return keycap;
     }
     public KeycapSet findOneKeycapSet(String name){
         KeycapSet keycapSet = keycapSetRepository.findById(name).orElse(null);
-        if (keycapSet == null) throw new PartNotFoundException("Keycap set not found!.");
+        if (keycapSet == null) throw new PartNotFoundException("Keycap with name " + name + " not found!.");
         return keycapSet;
     }
     public PCB findOnePCB(String name){
         PCB pcb = pcbRepository.findById(name).orElse(null);
-        if (pcb == null) throw new PartNotFoundException("PCB not found!.");
+        if (pcb == null) throw new PartNotFoundException("PCB with name " + name + "not found!.");
         return pcb;
     }
     public Plate findOnePlate(String name){
         Plate plate = plateRepository.findById(name).orElse(null);
-        if (plate == null) throw new PartNotFoundException("Plate not found!.");
+        if (plate == null) throw new PartNotFoundException("Plate with name " + name + " not found!");
         return plate;
     }
     public Stabilizer findOneStabilizers(String name){
         Stabilizer stabilizer = stabilizerRepository.findById(name).orElse(null);
-        if (stabilizer == null) throw new PartNotFoundException("Stabilizer not found!.");
+        if (stabilizer == null) throw new PartNotFoundException("Stabilizer with name " + name + " not found!");
         return stabilizer;
     }
     public SwitchSet findOneSwitchSet(String name){
         SwitchSet switchSet = switchSetRepository.findById(name).orElse(null);
-        if (switchSet == null) throw new PartNotFoundException("Stabilizer not found!.");
+        if (switchSet == null) throw new PartNotFoundException("Switch set with name " + name + " not found!");
         return switchSet;
+    }
+    public Part findOnePart(String name){
+        Part part = partRepository.findById(name).orElse(null);
+        if (part == null) throw new PartNotFoundException("Part with name" + name + " not found!");
+        return part;
     }
 }

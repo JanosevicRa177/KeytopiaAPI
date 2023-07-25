@@ -17,9 +17,9 @@ import java.util.List;
 @Entity(name = "Brand")
 public class Brand {
     @Id
-    @Column(name="BrandName")
+    @Column(name="brand_name")
     private String name;
-    @Column(name="BrandSlogan")
+    @Column(name="brand_slogan")
     private String slogan;
     @ManyToMany(mappedBy = "brands")
     @LazyCollection(LazyCollectionOption.FALSE)

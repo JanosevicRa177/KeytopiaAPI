@@ -10,20 +10,20 @@ import java.util.Date;
 @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
-@Entity(name = "Product")
+@Entity(name = "product")
 public class Product {
     @Id
-    @Column(name="idProduct")
+    @Column(name="id_product")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name="SoldDate")
+    @Column(name="sold_date")
     private Date soldDate;
     @ManyToOne
-    @JoinColumn(name="idOrder")
+    @JoinColumn(name="id_order")
     private Order order;
-    @Column(name="ProductPrice")
+    @Column(name="product_price")
     private double price;
     @ManyToOne
-    @JoinColumn(name="idPart",nullable = false)
+    @JoinColumn(name="id_part",nullable = false)
     private Part part;
 }

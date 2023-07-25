@@ -17,20 +17,20 @@ import java.util.ArrayList;
 @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
-@Entity(name = "PCB")
+@Entity(name = "pcb")
 public class PCB extends Part{
-    @Column(name="PCBType")
+    @Column(name="pcbtype")
     private PCBType type;
-    @Column(name="BTConnect")
+    @Column(name="btconnect")
     private boolean btConnect;
     @ManyToOne
-    @JoinColumn(name="SizeName", nullable=false)
+    @JoinColumn(name="size_name", nullable=false)
     private Size size;
-    @Column(name="PCBColor")
+    @Column(name="pcbcolor")
     private String color;
-    @Column(name="PinType")
+    @Column(name="pin_type")
     private PinType pinType;
-    @Column(name="StabilizerType")
+    @Column(name="stabilizer_type")
     private StabilizerType stabilizerType;
     public PCB(PCBDto pcbDto, Brand brand, Size size,String imageUrl,Supplier supplier){
         super(pcbDto.getName(), 0, pcbDto.getPrice(), PartType.PCB, pcbDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand, imageUrl, supplier);

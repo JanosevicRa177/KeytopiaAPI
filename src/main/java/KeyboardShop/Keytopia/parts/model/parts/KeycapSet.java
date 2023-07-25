@@ -23,21 +23,21 @@ import java.util.List;
 @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
-@Entity(name = "KeycapSet")
+@Entity(name = "keycap_set")
 public class KeycapSet extends Part {
-    @Column(name="KeycapQuantity")
+    @Column(name="keycap_quantity")
     private int keycapQuantity;
-    @Column(name="KeycapSetMaterial")
+    @Column(name="keycap_set_material")
     private KeycapMaterial material;
-    @Column(name="KeycapSetLanguage")
+    @Column(name="keycap_set_language")
     private String language;
     @ManyToOne
-    @JoinColumn(name="KeycapProfileName", nullable=false)
+    @JoinColumn(name="keycap_profile_name", nullable=false)
     private KeycapProfile keycapProfile;
     @ManyToMany
     @JoinTable(name="layout_keycap_set",
-            joinColumns=@JoinColumn(name="PartName"),
-            inverseJoinColumns=@JoinColumn(name="LayoutName")
+            joinColumns=@JoinColumn(name="part_name"),
+            inverseJoinColumns=@JoinColumn(name="layout_name")
     )
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Layout> supportedLayouts;

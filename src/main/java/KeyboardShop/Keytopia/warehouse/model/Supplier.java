@@ -11,7 +11,6 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -21,19 +20,19 @@ import java.util.List;
 @Entity(name = "Supplier")
 public class Supplier {
     @Id
-    @Column(name="SupplierName")
+    @Column(name="supplier_name")
     private String name;
-    @Column(name="SupplierPhone")
+    @Column(name="supplier_phone")
     private String phone;
-    @Column(name="SupplierPenals")
+    @Column(name="supplier_penals")
     private int penals;
     @OneToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "idAddress", referencedColumnName = "idAddress")
+    @JoinColumn(name = "id_address", referencedColumnName = "id_address")
     private Address address;
     @ManyToMany
     @JoinTable(name="brand_supplier",
-            joinColumns=@JoinColumn(name="SupplierName"),
-            inverseJoinColumns=@JoinColumn(name="BrandName")
+            joinColumns=@JoinColumn(name="supplier_name"),
+            inverseJoinColumns=@JoinColumn(name="brand_name")
     )
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Brand> brands;

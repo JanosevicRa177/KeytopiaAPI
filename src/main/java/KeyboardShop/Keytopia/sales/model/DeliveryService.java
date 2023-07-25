@@ -12,12 +12,12 @@ import java.util.List;
 @Entity(name = "delivery_service")
 public class DeliveryService {
     @Id
-    @Column(name="idDeliveryService")
+    @Column(name="id_delivery_service")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name="DeliveryServiceName")
+    @Column(name="delivery_service_name")
     private String name;
-    @Column(name="DeliveryServicePhone")
+    @Column(name="delivery_service_phone")
     private String phone;
     @OneToMany(mappedBy = "deliveryService")
     private List<Order> orders;

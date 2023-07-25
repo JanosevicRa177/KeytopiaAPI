@@ -15,20 +15,20 @@ import java.util.List;
 @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
-@Entity(name = "Procurement")
+@Entity(name = "procurement")
 public class Procurement {
     @Id
-    @Column(name="idProcurement")
+    @Column(name="id_procurement")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name="ProcurementDate")
+    @Column(name="procurement_date")
     private Date date;
-    @Column(name="ProcurementDeadline")
+    @Column(name="procurement_deadline")
     private Date deadline;
     @OneToMany(mappedBy = "procurement")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<ProcurementPart> procurementParts;
     @ManyToOne
-    @JoinColumn(name="SupplierName", nullable=false)
+    @JoinColumn(name="supplier_name", nullable=false)
     private Supplier supplier;
 }

@@ -15,12 +15,12 @@ import java.util.List;
 @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
-@Entity(name = "Size")
+@Entity(name = "size")
 public class Size {
     @Id
-    @Column(name = "SizeName")
+    @Column(name = "size_name")
     private String name;
-    @Column(name = "NeededNumberOfKeys")
+    @Column(name = "needed_number_of_keys")
     private int neededNumberOfKeys;
     @OneToMany(mappedBy = "size")
     @LazyCollection(LazyCollectionOption.FALSE)

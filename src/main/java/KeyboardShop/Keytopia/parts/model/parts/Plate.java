@@ -17,14 +17,14 @@ import java.util.ArrayList;
 @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
-@Entity(name = "Plate")
+@Entity(name = "plate")
 public class Plate extends Part {
-    @Column(name="PlateMaterial")
+    @Column(name="plate_material")
     private String material;
-    @Column(name="PlateColor")
+    @Column(name="plate_color")
     private String color;
     @ManyToOne
-    @JoinColumn(name="SizeName", nullable=false)
+    @JoinColumn(name="size_name", nullable=false)
     private Size size;
     public Plate(PlateDto plateDto, Brand brand, Size size,String imageUrl,Supplier supplier){
         super(plateDto.getName(), 0, plateDto.getPrice(), PartType.PLATE, plateDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand, imageUrl,supplier);

@@ -20,23 +20,23 @@ import java.util.ArrayList;
 @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
-@Entity(name = "Cable")
+@Entity(name = "cable")
 public class Cable extends Part {
-    @Column(name="CableMaterial")
+    @Column(name="cable_material")
     private String material;
-    @Column(name="CableColor")
+    @Column(name="cable_color")
     private String color;
-    @Column(name="CableLength")
+    @Column(name="cable_length")
     private String length;
-    @Column(name="CableConnectorKeyboard")
+    @Column(name="cable_connector_keyboard")
     @Enumerated(EnumType.STRING)
     private CableConnector keyboardConnector;
-    @Column(name="CableConnectorComputer")
+    @Column(name="cable_connector_computer")
     @Enumerated(EnumType.STRING)
     private CableConnector computerConnector;
-    @Column(name="IsCoiled")
+    @Column(name="is_coiled")
     private boolean isCoiled;
-    @Column(name="IsQuickRelease")
+    @Column(name="is_quick_release")
     private boolean isQuickRelease;
     public Cable(CableDto cableDto, Brand brand, String imageUrl,Supplier supplier){
         super(cableDto.getName(), 0, cableDto.getPrice(), PartType.CABLE, cableDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand, imageUrl, supplier);

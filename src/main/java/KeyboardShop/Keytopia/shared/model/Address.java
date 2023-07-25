@@ -13,17 +13,17 @@ import javax.persistence.*;
 @Entity(name = "Address")
 public class Address {
     @Id
-    @Column(name="idAddress")
+    @Column(name="id_address")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name="Street")
+    @Column(name="street")
     private String street;
-    @Column(name="StreetNumber")
+    @Column(name="street_number")
     private String streetNumber;
-    @Column(name="City")
+    @Column(name="city")
     private String city;
-    @Column(name="ZipCode")
+    @Column(name="zip_code")
     private String zipCode;
-    @Column(name="Country")
+    @Column(name="country")
     private String country;
 }

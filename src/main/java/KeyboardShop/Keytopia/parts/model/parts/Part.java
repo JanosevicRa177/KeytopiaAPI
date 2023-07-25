@@ -22,16 +22,16 @@ import java.util.List;
 @Entity(name = "Part")
 public class Part {
     @Id
-    @Column(name="PartName")
+    @Column(name="part_name")
     private String name;
-    @Column(name="PartQuantity")
+    @Column(name="part_quantity")
     private int quantity;
-    @Column(name="PartPrice")
+    @Column(name="part_price")
     private double price;
-    @Column(name="PartType")
+    @Column(name="part_type")
     @Enumerated(EnumType.STRING)
     private PartType partType;
-    @Column(name="PartPriceWeight")
+    @Column(name="part_price_weight")
     @Enumerated(EnumType.STRING)
     private PriceWeight priceWeight;
     @OneToMany(mappedBy = "part")
@@ -41,11 +41,11 @@ public class Part {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Product> products;
     @ManyToOne
-    @JoinColumn(name="BrandName", nullable=true)
+    @JoinColumn(name="brand_name", nullable=true)
     private Brand brand;
-    @Column(name="PartImage", length = 2048)
+    @Column(name="part_image", length = 2048)
     private String imageUrl;
     @ManyToOne
-    @JoinColumn(name="SupplierName", nullable=true)
+    @JoinColumn(name="supplier_name", nullable=true)
     private Supplier supplier;
 }

@@ -14,9 +14,9 @@ import java.util.ArrayList;
 @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
-@Entity(name = "Stabilizer")
+@Entity(name = "stabilizer")
 public class Stabilizer extends Part {
-    @Column(name="StabilizerType")
+    @Column(name="stabilizer_type")
     @Enumerated(EnumType.STRING)
     private StabilizerType type;
     public Stabilizer(StabilizersDto stabilizerDto, Brand brand, String imageUrl, Supplier supplier){

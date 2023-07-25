@@ -13,31 +13,31 @@ import javax.persistence.*;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
-@Entity(name = "UserEntity")
+@Entity(name = "user_entity")
 public class User {
     @Id
-    @Column(name="idUser")
+    @Column(name="id_user")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name="UserName")
+    @Column(name="user_name")
     private String name;
-    @Column(name="UserSurname")
+    @Column(name="user_surname")
     private String surname;
-    @Column(name="UserPhone")
+    @Column(name="user_phone")
     private String phone;
     @Column(name="Role")
     @Enumerated(EnumType.STRING)
     private Role role;
-    @Column(name="Email",unique = true)
+    @Column(name="email",unique = true)
     private String email;
-    @Column(name="UserPassword")
+    @Column(name="user_password")
     private String password;
 
-    @Column(name="Activated")
+    @Column(name="activated")
     private boolean isActivated;
     
     @OneToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "idAddress", referencedColumnName = "idAddress")
+    @JoinColumn(name = "id_address", referencedColumnName = "id_address")
     private Address address;
     
     public User(RegisterBuyerDto registerDto){

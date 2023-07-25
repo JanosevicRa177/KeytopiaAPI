@@ -19,21 +19,21 @@ import java.util.List;
 @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
-@Entity(name = "Switch")
+@Entity(name = "switch")
 public class Switch {
     @Id
-    @Column(name="SwitchName")
+    @Column(name="switch_name")
     private String name;
-    @Column(name="SwitchType")
+    @Column(name="switch_type")
     private SwitchType switchType;
-    @Column(name="PinType")
+    @Column(name="pin_type")
     @Enumerated(EnumType.STRING)
     private PinType pinType;
-    @Column(name="ActuationForce")
+    @Column(name="actuation_force")
     private int actuationForce;
-    @Column(name="ActuationPoint")
+    @Column(name="actuation_point")
     private double actuationPoint;
-    @Column(name="SwitchPriceWeight")
+    @Column(name="switch_price_weight")
     @Enumerated(EnumType.STRING)
     private PriceWeight priceWeight;
     @OneToMany(mappedBy = "aSwitch")

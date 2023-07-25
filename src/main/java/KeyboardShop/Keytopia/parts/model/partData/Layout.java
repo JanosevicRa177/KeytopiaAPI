@@ -13,12 +13,12 @@ import java.util.List;
 @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
-@Entity(name = "Layout")
+@Entity(name = "layout")
 public class Layout {
     @Id
-    @Column(name="LayoutName")
+    @Column(name="layout_name")
     private String name;
-    @Column(name="Localization")
+    @Column(name="localization")
     private String localization;
     @ManyToMany(mappedBy = "supportedLayouts")
     @LazyCollection(LazyCollectionOption.FALSE)

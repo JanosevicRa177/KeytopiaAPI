@@ -22,12 +22,12 @@ import java.util.Collections;
 @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
-@Entity(name = "Keycap")
+@Entity(name = "keycap")
 public class Keycap extends Part{
-    @Column(name="KeycapMaterial")
+    @Column(name="keycap_material")
     private KeycapMaterial material;
     @ManyToOne
-    @JoinColumn(name="KeycapProfileName", nullable=false)
+    @JoinColumn(name="keycap_profile_name", nullable=false)
     private KeycapProfile keycapProfile;
     public Keycap(KeycapDto keycapDto, Brand brand,KeycapProfile keycapProfile, String imageUrl,Supplier supplier){
         super(keycapDto.getName(), 0, keycapDto.getPrice(), PartType.KEYCAP, keycapDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand,imageUrl,supplier);

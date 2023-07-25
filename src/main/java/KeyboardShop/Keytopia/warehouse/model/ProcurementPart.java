@@ -13,18 +13,18 @@ import java.util.List;
 @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
-@Entity(name = "ProcurementPart")
+@Entity(name = "procurement_part")
 public class ProcurementPart {
     @Id
-    @Column(name="idProcurementPart")
+    @Column(name="id_procurement_part")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name="PartQuantity")
+    @Column(name="part_quantity")
     private int quantity;
     @ManyToOne
-    @JoinColumn(name="idProcurement", nullable=false)
+    @JoinColumn(name="id_procurement", nullable=false)
     private Procurement procurement;
     @ManyToOne
-    @JoinColumn(name="idPart", nullable=false)
+    @JoinColumn(name="id_part", nullable=false)
     private Part part;
 }
