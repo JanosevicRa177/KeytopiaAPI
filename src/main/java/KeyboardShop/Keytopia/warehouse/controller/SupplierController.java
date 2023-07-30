@@ -27,6 +27,12 @@ public class SupplierController {
         supplierService.create(supplierDto);
         return ResponseEntity.ok().build();
     }
+    @PatchMapping("{name}/brands")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
+    public ResponseEntity<Void> updateBrands(@Valid @RequestBody List<String> brands,@PathVariable String name) {
+        supplierService.updateBrands(brands,name);
+        return ResponseEntity.ok().build();
+    }
     @GetMapping("")
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
     public ResponseEntity<List<SupplierDto>> findAll() {

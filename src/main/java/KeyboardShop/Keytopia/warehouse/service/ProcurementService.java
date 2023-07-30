@@ -2,12 +2,24 @@ package KeyboardShop.Keytopia.warehouse.service;
 
 import KeyboardShop.Keytopia.parts.model.parts.Part;
 import KeyboardShop.Keytopia.parts.service.PartService;
+import KeyboardShop.Keytopia.utils.excentions.warehouseExceptions.ProcurementDeadlineExpiredException;
+import KeyboardShop.Keytopia.utils.excentions.warehouseExceptions.ProcurementDeadlineNotYetExpiredException;
 import KeyboardShop.Keytopia.utils.excentions.warehouseExceptions.ProcurementInvalidException;
+import KeyboardShop.Keytopia.utils.excentions.warehouseExceptions.WarehouseEntityNotFoundException;
 import KeyboardShop.Keytopia.warehouse.dto.ProcurementDto;
+import KeyboardShop.Keytopia.warehouse.model.Brand;
+import KeyboardShop.Keytopia.warehouse.model.PartItem;
+import KeyboardShop.Keytopia.warehouse.model.Procurement;
 import KeyboardShop.Keytopia.warehouse.model.Supplier;
+import KeyboardShop.Keytopia.warehouse.model.enums.ProcurementState;
+import KeyboardShop.Keytopia.warehouse.repository.IProcurementPartRepository;
+import KeyboardShop.Keytopia.warehouse.repository.IProcurementRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,36 +29,86 @@ public class ProcurementService {
     
     private final PartService partService;
     private final SupplierService supplierService;
+    private final IProcurementRepository procurementRepository;
+    private  final IProcurementPartRepository procurementPartRepository;
     
-    public void create(ProcurementDto procurementDto){
-        List<Part> parts = new ArrayList<>();
-        procurementDto.getParts().forEach((partItemDto -> parts.add(partService.findOnePart(partItemDto.getName()))));
-        List<Supplier> suppliers = supplierService.findAll();
-        handleProcurementCreation(parts,suppliers);
+    public void realize(Long id){
+        Procurement procurement = procurementRepository.findById(id).orElse(null);
+        if(procurement == null) throw new WarehouseEntityNotFoundException("Procurement not found!");
+        if(procurement.getDeadline().isBefore(LocalDate.now())) throw new ProcurementDeadlineExpiredException();
+        
+        procurement.getProcurementParts().forEach((procurementPart -> {
+            Part part = procurementPart.getPart();
+            part.increaseQuantityBy(procurementPart.getQuantity());
+            partService.save(part);
+        }));
+        procurement.setState(ProcurementState.REALIZED);
+        procurementRepository.save(procurement);
+    }
+    public void penalize(Long id){
+        Procurement procurement = procurementRepository.findById(id).orElse(null);
+        if(procurement == null) throw new WarehouseEntityNotFoundException("Procurement not found!");
+        if(procurement.getDeadline().isAfter(LocalDate.now())) throw new ProcurementDeadlineNotYetExpiredException();
+        
+        Supplier supplier = procurement.getSupplier();
+        supplier.penalize();
+        supplierService.save(supplier);
+        
+        procurement.setState(ProcurementState.CANCELED);
+        procurementRepository.save(procurement);
+    }
+    public void delete(Long id){
+        Procurement procurement = procurementRepository.findById(id).orElse(null);
+        if(procurement == null) throw new WarehouseEntityNotFoundException("Procurement not found!");
+
+        procurementPartRepository.deleteAll(procurement.getProcurementParts());
+        procurementRepository.delete(procurement);
+    }
+    public Page<Procurement> findAll(int pageSize, int pageNumber){
+        return procurementRepository.findAll(PageRequest.of(pageNumber, pageSize));
     }
     
-    private void handleProcurementCreation(List<Part> parts, List<Supplier> suppliers){
+    public void create(ProcurementDto procurementDto){
+        List<PartItem> partItems = new ArrayList<>();
+        procurementDto.getParts().forEach(partItemDto -> partItems.add(new PartItem(partItemDto.getQuantity(),partService.findOnePart(partItemDto.getName()))));
+        List<Supplier> suppliers = supplierService.findAll();
+        handleProcurementCreation(partItems,suppliers);
+    }
+    
+    private void handleProcurementCreation(List<PartItem> partItems, List<Supplier> suppliers){
+        if(partItems.isEmpty()) return;
+        
         suppliers.sort((supplier1, supplier2) -> 
-                (parts.stream().filter(part -> supplier2.getParts().contains(part)).toList().size() +
-                parts.stream().filter(part -> supplier2.getBrands().contains(part.getBrand())).toList().size())
-                -
-                (parts.stream().filter(part -> supplier1.getParts().contains(part)).toList().size() +
-                 parts.stream().filter(part -> supplier1.getBrands().contains(part.getBrand())).toList().size()));
-        Supplier chosen = suppliers.remove(0);
-        if(!parts.isEmpty()){
-            if((parts.stream().filter(part -> chosen.getParts().contains(part)).toList().size() +
-                parts.stream() .filter(part -> chosen.getBrands().contains(part.getBrand())).toList().size()) == 0){
-                {
-                    StringBuilder partsNames = new StringBuilder();
-                    parts.forEach(part -> partsNames.append(part.getName()).append(" ,"));
-                    if (partsNames.length() > 0) {
-                        partsNames.delete(partsNames.length() - 2, partsNames.length());
-                    }
-                    throw new ProcurementInvalidException(partsNames.toString());
-                }
+                getNumberOfMatchingParts(partItems,supplier2) - getNumberOfMatchingParts(partItems,supplier1));
+        
+        Supplier chosen = suppliers.get(0);
+        List<PartItem> matchingPartItems = getMatchingParts(partItems,chosen);
+        
+        if((!partItems.isEmpty() && matchingPartItems.size() == 0) || suppliers.isEmpty()) {
+            StringBuilder partsNames = new StringBuilder();
+            partItems.forEach(part -> partsNames.append(part.getPart().getName()).append(" ,"));
+            if (partsNames.length() > 0) {
+                partsNames.delete(partsNames.length() - 2, partsNames.length());
             }
-            return;
+            throw new ProcurementInvalidException(partsNames.toString());
         }
-        handleProcurementCreation(parts,suppliers);
+        suppliers.remove(0);
+        
+        Procurement procurement = new Procurement(matchingPartItems,chosen);
+        procurementRepository.save(procurement);
+        procurementPartRepository.saveAll(procurement.getProcurementParts());
+        
+        partItems.removeAll(matchingPartItems);
+        handleProcurementCreation(partItems,suppliers);
+    }
+    private int getNumberOfMatchingParts(List<PartItem> partsItems, Supplier supplier){
+        return partsItems.stream().filter(partItem -> supplier.getParts().contains(partItem.getPart())).toList().size() +
+                partsItems.stream() .filter(partItem -> supplier.getBrands().contains(partItem.getPart().getBrand())).toList().size();
+    }
+    private List<PartItem> getMatchingParts(List<PartItem> partsItems, Supplier supplier) {
+        List<PartItem> matchingParts = new ArrayList<>();
+        matchingParts.addAll(partsItems.stream().filter(partItem -> supplier.getParts().contains(partItem.getPart())).toList());
+        matchingParts.addAll(partsItems.stream().filter(partItem -> supplier.getBrands().contains(partItem.getPart().getBrand())).toList());
+        return matchingParts;
     }
 }

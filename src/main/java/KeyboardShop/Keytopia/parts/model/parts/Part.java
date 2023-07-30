@@ -2,7 +2,6 @@ package KeyboardShop.Keytopia.parts.model.parts;
 
 import KeyboardShop.Keytopia.parts.model.enums.PartType;
 import KeyboardShop.Keytopia.parts.model.enums.PriceWeight;
-import KeyboardShop.Keytopia.sales.model.DeliveryService;
 import KeyboardShop.Keytopia.sales.model.Product;
 import KeyboardShop.Keytopia.warehouse.model.Brand;
 import KeyboardShop.Keytopia.warehouse.model.ProcurementPart;
@@ -48,4 +47,8 @@ public class Part {
     @ManyToOne
     @JoinColumn(name="supplier_name", nullable=true)
     private Supplier supplier;
+    
+    public void increaseQuantityBy(int quantity){
+        this.quantity = this.quantity + quantity;
+    }
 }

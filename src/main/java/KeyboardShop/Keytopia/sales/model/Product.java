@@ -24,6 +24,6 @@ public class Product {
     @Column(name="product_price")
     private double price;
     @ManyToOne
-    @JoinColumn(name="id_part",nullable = false)
+    @JoinColumn(name="part_name",nullable = false)
     private Part part;
 }

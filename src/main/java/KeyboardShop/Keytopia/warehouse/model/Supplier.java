@@ -49,4 +49,5 @@ public class Supplier {
     public void removeBrand(Brand brand){
         this.brands.remove(brand);
     }
+    public void penalize(){ this.penals++; }
 }

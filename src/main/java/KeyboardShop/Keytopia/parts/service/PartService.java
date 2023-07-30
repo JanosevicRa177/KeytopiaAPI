@@ -327,4 +327,7 @@ public class PartService {
         if (part == null) throw new PartNotFoundException("Part with name" + name + " not found!");
         return part;
     }
+    public void save(Part part){
+        partRepository.save(part);
+    }
 }

@@ -1,6 +1,7 @@
 package KeyboardShop.Keytopia.warehouse.service;
 
 import KeyboardShop.Keytopia.utils.excentions.partExceptions.partData.PartDataAlreadyExistsException;
+import KeyboardShop.Keytopia.utils.excentions.warehouseExceptions.WarehouseEntityAlreadyExistsException;
 import KeyboardShop.Keytopia.utils.excentions.warehouseExceptions.WarehouseEntityCantBeDeletedException;
 import KeyboardShop.Keytopia.utils.excentions.warehouseExceptions.WarehouseEntityNotFoundException;
 import KeyboardShop.Keytopia.warehouse.dto.SupplierDto;
@@ -24,7 +25,7 @@ public class SupplierService {
     
     public void create(SupplierDto supplierDto){
         Supplier supplier = supplierRepository.findById(supplierDto.getName()).orElse(null);
-        if (supplier != null) throw new PartDataAlreadyExistsException("Supplier with this name already exists.");
+        if (supplier != null) throw new WarehouseEntityAlreadyExistsException("Supplier with this name already exists.");
         List<Brand> brands = new ArrayList<>();
         supplierDto.getBrands().forEach((brandName) -> {
             Brand brand = brandService.find(brandName);
@@ -32,6 +33,18 @@ public class SupplierService {
             brands.add(brand);
         });
         supplierRepository.save(new Supplier(supplierDto,brands));
+    }
+    public void updateBrands(List<String> brandNames,String name){
+        Supplier supplier = supplierRepository.findById(name).orElse(null);
+        if (supplier == null) throw new WarehouseEntityNotFoundException("Supplier not found!.");
+        List<Brand> brands = new ArrayList<>();
+        brandNames.forEach((brandName) -> {
+            Brand brand = brandService.find(brandName);
+            if(brand == null) throw new WarehouseEntityNotFoundException("Brand with name" + brandName + "does not exists");
+            brands.add(brand);
+        });
+        supplier.setBrands(brands);
+        supplierRepository.save(supplier);
     }
     public List<Supplier> findAll(){
         return supplierRepository.findAll();
@@ -49,5 +62,8 @@ public class SupplierService {
     }
     public Supplier find(String name){
         return supplierRepository.findById(name).orElse(null);
+    }
+    public void save(Supplier supplier){
+        supplierRepository.save(supplier);
     }
 }

@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @Setter
@@ -25,6 +24,6 @@ public class ProcurementPart {
     @JoinColumn(name="id_procurement", nullable=false)
     private Procurement procurement;
     @ManyToOne
-    @JoinColumn(name="id_part", nullable=false)
+    @JoinColumn(name="part_name", nullable=false)
     private Part part;
 }
