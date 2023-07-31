@@ -2,12 +2,12 @@ package KeyboardShop.Keytopia.warehouse.service;
 
 import KeyboardShop.Keytopia.parts.model.parts.Part;
 import KeyboardShop.Keytopia.parts.service.PartService;
-import KeyboardShop.Keytopia.utils.excentions.warehouseExceptions.ProcurementDeadlineExpiredException;
+import KeyboardShop.Keytopia.utils.excentions.warehouseExceptions.ProcurementActionInvalidException;
 import KeyboardShop.Keytopia.utils.excentions.warehouseExceptions.ProcurementDeadlineNotYetExpiredException;
 import KeyboardShop.Keytopia.utils.excentions.warehouseExceptions.ProcurementInvalidException;
 import KeyboardShop.Keytopia.utils.excentions.warehouseExceptions.WarehouseEntityNotFoundException;
+import KeyboardShop.Keytopia.utils.model.SortDirection;
 import KeyboardShop.Keytopia.warehouse.dto.ProcurementDto;
-import KeyboardShop.Keytopia.warehouse.model.Brand;
 import KeyboardShop.Keytopia.warehouse.model.PartItem;
 import KeyboardShop.Keytopia.warehouse.model.Procurement;
 import KeyboardShop.Keytopia.warehouse.model.Supplier;
@@ -17,6 +17,7 @@ import KeyboardShop.Keytopia.warehouse.repository.IProcurementRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -35,7 +36,7 @@ public class ProcurementService {
     public void realize(Long id){
         Procurement procurement = procurementRepository.findById(id).orElse(null);
         if(procurement == null) throw new WarehouseEntityNotFoundException("Procurement not found!");
-        if(procurement.getDeadline().isBefore(LocalDate.now())) throw new ProcurementDeadlineExpiredException();
+        if(procurement.getState() != ProcurementState.PENDING) throw new ProcurementActionInvalidException("Procurement is not pending");
         
         procurement.getProcurementParts().forEach((procurementPart -> {
             Part part = procurementPart.getPart();
@@ -49,7 +50,9 @@ public class ProcurementService {
         Procurement procurement = procurementRepository.findById(id).orElse(null);
         if(procurement == null) throw new WarehouseEntityNotFoundException("Procurement not found!");
         if(procurement.getDeadline().isAfter(LocalDate.now())) throw new ProcurementDeadlineNotYetExpiredException();
-        
+        if(procurement.getState() != ProcurementState.PENDING) throw new ProcurementActionInvalidException("Procurement is not pending");
+
+
         Supplier supplier = procurement.getSupplier();
         supplier.penalize();
         supplierService.save(supplier);
@@ -60,12 +63,21 @@ public class ProcurementService {
     public void delete(Long id){
         Procurement procurement = procurementRepository.findById(id).orElse(null);
         if(procurement == null) throw new WarehouseEntityNotFoundException("Procurement not found!");
+        if(procurement.getState() != ProcurementState.PENDING) throw new ProcurementActionInvalidException("Procurement is not pending");
+
 
         procurementPartRepository.deleteAll(procurement.getProcurementParts());
         procurementRepository.delete(procurement);
     }
-    public Page<Procurement> findAll(int pageSize, int pageNumber){
-        return procurementRepository.findAll(PageRequest.of(pageNumber, pageSize));
+    public Page<Procurement> findAll(int pageSize, int pageNumber,ProcurementState procurementState, SortDirection direction){
+        Sort sort = Sort.unsorted();
+        if(direction == SortDirection.ASC)
+            sort = Sort.by("date").ascending();
+        else if(direction == SortDirection.DESC)
+            sort = Sort.by("date").descending();
+        if(procurementState != ProcurementState.NONE)
+            return procurementRepository.findAllByState(procurementState,PageRequest.of(pageNumber, pageSize,sort));
+        return procurementRepository.findAll(PageRequest.of(pageNumber, pageSize,sort));
     }
     
     public void create(ProcurementDto procurementDto){

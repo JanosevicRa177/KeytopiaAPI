@@ -1,8 +1,10 @@
 package KeyboardShop.Keytopia.warehouse.controller;
 
+import KeyboardShop.Keytopia.utils.model.SortDirection;
 import KeyboardShop.Keytopia.warehouse.dto.GetProcurementDto;
 import KeyboardShop.Keytopia.warehouse.dto.ProcurementDto;
 import KeyboardShop.Keytopia.warehouse.model.Procurement;
+import KeyboardShop.Keytopia.warehouse.model.enums.ProcurementState;
 import KeyboardShop.Keytopia.warehouse.service.ProcurementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -46,10 +48,11 @@ public class ProcurementController {
         procurementService.delete(id);
         return ResponseEntity.ok().build();
     }
-    @GetMapping("/{pageSize}/{pageNumber}")
+    @GetMapping("page")
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Page<GetProcurementDto>> findAll(@Valid @PathVariable int pageSize, @Valid @PathVariable int pageNumber) {
-        Page<Procurement> procurementPage = procurementService.findAll(pageSize, pageNumber);
+    public ResponseEntity<Page<GetProcurementDto>> findAll(@Valid @RequestParam int pageSize, @Valid @RequestParam int pageNumber,
+                                                           @RequestParam ProcurementState state, @RequestParam SortDirection sortDirection) {
+        Page<Procurement> procurementPage = procurementService.findAll(pageSize, pageNumber,state,sortDirection);
         List<GetProcurementDto> procurementDtos = new ArrayList<>();
         procurementPage.getContent().forEach((procurement)-> {
             procurementDtos.add(new GetProcurementDto(procurement));
