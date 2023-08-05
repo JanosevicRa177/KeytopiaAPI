@@ -51,7 +51,7 @@ public class ProcurementController {
     @GetMapping("page")
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
     public ResponseEntity<Page<GetProcurementDto>> findAll(@Valid @RequestParam int pageSize, @Valid @RequestParam int pageNumber,
-                                                           @RequestParam ProcurementState state, @RequestParam SortDirection sortDirection) {
+                                                           @RequestParam(required = false) ProcurementState state, @RequestParam SortDirection sortDirection) {
         Page<Procurement> procurementPage = procurementService.findAll(pageSize, pageNumber,state,sortDirection);
         List<GetProcurementDto> procurementDtos = new ArrayList<>();
         procurementPage.getContent().forEach((procurement)-> {
