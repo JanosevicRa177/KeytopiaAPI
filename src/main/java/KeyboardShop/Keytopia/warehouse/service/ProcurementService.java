@@ -70,16 +70,21 @@ public class ProcurementService {
         procurementRepository.delete(procurement);
     }
     public Page<Procurement> findAll(int pageSize, int pageNumber,ProcurementState procurementState, SortDirection direction){
+        Sort sort = getSortByDate(direction);
+        if(procurementState != ProcurementState.NONE)
+            return procurementRepository.findAllByState(procurementState,PageRequest.of(pageNumber, pageSize,sort));
+        return procurementRepository.findAll(PageRequest.of(pageNumber, pageSize,sort));
+    }
+
+    private Sort getSortByDate(SortDirection direction) {
         Sort sort = Sort.unsorted();
         if(direction == SortDirection.ASC)
             sort = Sort.by("date").ascending();
         else if(direction == SortDirection.DESC)
             sort = Sort.by("date").descending();
-        if(procurementState != ProcurementState.NONE)
-            return procurementRepository.findAllByState(procurementState,PageRequest.of(pageNumber, pageSize,sort));
-        return procurementRepository.findAll(PageRequest.of(pageNumber, pageSize,sort));
+        return sort;
     }
-    
+
     public void create(ProcurementDto procurementDto){
         List<PartItem> partItems = new ArrayList<>();
         procurementDto.getParts().forEach(partItemDto -> partItems.add(new PartItem(partItemDto.getQuantity(),partService.findOnePart(partItemDto.getName()))));

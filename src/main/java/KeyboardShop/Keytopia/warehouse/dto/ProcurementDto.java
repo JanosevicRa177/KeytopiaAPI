@@ -10,5 +10,5 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class ProcurementDto {
-    private List<PartItemDto> parts;
+    private List<PartWithQuantityDto> parts;
 }

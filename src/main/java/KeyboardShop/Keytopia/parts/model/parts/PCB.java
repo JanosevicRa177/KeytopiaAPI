@@ -9,9 +9,12 @@ import KeyboardShop.Keytopia.parts.model.enums.StabilizerType;
 import KeyboardShop.Keytopia.warehouse.model.Brand;
 import KeyboardShop.Keytopia.warehouse.model.Supplier;
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -32,6 +35,9 @@ public class PCB extends Part{
     private PinType pinType;
     @Column(name="stabilizer_type")
     private StabilizerType stabilizerType;
+    @OneToMany(mappedBy = "pcb")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Keyboard> keyboards;
     public PCB(PCBDto pcbDto, Brand brand, Size size,String imageUrl,Supplier supplier){
         super(pcbDto.getName(), 0, pcbDto.getPrice(), PartType.PCB, pcbDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand, imageUrl, supplier);
         this.type = pcbDto.getType();

@@ -41,7 +41,7 @@ public class PartDataService {
     public void deleteSize(String name){
         Size size = sizeRepository.findById(name).orElse(null);
         if (size == null) throw new PartDataNotFoundException("Size does not exists!");
-        if(!size.getCases().isEmpty()) throw new PartDataCantBeDeletedException("Size cant be deleted because it has \"Case\" parts connected to it!");
+        if(!size.getCaseEntityEntities().isEmpty()) throw new PartDataCantBeDeletedException("Size cant be deleted because it has \"Case\" parts connected to it!");
         if(!size.getPcbs().isEmpty()) throw new PartDataCantBeDeletedException("Size cant be deleted because it has \"Pcb\" parts connected to it!");
         if(!size.getPlates().isEmpty()) throw new PartDataCantBeDeletedException("Size cant be deleted because it has \"Plate\" parts connected to it!");
         sizeRepository.delete(size);

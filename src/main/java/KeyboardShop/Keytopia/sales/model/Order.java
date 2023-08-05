@@ -31,10 +31,10 @@ public class Order {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Service> services;
     @ManyToOne
-    @JoinColumn(name="idUser", nullable=false)
+    @JoinColumn(name="id_user", nullable=false)
     private Buyer buyer;
     @ManyToOne
-    @JoinColumn(name="idDeliveryService", nullable=false)
+    @JoinColumn(name="id_delivery_service", nullable=false)
     private DeliveryService deliveryService;
     @OneToMany(mappedBy = "order")
     @LazyCollection(LazyCollectionOption.FALSE)

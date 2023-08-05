@@ -1,6 +1,6 @@
 package KeyboardShop.Keytopia.parts.dto.part;
 
-import KeyboardShop.Keytopia.parts.model.parts.Case;
+import KeyboardShop.Keytopia.parts.model.parts.CaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,10 +14,10 @@ public class CaseDto extends  PartDto{
     private String color;
     private String size;
     private MultipartFile image;
-    public CaseDto(Case aCase){
-        super(aCase);
-        this.material = aCase.getMaterial();
-        this.color = aCase.getColor();
-        this.size = aCase.getSize().getName();
+    public CaseDto(CaseEntity aCaseEntity){
+        super(aCaseEntity);
+        this.material = aCaseEntity.getMaterial();
+        this.color = aCaseEntity.getColor();
+        this.size = aCaseEntity.getSize().getName();
     }
 }

@@ -1,6 +1,5 @@
 package KeyboardShop.Keytopia.parts.model.parts;
 
-import KeyboardShop.Keytopia.parts.dto.part.KeycapDto;
 import KeyboardShop.Keytopia.parts.dto.part.KeycapSetDto;
 import KeyboardShop.Keytopia.parts.model.enums.PartType;
 import KeyboardShop.Keytopia.parts.model.partData.KeycapProfile;
@@ -31,6 +30,8 @@ public class KeycapSet extends Part {
     private KeycapMaterial material;
     @Column(name="keycap_set_language")
     private String language;
+    @Column(name="keycap_set_color")
+    private String color;
     @ManyToOne
     @JoinColumn(name="keycap_profile_name", nullable=false)
     private KeycapProfile keycapProfile;
@@ -41,6 +42,9 @@ public class KeycapSet extends Part {
     )
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Layout> supportedLayouts;
+    @OneToMany(mappedBy = "keycapSet")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Keyboard> keyboards;
     public KeycapSet(KeycapSetDto keycapSetDto, Brand brand, KeycapProfile keycapProfile, List<Layout> layouts,String imageUrl,Supplier supplier){
         super(keycapSetDto.getName(), 0, keycapSetDto.getPrice(), PartType.KEYCAP_SET, keycapSetDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand,imageUrl,supplier);
         this.material = keycapSetDto.getMaterial();
@@ -48,5 +52,6 @@ public class KeycapSet extends Part {
         this.keycapQuantity = keycapSetDto.getKeycapQuantity();
         this.keycapProfile = keycapProfile;
         this.supportedLayouts = layouts;
+        this.color = keycapSetDto.getColor();
     }
 }

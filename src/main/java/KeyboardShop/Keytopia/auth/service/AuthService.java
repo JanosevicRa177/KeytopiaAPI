@@ -65,7 +65,7 @@ public class AuthService {
         Authentication authStrategy = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
         Authentication authentication = authenticationManager.authenticate(authStrategy);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return jwtUtils.generateAccessToken(user.getEmail());
+        return jwtUtils.generateAccessToken(user.getEmail(),user.getRole().toString());
     }
 
     public User getUserFromHeader(String header){

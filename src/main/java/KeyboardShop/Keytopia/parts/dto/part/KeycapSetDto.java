@@ -18,6 +18,7 @@ public class KeycapSetDto extends  PartDto {
     private KeycapMaterial material;
     private String language;
     private String keycapProfile;
+    private String color;
     private List<String> layouts;
     private MultipartFile image;
     public KeycapSetDto(KeycapSet keycapSet){
@@ -28,5 +29,6 @@ public class KeycapSetDto extends  PartDto {
         List<String> layoutNames = new ArrayList<>();
         keycapSet.getSupportedLayouts().forEach(layout -> layoutNames.add(layout.getName()));
         this.layouts = layoutNames;
+        this.color = keycapSet.getColor();
     }
 }

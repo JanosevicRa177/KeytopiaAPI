@@ -8,10 +8,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PartItemDto {
+public class PartWithQuantityDto {
     private String name;
     private Integer quantity;
-    public PartItemDto(ProcurementPart part){
+    public PartWithQuantityDto(ProcurementPart part){
         this.name = part.getPart().getName();
         this.quantity = part.getQuantity();
     }

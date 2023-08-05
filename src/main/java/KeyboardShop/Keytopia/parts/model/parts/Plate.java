@@ -9,9 +9,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,6 +29,9 @@ public class Plate extends Part {
     @ManyToOne
     @JoinColumn(name="size_name", nullable=false)
     private Size size;
+    @OneToMany(mappedBy = "plate")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Keyboard> keyboards;
     public Plate(PlateDto plateDto, Brand brand, Size size,String imageUrl,Supplier supplier){
         super(plateDto.getName(), 0, plateDto.getPrice(), PartType.PLATE, plateDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand, imageUrl,supplier);
         this.size = size;

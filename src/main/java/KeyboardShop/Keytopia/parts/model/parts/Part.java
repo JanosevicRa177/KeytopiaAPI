@@ -19,6 +19,9 @@ import java.util.List;
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity(name = "Part")
+@Table(indexes = {
+        @Index(name = "idx_part", columnList = "part_name, part_type")
+})
 public class Part {
     @Id
     @Column(name="part_name")

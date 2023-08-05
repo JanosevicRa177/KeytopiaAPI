@@ -9,12 +9,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -38,6 +38,9 @@ public class Cable extends Part {
     private boolean isCoiled;
     @Column(name="is_quick_release")
     private boolean isQuickRelease;
+    @OneToMany(mappedBy = "cable")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Keyboard> keyboards;
     public Cable(CableDto cableDto, Brand brand, String imageUrl,Supplier supplier){
         super(cableDto.getName(), 0, cableDto.getPrice(), PartType.CABLE, cableDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand, imageUrl, supplier);
         this.material = cableDto.getMaterial();

@@ -1,8 +1,12 @@
 package KeyboardShop.Keytopia.parts.controller;
 
+import KeyboardShop.Keytopia.auth.model.Role;
+import KeyboardShop.Keytopia.auth.model.User;
+import KeyboardShop.Keytopia.auth.security.JwtUtils;
+import KeyboardShop.Keytopia.auth.service.AuthService;
 import KeyboardShop.Keytopia.parts.dto.part.*;
 import KeyboardShop.Keytopia.parts.dto.part.CableDto;
-import KeyboardShop.Keytopia.parts.model.enums.PartType;
+import KeyboardShop.Keytopia.parts.model.enums.*;
 import KeyboardShop.Keytopia.parts.model.parts.*;
 import KeyboardShop.Keytopia.parts.service.PartService;
 import KeyboardShop.Keytopia.utils.excentions.UnsupportedPartTypeException;
@@ -10,6 +14,7 @@ import KeyboardShop.Keytopia.utils.model.SortDirection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,6 +29,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PartController {
     private final PartService partService;
+    private final AuthService authService;
     
     @PostMapping(value ="/cable", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
@@ -104,23 +110,110 @@ public class PartController {
             throw new UnsupportedPartTypeException();
         }
     }
-    @GetMapping("/page")
-    public ResponseEntity<Page<PartDto>> findAllParts(@RequestParam PartType partType, @RequestParam int pageSize, @RequestParam int pageNumber,
-                                                      @RequestParam String name,@RequestParam SortDirection sortDirection) {
-        Page<Part> partPage = partService.findAllParts(partType, pageSize, pageNumber,name,sortDirection);
-        List<PartDto> partDtos = new ArrayList<>();
-        partPage.getContent().forEach((part)-> partDtos.add(new PartDto(part)));
-        Page<PartDto> cablePageDto = new PageImpl<>(partDtos, partPage.getPageable(),partPage.getTotalElements());
+    @GetMapping("case/page")
+    public ResponseEntity<Page<PartItemWithSizeDto>> findAllCases(@RequestParam int pageSize, @RequestParam int pageNumber,
+                                                      @RequestParam String name,@RequestParam(required = false) String color,
+                                                      @RequestParam(required = false) String sizeName, @RequestParam(required = false) PriceWeight priceWeight) {
+        Page<CaseEntity> partPage = partService.findAllCases(color,sizeName, name,priceWeight , pageSize, pageNumber);
+        List<PartItemWithSizeDto> partDtos = new ArrayList<>();
+        partPage.getContent().forEach((part)-> partDtos.add(new PartItemWithSizeDto(part)));
+        Page<PartItemWithSizeDto> casePageDto = new PageImpl<>(partDtos, partPage.getPageable(),partPage.getTotalElements());
+        return ResponseEntity.ok(casePageDto);
+    }
+    @GetMapping("cable/page")
+    public ResponseEntity<Page<PartItemDto>> findAllCables(@RequestParam int pageSize, @RequestParam int pageNumber,
+                                                      @RequestParam String name,
+                                                      @RequestParam(required = false) PriceWeight priceWeight, @RequestParam(required = false) String color) {
+        Page<Cable> partPage = partService.findAllCables(color, name, priceWeight, pageSize, pageNumber);
+        List<PartItemDto> partDtos = new ArrayList<>();
+        partPage.getContent().forEach((part)-> partDtos.add(new PartItemDto(part)));
+        Page<PartItemDto> cablePageDto = new PageImpl<>(partDtos, partPage.getPageable(),partPage.getTotalElements());
         return ResponseEntity.ok(cablePageDto);
     }
+    @GetMapping("plate/page")
+    public ResponseEntity<Page<PartItemWithSizeDto>> findAllPlates(@RequestParam int pageSize, @RequestParam int pageNumber,
+                                                                  @RequestParam String name,@RequestParam(required = false) String color,
+                                                                  @RequestParam(required = false) String sizeName, @RequestParam(required = false) PriceWeight priceWeight) {
+        Page<Plate> partPage = partService.findAllPlates(color,sizeName, name,priceWeight , pageSize, pageNumber);
+        List<PartItemWithSizeDto> partDtos = new ArrayList<>();
+        partPage.getContent().forEach((part)-> partDtos.add(new PartItemWithSizeDto(part)));
+        Page<PartItemWithSizeDto> casePageDto = new PageImpl<>(partDtos, partPage.getPageable(),partPage.getTotalElements());
+        return ResponseEntity.ok(casePageDto);
+    }
+    @GetMapping("switch-set/page")
+    public ResponseEntity<Page<PartItemWithPinTypeDto>> findAllSwitchSets(@RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam(required = false) PinType pinType,
+                                                                   @RequestParam String name,@RequestParam(required = false) SwitchType switchType,
+                                                                   @RequestParam(required = false) String sizeName, @RequestParam(required = false) PriceWeight priceWeight) {
+        Page<SwitchSet> partPage = partService.findAllSwitchSets(pinType,sizeName, name, switchType, priceWeight , pageSize, pageNumber);
+        List<PartItemWithPinTypeDto> partDtos = new ArrayList<>();
+        partPage.getContent().forEach((part)-> partDtos.add(new PartItemWithPinTypeDto(part)));
+        Page<PartItemWithPinTypeDto> casePageDto = new PageImpl<>(partDtos, partPage.getPageable(),partPage.getTotalElements());
+        return ResponseEntity.ok(casePageDto);
+    }
+
+    @GetMapping("keycap-set/page")
+    public ResponseEntity<Page<PartItemDto>> findAllKeycapSets(@RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam(required = false) String color,
+                                                                          @RequestParam String name,@RequestParam(required = false) String sizeName,
+                                                                          @RequestParam(required = false) PriceWeight priceWeight) {
+        Page<KeycapSet> partPage = partService.findAllKeycapSets(color,sizeName, name, priceWeight , pageSize, pageNumber);
+        List<PartItemDto> partDtos = new ArrayList<>();
+        partPage.getContent().forEach((part)-> partDtos.add(new PartItemDto(part)));
+        Page<PartItemDto> casePageDto = new PageImpl<>(partDtos, partPage.getPageable(),partPage.getTotalElements());
+        return ResponseEntity.ok(casePageDto);
+    }
+
+    @GetMapping("stabilizers/page")
+    public ResponseEntity<Page<PartItemWithStabilizerTypeDto>> findAllStabilizers(@RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam(required = false) StabilizerType stabilizerType,
+                                                               @RequestParam String name, @RequestParam(required = false) PriceWeight priceWeight) {
+        Page<Stabilizer> partPage = partService.findAllStabilizers(stabilizerType,name, priceWeight , pageSize, pageNumber);
+        List<PartItemWithStabilizerTypeDto> partDtos = new ArrayList<>();
+        partPage.getContent().forEach((part)-> partDtos.add(new PartItemWithStabilizerTypeDto(part)));
+        Page<PartItemWithStabilizerTypeDto> casePageDto = new PageImpl<>(partDtos, partPage.getPageable(),partPage.getTotalElements());
+        return ResponseEntity.ok(casePageDto);
+    }
+
+    @GetMapping("pcb/page")
+    public ResponseEntity<Page<PartItemPcbDto>> findAllPCBs(@RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam(required = false) StabilizerType stabilizerType,
+                                                                @RequestParam String name, @RequestParam(required = false) PriceWeight priceWeight,
+                                                                @RequestParam(required = false) String sizeName) {
+        Page<PCB> partPage = partService.findAllPCBs(sizeName, stabilizerType, name, priceWeight , pageSize, pageNumber);
+        List<PartItemPcbDto> partDtos = new ArrayList<>();
+        partPage.getContent().forEach((part)-> partDtos.add(new PartItemPcbDto(part)));
+        Page<PartItemPcbDto> casePageDto = new PageImpl<>(partDtos, partPage.getPageable(),partPage.getTotalElements());
+        return ResponseEntity.ok(casePageDto);
+    }
+
+    @GetMapping("keycap/page")
+    public ResponseEntity<Page<PartItemDto>> findAllKeycaps(@RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam(required = false) PriceWeight priceWeight,
+                                                         @RequestParam String name) {
+        Page<Keycap> partPage = partService.findAllKeycaps(name, priceWeight, pageSize, pageNumber);
+        List<PartItemDto> partDtos = new ArrayList<>();
+        partPage.getContent().forEach((part)-> partDtos.add(new PartItemDto(part)));
+        Page<PartItemDto> casePageDto = new PageImpl<>(partDtos, partPage.getPageable(),partPage.getTotalElements());
+        return ResponseEntity.ok(casePageDto);
+    }
+
+    @GetMapping("page")
+    public ResponseEntity<Page<PartItemDto>> findAllParts(@RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam(required = false) String name,
+                                                            @RequestParam(required = false) PartType partType,@RequestParam SortDirection sortDirection,
+                                                          @RequestHeader(HttpHeaders.AUTHORIZATION) final String authHeader) {
+        User user = authService.getUserFromHeader(authHeader);
+        String value = user.getRole() == Role.ADMIN ? "quantity" : "price";
+        Page<Part> partPage = partService.findAllParts(partType, name, pageSize, pageNumber, sortDirection,value);
+        List<PartItemDto> partDtos = new ArrayList<>();
+        partPage.getContent().forEach((part)-> partDtos.add(new PartItemDto(part)));
+        Page<PartItemDto> casePageDto = new PageImpl<>(partDtos, partPage.getPageable(),partPage.getTotalElements());
+        return ResponseEntity.ok(casePageDto);
+    }
+    
     @GetMapping("/{partType}/{name}")
     public ResponseEntity<PartDto> findOnePart(@PathVariable PartType partType, @PathVariable String name) {
         if(partType == PartType.CABLE){
             Cable cable = partService.findOneCable(name);
             return ResponseEntity.ok(new CableDto(cable));   
         } else if(partType == PartType.CASE){
-            Case aCase = partService.findOneCase(name);
-            return ResponseEntity.ok(new CaseDto(aCase));
+            CaseEntity aCaseEntity = partService.findOneCase(name);
+            return ResponseEntity.ok(new CaseDto(aCaseEntity));
         } else if(partType == PartType.KEYCAP){
             Keycap keycap = partService.findOneKeycap(name);
             return ResponseEntity.ok(new KeycapDto(keycap));

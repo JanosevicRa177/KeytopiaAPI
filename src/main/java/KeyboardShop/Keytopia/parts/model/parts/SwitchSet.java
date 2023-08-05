@@ -12,11 +12,9 @@ import lombok.Setter;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -30,6 +28,9 @@ public class SwitchSet extends Part {
     @JoinColumn(name="switch_name", nullable=false)
     @LazyCollection(LazyCollectionOption.FALSE)
     private Switch aSwitch;
+    @OneToMany(mappedBy = "switchSet")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Keyboard> keyboards;
     public SwitchSet(SwitchSetDto switchSetDto, Brand brand, Switch aSwitch,String imageUrl,Supplier supplier){
         super(switchSetDto.getName(), 0, switchSetDto.getPrice(), PartType.SWITCH_SET, aSwitch.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand, imageUrl,supplier);
         this.switchQuantity = switchSetDto.getSwitchQuantity();

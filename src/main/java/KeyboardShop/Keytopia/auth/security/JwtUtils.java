@@ -13,10 +13,11 @@ public class JwtUtils {
 	private final String activationSecret = Dotenv.load().get("ACTIVATION_SECRET");
 
 
-	public String generateAccessToken(String subject) {
+	public String generateAccessToken(String subject,String role) {
 		int accessTokenExpirationMs = 1000 * 60 * 60 * 2; //2h
 		return Jwts.builder()
 				.setSubject(subject)
+				.claim("role", role)
 				.setIssuedAt(new Date())
 				.setExpiration(new Date((new Date()).getTime() + accessTokenExpirationMs))
 				.signWith(SignatureAlgorithm.HS512, authSecret)
@@ -36,15 +37,6 @@ public class JwtUtils {
 				.compact();
 	}
 
-	public String generateToken(String email, int expirationMs,String secret) {
-		return Jwts.builder()
-			.setSubject(email)
-			.setIssuedAt(new Date())
-			.setExpiration(new Date((new Date()).getTime() + expirationMs))
-			.signWith(SignatureAlgorithm.HS512, secret)
-			.compact();
-	}
-
 	public String getEmailFromAuthToken(String token) {
 		return Jwts.parser().setSigningKey(authSecret).parseClaimsJws(token).getBody().getSubject();
 	}
@@ -55,8 +47,8 @@ public class JwtUtils {
 	public boolean validateAuthToken(final String authToken) {
 		return validateToken(authToken, authSecret);
 	}
-	public boolean validateActivationToken(final String activationToken) {
-		return validateToken(activationToken, activationSecret);
+	public void validateActivationToken(final String activationToken) {
+		validateToken(activationToken, activationSecret);
 	}
 
 	public boolean validateToken(final String authToken, String secret) {
