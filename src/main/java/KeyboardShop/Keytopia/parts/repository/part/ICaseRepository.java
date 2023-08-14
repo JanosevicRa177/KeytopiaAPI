@@ -11,7 +11,8 @@ public interface ICaseRepository extends JpaRepository<CaseEntity, String> {
     @Query("SELECT c FROM case_entity c WHERE " +
             "(:sizeName IS NULL OR c.size.name = :sizeName)  AND " +
             "(LOWER(c.name) LIKE %:caseName%) AND " +
+            "(c.quantity >= :minQuantity) AND " +
             "(:color IS NULL OR LOWER(c.color) LIKE %:color%) AND " +
             "(:priceWeight IS NULL OR c.priceWeight = :priceWeight) ")
-    Page<CaseEntity> findAllCases(String color,PriceWeight priceWeight, String sizeName, String caseName, Pageable pageable);
+    Page<CaseEntity> findAllCases(String color,PriceWeight priceWeight, String sizeName, String caseName, int minQuantity, Pageable pageable);
 }

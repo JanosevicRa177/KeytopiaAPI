@@ -10,7 +10,8 @@ import org.springframework.data.jpa.repository.Query;
 public interface ICableRepository extends JpaRepository<Cable, String> {
     @Query("SELECT c FROM cable c WHERE " +
             "(LOWER(c.name) LIKE %:cableName%) AND " +
+            "(c.quantity >= :minQuantity) AND " +
             "(:color IS NULL OR LOWER(c.color) LIKE %:color%) AND " +
             "(:priceWeight IS NULL OR c.priceWeight = :priceWeight) ")
-    Page<Cable> findAllCables(String color, PriceWeight priceWeight, String cableName, Pageable pageable);
+    Page<Cable> findAllCables(String color, PriceWeight priceWeight, String cableName, int minQuantity, Pageable pageable);
 }

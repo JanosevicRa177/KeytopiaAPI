@@ -196,13 +196,15 @@ public class PartService {
         } catch (IOException e) {
             throw new FileUploadException();
         }
+        SwitchSet switchSet = new SwitchSet(switchSetDto,brand,aSwitch,imageUrl,supplier);
+        switchSet.setPriceWeight(aSwitch.getPriceWeight());
         
         switchSetRepository.save(new SwitchSet(switchSetDto,brand,aSwitch,imageUrl,supplier));
     }
 
     public void deleteCable(String name){
         Cable cable = cableRepository.findById(name).orElse(null);
-        if (cable == null) throw new PartAlreadyExistsException("Cable with this name already exists.");
+        if (cable == null) throw new PartNotFoundException("Cable not found.");
         
         if(!cable.getProcurementParts().isEmpty()) throw new PartCantBeDeletedException("Cable cant be deleted because it has procurements connected to it!");
         if(!cable.getProducts().isEmpty()) throw new PartCantBeDeletedException("Cable cant be deleted because it has products connected to it!");
@@ -211,7 +213,7 @@ public class PartService {
     }
     public void deleteCase(String name){
         CaseEntity aCaseEntity = caseRepository.findById(name).orElse(null);
-        if (aCaseEntity == null) throw new PartAlreadyExistsException("Case with this name already exists.");
+        if (aCaseEntity == null) throw new PartNotFoundException("Case not found.");
 
         if(!aCaseEntity.getProcurementParts().isEmpty()) throw new PartCantBeDeletedException("Case cant be deleted because it has procurements connected to it!");
         if(!aCaseEntity.getProducts().isEmpty()) throw new PartCantBeDeletedException("Case cant be deleted because it has products connected to it!");
@@ -220,7 +222,7 @@ public class PartService {
     }
     public void deleteKeycap(String name){
         Keycap keycap = keycapRepository.findById(name).orElse(null);
-        if (keycap == null) throw new PartAlreadyExistsException("Keycap with this name already exists.");
+        if (keycap == null) throw new PartNotFoundException("Keycap not found.");
 
         if(!keycap.getProcurementParts().isEmpty()) throw new PartCantBeDeletedException("Keycap cant be deleted because it has procurements connected to it!");
         if(!keycap.getProducts().isEmpty()) throw new PartCantBeDeletedException("Keycap cant be deleted because it has products connected to it!");
@@ -229,7 +231,7 @@ public class PartService {
     }
     public void deleteKeycapSet(String name){
         KeycapSet keycapSet = keycapSetRepository.findById(name).orElse(null);
-        if (keycapSet == null) throw new PartAlreadyExistsException("Keycap set with this name already exists.");
+        if (keycapSet == null) throw new PartNotFoundException("Keycap set not found.");
 
         if(!keycapSet.getProcurementParts().isEmpty()) throw new PartCantBeDeletedException("Keycap set cant be deleted because it has procurements connected to it!");
         if(!keycapSet.getProducts().isEmpty()) throw new PartCantBeDeletedException("Keycap set cant be deleted because it has products connected to it!");
@@ -238,7 +240,7 @@ public class PartService {
     }
     public void deletePCB(String name){
         PCB pcb = pcbRepository.findById(name).orElse(null);
-        if (pcb == null) throw new PartAlreadyExistsException("PCB with this name already exists.");
+        if (pcb == null) throw new PartNotFoundException("PCB not found.");
 
         if(!pcb.getProcurementParts().isEmpty()) throw new PartCantBeDeletedException("PCB cant be deleted because it has procurements connected to it!");
         if(!pcb.getProducts().isEmpty()) throw new PartCantBeDeletedException("PCB cant be deleted because it has products connected to it!");
@@ -247,7 +249,7 @@ public class PartService {
     }
     public void deletePlate(String name){
         Plate plate = plateRepository.findById(name).orElse(null);
-        if (plate == null) throw new PartAlreadyExistsException("Plate with this name already exists.");
+        if (plate == null) throw new PartNotFoundException("Plate not found.");
 
         if(!plate.getProcurementParts().isEmpty()) throw new PartCantBeDeletedException("Plate cant be deleted because it has procurements connected to it!");
         if(!plate.getProducts().isEmpty()) throw new PartCantBeDeletedException("Plate cant be deleted because it has products connected to it!");
@@ -256,7 +258,7 @@ public class PartService {
     }
     public void deleteStabilizers(String name){
         Stabilizer stabilizer = stabilizerRepository.findById(name).orElse(null);
-        if (stabilizer == null) throw new PartAlreadyExistsException("Stabilizer with this name already exists.");
+        if (stabilizer == null) throw new PartNotFoundException("Stabilizers not found.");
 
         if(!stabilizer.getProcurementParts().isEmpty()) throw new PartCantBeDeletedException("Stabilizer cant be deleted because it has procurements connected to it!");
         if(!stabilizer.getProducts().isEmpty()) throw new PartCantBeDeletedException("Stabilizer cant be deleted because it has products connected to it!");
@@ -265,65 +267,83 @@ public class PartService {
     }
     public void deleteSwitchSet(String name){
         SwitchSet switchSet = switchSetRepository.findById(name).orElse(null);
-        if (switchSet == null) throw new PartAlreadyExistsException("Switch set with this name already exists.");
+        if (switchSet == null) throw new PartNotFoundException("Switch set not found.");
 
         if(!switchSet.getProcurementParts().isEmpty()) throw new PartCantBeDeletedException("Switch set cant be deleted because it has procurements connected to it!");
         if(!switchSet.getProducts().isEmpty()) throw new PartCantBeDeletedException("Switch set cant be deleted because it has products connected to it!");
 
         switchSetRepository.delete(switchSet);
     }
-    public Page<CaseEntity> findAllCases(String color, String sizeName, String name, PriceWeight priceWeight, int pageSize, int pageNumber){
-            return caseRepository.findAllCases(color, priceWeight,sizeName,name,PageRequest.of(pageNumber, pageSize));
+    public Page<CaseEntity> findAllCases(String color, String sizeName, String name, PriceWeight priceWeight,
+                                            int minQuantity, int pageSize, int pageNumber){
+            return caseRepository.findAllCases(color.toLowerCase(), priceWeight,sizeName,name.toLowerCase(),
+                    minQuantity, PageRequest.of(pageNumber, pageSize));
     }
 
-    public Page<Cable> findAllCables(String color, String name, PriceWeight priceWeight, int pageSize, int pageNumber){
-        return cableRepository.findAllCables(color, priceWeight,name,PageRequest.of(pageNumber, pageSize));
+    public Page<Cable> findAllCables(String color, String name, PriceWeight priceWeight, int minQuantity, 
+                                            int pageSize, int pageNumber){
+        return cableRepository.findAllCables(color.toLowerCase(), priceWeight,name.toLowerCase(),
+                minQuantity, PageRequest.of(pageNumber, pageSize));
     }
 
-    public Page<Plate> findAllPlates(String color, String sizeName, String name, PriceWeight priceWeight, int pageSize, int pageNumber){
-        return plateRepository.findAllPlates(color, priceWeight,sizeName,name,PageRequest.of(pageNumber, pageSize));
+    public Page<Plate> findAllPlates(String color, String sizeName, String name, PriceWeight priceWeight, 
+                                            int minQuantity, int pageSize, int pageNumber){
+        return plateRepository.findAllPlates(color.toLowerCase(), priceWeight,sizeName,name.toLowerCase(),
+                minQuantity, PageRequest.of(pageNumber, pageSize));
     }
 
-    public Page<SwitchSet> findAllSwitchSets(PinType pinType, String sizeName, String name, SwitchType switchType, PriceWeight priceWeight, int pageSize, int pageNumber){
+    public Page<SwitchSet> findAllSwitchSets(PinType pinType, String sizeName, String name, SwitchType switchType,
+                                             PriceWeight priceWeight, int minQuantity, int pageSize, int pageNumber){
         if(sizeName == null){
             if(pinType == PinType.PIN5 || pinType == null)
-                return switchSetRepository.findAllSwitchSets(null, priceWeight, 0, switchType, name, PageRequest.of(pageNumber, pageSize));
-            return switchSetRepository.findAllSwitchSets(PinType.PIN3, priceWeight, 0, switchType, name, PageRequest.of(pageNumber, pageSize));
+                return switchSetRepository.findAllSwitchSets(null, priceWeight, 
+                        0, switchType, name.toLowerCase(), minQuantity, PageRequest.of(pageNumber, pageSize));
+            return switchSetRepository.findAllSwitchSets(PinType.PIN3, priceWeight,
+                    0, switchType, name.toLowerCase(), minQuantity, PageRequest.of(pageNumber, pageSize));
         }
         
         Size size = partDataService.findSize(sizeName);
         if(size == null) throw new PartDataNotFoundException("Oops cant find size you provided!");
         
         if(pinType == PinType.PIN5 || pinType == null)
-            return switchSetRepository.findAllSwitchSets(null, priceWeight, size.getNeededNumberOfKeys(), switchType, name, PageRequest.of(pageNumber, pageSize));
-        return switchSetRepository.findAllSwitchSets(PinType.PIN3, priceWeight, size.getNeededNumberOfKeys(), switchType, name, PageRequest.of(pageNumber, pageSize));
+            return switchSetRepository.findAllSwitchSets(null, priceWeight,
+                    size.getNeededNumberOfKeys(), switchType, name.toLowerCase(), minQuantity, PageRequest.of(pageNumber, pageSize));
+        return switchSetRepository.findAllSwitchSets(PinType.PIN3, priceWeight,
+                size.getNeededNumberOfKeys(), switchType, name.toLowerCase(), minQuantity, PageRequest.of(pageNumber, pageSize));
     }
     
-    public Page<Stabilizer> findAllStabilizers(StabilizerType stabilizerType, String name, PriceWeight priceWeight, int pageSize, int pageNumber){
-        return stabilizerRepository.findAllStabilizers(priceWeight, name, stabilizerType, PageRequest.of(pageNumber, pageSize));
+    public Page<Stabilizer> findAllStabilizers(StabilizerType stabilizerType, String name, PriceWeight priceWeight,
+                                               int minQuantity, int pageSize, int pageNumber){
+        return stabilizerRepository.findAllStabilizers(priceWeight, name.toLowerCase(), stabilizerType,
+                minQuantity, PageRequest.of(pageNumber, pageSize));
     }
 
-    public Page<KeycapSet> findAllKeycapSets(String color, String sizeName, String name, PriceWeight priceWeight, int pageSize, int pageNumber){
+    public Page<KeycapSet> findAllKeycapSets(String color, String sizeName, String name, PriceWeight priceWeight,
+                                             int minQuantity, int pageSize, int pageNumber){
         if(sizeName == null)      
-            return keycapSetRepository.findAllKeycapSets(color, priceWeight, 0, name, PageRequest.of(pageNumber, pageSize));
+            return keycapSetRepository.findAllKeycapSets(color.toLowerCase(), priceWeight, 0,
+                    name.toLowerCase(), minQuantity, PageRequest.of(pageNumber, pageSize));
         
         Size size = partDataService.findSize(sizeName);
         if(size == null) throw new PartDataNotFoundException("Oops cant find size you provided!");
         
-        return keycapSetRepository.findAllKeycapSets(color, priceWeight, size.getNeededNumberOfKeys(), name, PageRequest.of(pageNumber, pageSize));
+        return keycapSetRepository.findAllKeycapSets(color.toLowerCase(), priceWeight, size.getNeededNumberOfKeys(),
+                name.toLowerCase(), minQuantity, PageRequest.of(pageNumber, pageSize));
     }
 
-    public Page<PCB> findAllPCBs(String sizeName, StabilizerType stabilizerType, String name, PriceWeight priceWeight, int pageSize,
-            int pageNumber){
-        return pcbRepository.findAllPCBs(priceWeight, stabilizerType, sizeName, name, PageRequest.of(pageNumber, pageSize));
+    public Page<PCB> findAllPCBs(String sizeName, String name, PriceWeight priceWeight, int minQuantity,
+                                 int pageSize, int pageNumber){
+        return pcbRepository.findAllPCBs(priceWeight, sizeName, name.toLowerCase(), minQuantity,
+                PageRequest.of(pageNumber, pageSize));
     }
-    public Page<Keycap> findAllKeycaps(String name,PriceWeight priceWeight, int pageSize, int pageNumber){
-        return keycapRepository.findAllKeycaps(name, priceWeight, PageRequest.of(pageNumber, pageSize));
+    public Page<Keycap> findAllKeycaps(String name,PriceWeight priceWeight, int minQuantity, int pageSize, int pageNumber){
+        return keycapRepository.findAllKeycaps(name.toLowerCase(), priceWeight, minQuantity, PageRequest.of(pageNumber, pageSize));
     }
 
-    public Page<Part> findAllParts(PartType partType, String name, int pageSize, int pageNumber, SortDirection direction, String value){
+    public Page<Part> findAllParts(PartType partType, String name, int minQuantity,
+                                   int pageSize, int pageNumber, SortDirection direction, String value){
         Sort sort = GetSort(direction,value);
-        return partRepository.findAllParts(partType, name, PageRequest.of(pageNumber, pageSize,sort));
+        return partRepository.findAllParts(partType, name.toLowerCase(), minQuantity, PageRequest.of(pageNumber, pageSize,sort));
     }
 
     private Sort GetSort(SortDirection direction,String value) {
@@ -336,44 +356,28 @@ public class PartService {
     }
 
     public Cable findOneCable(String name){
-        Cable cable = cableRepository.findById(name).orElse(null);
-        if (cable == null) throw new PartNotFoundException("Cable with name " + name + " not found!.");
-        return cable;
+        return cableRepository.findById(name).orElse(null);
     }
     public CaseEntity findOneCase(String name){
-        CaseEntity aCaseEntity = caseRepository.findById(name).orElse(null);
-        if (aCaseEntity == null) throw new PartNotFoundException("Case with name " + name + " not found!.");
-        return aCaseEntity;
+        return caseRepository.findById(name).orElse(null);
     }
     public Keycap findOneKeycap(String name){
-        Keycap keycap = keycapRepository.findById(name).orElse(null);
-        if (keycap == null) throw new PartNotFoundException("Keycap with name " + name + "  not found!.");
-        return keycap;
+        return keycapRepository.findById(name).orElse(null);
     }
     public KeycapSet findOneKeycapSet(String name){
-        KeycapSet keycapSet = keycapSetRepository.findById(name).orElse(null);
-        if (keycapSet == null) throw new PartNotFoundException("Keycap with name " + name + " not found!.");
-        return keycapSet;
+        return keycapSetRepository.findById(name).orElse(null);
     }
     public PCB findOnePCB(String name){
-        PCB pcb = pcbRepository.findById(name).orElse(null);
-        if (pcb == null) throw new PartNotFoundException("PCB with name " + name + "not found!.");
-        return pcb;
+        return pcbRepository.findById(name).orElse(null);
     }
     public Plate findOnePlate(String name){
-        Plate plate = plateRepository.findById(name).orElse(null);
-        if (plate == null) throw new PartNotFoundException("Plate with name " + name + " not found!");
-        return plate;
+        return plateRepository.findById(name).orElse(null);
     }
     public Stabilizer findOneStabilizers(String name){
-        Stabilizer stabilizer = stabilizerRepository.findById(name).orElse(null);
-        if (stabilizer == null) throw new PartNotFoundException("Stabilizer with name " + name + " not found!");
-        return stabilizer;
+        return stabilizerRepository.findById(name).orElse(null);
     }
     public SwitchSet findOneSwitchSet(String name){
-        SwitchSet switchSet = switchSetRepository.findById(name).orElse(null);
-        if (switchSet == null) throw new PartNotFoundException("Switch set with name " + name + " not found!");
-        return switchSet;
+        return switchSetRepository.findById(name).orElse(null);
     }
     public Part findOnePart(String name){
         Part part = partRepository.findById(name).orElse(null);

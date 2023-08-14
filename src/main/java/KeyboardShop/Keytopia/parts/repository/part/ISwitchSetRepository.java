@@ -11,10 +11,12 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ISwitchSetRepository extends JpaRepository<SwitchSet, String> {
     @Query("SELECT s FROM switch_set s WHERE " +
-            "(:minSwitchQuantity IS NULL OR s.switchQuantity > :minSwitchQuantity) AND " +
+            "(:minSwitchQuantity IS NULL OR s.switchQuantity >= :minSwitchQuantity) AND " +
             "(:switchType IS NULL OR s.aSwitch.switchType = :switchType) AND " +
+            "(s.quantity >= :minQuantity) AND " +
             "(LOWER(s.name) LIKE %:switchSetName%) AND " +
             "(:pinType IS NULL OR s.aSwitch.pinType = :pinType) AND " +
             "(:priceWeight IS NULL OR s.priceWeight = :priceWeight) ")
-    Page<SwitchSet> findAllSwitchSets(PinType pinType, PriceWeight priceWeight, int minSwitchQuantity, SwitchType switchType, String switchSetName, Pageable pageable);
+    Page<SwitchSet> findAllSwitchSets(PinType pinType, PriceWeight priceWeight, int minSwitchQuantity, 
+                                      SwitchType switchType, String switchSetName, int minQuantity, Pageable pageable);
 }

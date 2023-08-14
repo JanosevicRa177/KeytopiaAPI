@@ -29,7 +29,7 @@ public class CaseEntity extends Part {
     @ManyToOne
     @JoinColumn(name="size_name", nullable=false)
     private Size size;
-    @OneToMany(mappedBy = "aCaseEntity")
+    @OneToMany(mappedBy = "aCase")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Keyboard> keyboards;
     public CaseEntity(CaseDto caseDto, Brand brand, Size size, String imageUrl, Supplier supplier){

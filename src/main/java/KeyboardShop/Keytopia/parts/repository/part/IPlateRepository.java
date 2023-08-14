@@ -11,7 +11,8 @@ public interface IPlateRepository extends JpaRepository<Plate,String> {
     @Query("SELECT p FROM plate p WHERE " +
             "(:sizeName IS NULL OR p.size.name LIKE %:sizeName%) AND " +
             "(LOWER(p.name) LIKE %:plateName%) AND " +
+            "(p.quantity >= :minQuantity) AND " +
             "(:color IS NULL OR LOWER(p.color) LIKE %:color%) AND " +
             "(:priceWeight IS NULL OR p.priceWeight = :priceWeight) ")
-    Page<Plate> findAllPlates(String color, PriceWeight priceWeight, String sizeName, String plateName, Pageable pageable);
+    Page<Plate> findAllPlates(String color, PriceWeight priceWeight, String sizeName, String plateName, int minQuantity, Pageable pageable);
 }

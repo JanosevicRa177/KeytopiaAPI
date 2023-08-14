@@ -12,6 +12,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -53,5 +54,18 @@ public class Part {
     
     public void increaseQuantityBy(int quantity){
         this.quantity = this.quantity + quantity;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Part part = (Part) o;
+        return Objects.equals(name, part.name) &&
+                partType == part.partType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, partType);
     }
 }

@@ -120,7 +120,6 @@ public class PartDataController {
         return ResponseEntity.ok(keycapProfileNames);
     }
     @GetMapping("/size")
-    @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
     public ResponseEntity<List<String>> findAllSizes() {
         List<Size> sizes = partDataService.findAllSizes();
         List<String> sizeNames = sizes.stream()

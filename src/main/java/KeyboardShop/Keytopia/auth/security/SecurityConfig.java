@@ -2,6 +2,7 @@ package KeyboardShop.Keytopia.auth.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -53,15 +54,16 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	public SecurityFilterChain configure(final HttpSecurity http) throws Exception {
-		http.cors().and().csrf().disable()
-				.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-				.authorizeRequests().antMatchers("/user/activate/**").permitAll().and()
-				.authorizeRequests().antMatchers("/auth/login").permitAll().and()
-				.authorizeRequests().antMatchers("/part").permitAll().and()
-				.authorizeRequests().antMatchers("/auth/register/buyer").permitAll()
-				.anyRequest().authenticated();
+		public SecurityFilterChain configure(final HttpSecurity http) throws Exception {
+			http.cors().and().csrf().disable()
+					.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+					.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+					.authorizeRequests().antMatchers("/user/activate/**").permitAll().and()
+					.authorizeRequests().antMatchers("/auth/login").permitAll().and()
+					.authorizeRequests().antMatchers(HttpMethod.GET, "/part/**").permitAll().and()
+					.authorizeRequests().antMatchers(HttpMethod.GET, "/part-data/size").permitAll().and()
+					.authorizeRequests().antMatchers("/auth/register/buyer").permitAll()
+					.anyRequest().authenticated();
 
 		http.authenticationProvider(authenticationProvider());
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

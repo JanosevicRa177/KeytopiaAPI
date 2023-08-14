@@ -24,6 +24,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Math.abs;
+
 @Service
 @RequiredArgsConstructor
 public class ProcurementService {
@@ -91,17 +93,23 @@ public class ProcurementService {
         List<Supplier> suppliers = supplierService.findAll();
         handleProcurementCreation(partItems,suppliers);
     }
-    
+
     private void handleProcurementCreation(List<PartItem> partItems, List<Supplier> suppliers){
         if(partItems.isEmpty()) return;
-        
-        suppliers.sort((supplier1, supplier2) -> 
-                getNumberOfMatchingParts(partItems,supplier2) - getNumberOfMatchingParts(partItems,supplier1));
-        
+
+        suppliers.sort((supplier1, supplier2) -> {
+            double sortValue = ((getNumberOfMatchingParts(partItems,supplier2) - supplier2.getPenals() * 0.4) -
+                    (getNumberOfMatchingParts(partItems,supplier1) - supplier1.getPenals() * 0.4));
+            if(sortValue == 0) return 0;
+            sortValue = sortValue/abs(sortValue);
+            return (int)sortValue;
+        });
+
         Supplier chosen = suppliers.get(0);
         List<PartItem> matchingPartItems = getMatchingParts(partItems,chosen);
-        
-        if((!partItems.isEmpty() && matchingPartItems.size() == 0) || suppliers.isEmpty()) {
+        suppliers.remove(0);
+
+        if(!partItems.isEmpty() && matchingPartItems.size() == 0 && suppliers.isEmpty()) {
             StringBuilder partsNames = new StringBuilder();
             partItems.forEach(part -> partsNames.append(part.getPart().getName()).append(" ,"));
             if (partsNames.length() > 0) {
@@ -109,18 +117,19 @@ public class ProcurementService {
             }
             throw new ProcurementInvalidException(partsNames.toString());
         }
-        suppliers.remove(0);
-        
-        Procurement procurement = new Procurement(matchingPartItems,chosen);
-        procurementRepository.save(procurement);
-        procurementPartRepository.saveAll(procurement.getProcurementParts());
-        
+
+        if(matchingPartItems.size() != 0){
+            Procurement procurement = new Procurement(matchingPartItems,chosen);
+            procurementRepository.save(procurement);
+            procurementPartRepository.saveAll(procurement.getProcurementParts());
+        }
+
         partItems.removeAll(matchingPartItems);
         handleProcurementCreation(partItems,suppliers);
     }
     private int getNumberOfMatchingParts(List<PartItem> partsItems, Supplier supplier){
         return partsItems.stream().filter(partItem -> supplier.getParts().contains(partItem.getPart())).toList().size() +
-                partsItems.stream() .filter(partItem -> supplier.getBrands().contains(partItem.getPart().getBrand())).toList().size();
+                partsItems.stream().filter(partItem -> supplier.getBrands().contains(partItem.getPart().getBrand())).toList().size();
     }
     private List<PartItem> getMatchingParts(List<PartItem> partsItems, Supplier supplier) {
         List<PartItem> matchingParts = new ArrayList<>();

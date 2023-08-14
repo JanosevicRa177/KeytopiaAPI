@@ -9,10 +9,11 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface IKeycapSetRepository extends JpaRepository<KeycapSet, String> {
     @Query("SELECT k FROM keycap_set k WHERE " +
-            "(k.keycapQuantity > :minKeycapQuantity) AND " +
+            "(k.keycapQuantity >= :minKeycapQuantity) AND " +
+            "(k.quantity >= :minQuantity) AND " +
             "(LOWER(k.name) LIKE %:keycapSetName%) AND " +
             "(:color IS NULL OR LOWER(k.color) LIKE %:color%) AND " +
             "(:priceWeight IS NULL OR k.priceWeight = :priceWeight) ")
-    Page<KeycapSet> findAllKeycapSets(String color, PriceWeight priceWeight, int minKeycapQuantity, String keycapSetName, Pageable pageable);
+    Page<KeycapSet> findAllKeycapSets(String color, PriceWeight priceWeight, int minKeycapQuantity, String keycapSetName,int minQuantity, Pageable pageable);
 
 }

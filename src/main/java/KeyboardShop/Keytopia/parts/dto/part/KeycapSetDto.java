@@ -30,5 +30,6 @@ public class KeycapSetDto extends  PartDto {
         keycapSet.getSupportedLayouts().forEach(layout -> layoutNames.add(layout.getName()));
         this.layouts = layoutNames;
         this.color = keycapSet.getColor();
+        this.keycapQuantity = keycapSet.getKeycapQuantity();
     }
 }

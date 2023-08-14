@@ -12,6 +12,8 @@ public interface IStabilizerRepository extends JpaRepository<Stabilizer, String>
     @Query("SELECT s FROM stabilizer s WHERE " +
             "(:stabilizerType IS NULL OR s.type = :stabilizerType) AND " +
             "(LOWER(s.name) LIKE %:stabilizerName%) AND " +
+            "(s.quantity >= :minQuantity) AND " +
             "(:priceWeight IS NULL OR s.priceWeight = :priceWeight) ")
-    Page<Stabilizer> findAllStabilizers(PriceWeight priceWeight, String stabilizerName, StabilizerType stabilizerType, Pageable pageable);
+    Page<Stabilizer> findAllStabilizers(PriceWeight priceWeight, String stabilizerName, StabilizerType stabilizerType,
+                                        int minQuantity, Pageable pageable);
 }

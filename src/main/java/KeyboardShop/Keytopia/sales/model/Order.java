@@ -8,6 +8,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -17,24 +18,16 @@ import java.util.List;
 public class Order {
     @Id
     @Column(name="id_order")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
     @Column(name="order_date")
     private Date date;
     @Column(name="order_deadline")
     private Date deadline;
-    @ManyToMany
-    @JoinTable(name="order_service",
-            joinColumns=@JoinColumn(name="id_order"),
-            inverseJoinColumns=@JoinColumn(name="id_service")
-    )
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Service> services;
     @ManyToOne
     @JoinColumn(name="id_user", nullable=false)
     private Buyer buyer;
     @ManyToOne
-    @JoinColumn(name="id_delivery_service", nullable=false)
+    @JoinColumn(name="delivery_service_name")
     private DeliveryService deliveryService;
     @OneToMany(mappedBy = "order")
     @LazyCollection(LazyCollectionOption.FALSE)

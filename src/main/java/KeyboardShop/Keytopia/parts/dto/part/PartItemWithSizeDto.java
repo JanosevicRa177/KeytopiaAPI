@@ -3,10 +3,12 @@ package KeyboardShop.Keytopia.parts.dto.part;
 import KeyboardShop.Keytopia.parts.model.parts.CaseEntity;
 import KeyboardShop.Keytopia.parts.model.parts.Plate;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class PartItemWithSizeDto extends PartItemDto{
     private String size;
     public PartItemWithSizeDto(CaseEntity aCaseEntity){

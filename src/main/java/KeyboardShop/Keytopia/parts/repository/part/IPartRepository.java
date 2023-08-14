@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface IPartRepository extends JpaRepository<Part, String> {
     @Query("SELECT p FROM Part p WHERE " +
             "(:partType IS NULL OR p.partType = :partType)  AND " +
+            "(p.quantity >= :minQuantity) AND " +
             "(:name IS NULL OR LOWER(p.name) LIKE %:name%) ")
-    Page<Part> findAllParts(PartType partType, String name, Pageable pageable);
+    Page<Part> findAllParts(PartType partType, String name, int minQuantity, Pageable pageable);
 }
