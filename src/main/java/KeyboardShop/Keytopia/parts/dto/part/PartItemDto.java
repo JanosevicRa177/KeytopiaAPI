@@ -26,5 +26,6 @@ public class PartItemDto {
     public PartItemDto(Keyboard keyboard) {
         this.name = keyboard.getName();
         this.price = keyboard.getPrice();
+        this.imageUrl = keyboard.getImageUrl();
     }
 }

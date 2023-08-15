@@ -67,6 +67,17 @@ public class KeyboardService {
         if (keyboard == null) throw new KeyboardNotFoundException("Keyboard not found.");
 
         keyboard.make(quantity);
+        partService.decreasePartQuantity(keyboard.getACase().getName(), quantity);
+        partService.decreasePartQuantity(keyboard.getStabilizer().getName(), quantity);
+        partService.decreasePartQuantity(keyboard.getPcb().getName(), quantity);
+        if(keyboard.getPlate() != null)
+            partService.decreasePartQuantity(keyboard.getPlate().getName(), quantity);
+        if(keyboard.getKeycapSet() != null)
+            partService.decreasePartQuantity(keyboard.getKeycapSet().getName(), quantity);
+        if(keyboard.getSwitchSet() != null)
+            partService.decreasePartQuantity(keyboard.getSwitchSet().getName(), quantity);
+        if(keyboard.getCable() != null)
+            partService.decreasePartQuantity(keyboard.getCable().getName(), quantity);
         keyboardRepository.save(keyboard);
     }
 

@@ -86,7 +86,7 @@ public class Keyboard {
         if(keycapSet != null)
             price += keycapSet.getPrice();
 
-        this.setQuantity(this.getQuantity() + quantity);
+        this.setPrice(price);
     }
     public void make(int quantity){
         if((pcb.getQuantity()-quantity) < 0)

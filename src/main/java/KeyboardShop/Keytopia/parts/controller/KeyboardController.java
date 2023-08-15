@@ -2,15 +2,14 @@ package KeyboardShop.Keytopia.parts.controller;
 
 import KeyboardShop.Keytopia.auth.model.Role;
 import KeyboardShop.Keytopia.auth.model.User;
+import KeyboardShop.Keytopia.auth.security.JwtUtils;
 import KeyboardShop.Keytopia.auth.service.AuthService;
 import KeyboardShop.Keytopia.parts.dto.keyboard.CreateKeyboardDto;
 import KeyboardShop.Keytopia.parts.dto.keyboard.KeyboardDto;
 import KeyboardShop.Keytopia.parts.dto.part.PartItemDto;
 import KeyboardShop.Keytopia.parts.model.parts.Keyboard;
-import KeyboardShop.Keytopia.parts.repository.part.*;
 import KeyboardShop.Keytopia.parts.service.KeyboardService;
 import KeyboardShop.Keytopia.utils.model.SortDirection;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -29,7 +28,8 @@ import java.util.List;
 public class KeyboardController {
     private final KeyboardService keyboardService;
     private final AuthService authService;
-
+    private final JwtUtils jwtUtils;
+    
     @PostMapping(value ="/admin", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
     public ResponseEntity<Void> createKeyboardAdmin(@ModelAttribute final CreateKeyboardDto keyboardDto) {
@@ -69,7 +69,7 @@ public class KeyboardController {
         String value = "price";
         Boolean adminGenerated = true;
         int minQuantity = 1;
-        if(authHeader != null){
+        if(authHeader != null && jwtUtils.validateAuthToken(authHeader.substring(7))){
             User user = authService.getUserFromHeader(authHeader);
             if(user.getRole() == Role.ADMIN){
                 minQuantity = 0;
@@ -80,8 +80,8 @@ public class KeyboardController {
         Page<Keyboard> keyboardPage = keyboardService.findAllKeyboards( name, minQuantity, adminGenerated, pageSize, pageNumber, sortDirection,value);
         List<PartItemDto> keyboardDtos = new ArrayList<>();
         keyboardPage.getContent().forEach((part)-> keyboardDtos.add(new PartItemDto(part)));
-        Page<PartItemDto> casePageDto = new PageImpl<>(keyboardDtos, keyboardPage.getPageable(),keyboardPage.getTotalElements());
-        return ResponseEntity.ok(casePageDto);
+        Page<PartItemDto> keyboardPageDto = new PageImpl<>(keyboardDtos, keyboardPage.getPageable(),keyboardPage.getTotalElements());
+        return ResponseEntity.ok(keyboardPageDto);
     }
 
     @GetMapping("/{name}")

@@ -11,23 +11,33 @@ import lombok.Setter;
 @NoArgsConstructor
 public class KeyboardDto {
     private String name;
-    private CaseDto caseDto;
-    private CableDto cableDto;
-    private KeycapSetDto keycapSetDto;
-    private SwitchSetDto switchSetDto;
-    private PCBDto pcbDto;
-    private PlateDto plateDto;
-    private StabilizersDto stabilizersDto;
+    private PartItemDto caseDto;
+    private PartItemDto cableDto;
+    private PartItemDto keycapSetDto;
+    private PartItemDto switchSetDto;
+    private PartItemDto pcbDto;
+    private PartItemDto plateDto;
+    private PartItemDto stabilizersDto;
+    private String imageUrl;
+    private Double price;
+    private int quantity;
     
     public KeyboardDto(Keyboard keyboard){
         this.name = keyboard.getName();
-        this.caseDto = new CaseDto(keyboard.getACase());
-        this.cableDto = new CableDto(keyboard.getCable());
-        this.pcbDto = new PCBDto(keyboard.getPcb());
-        this.keycapSetDto = new KeycapSetDto(keyboard.getKeycapSet());
-        this.plateDto = new PlateDto(keyboard.getPlate());
-        this.stabilizersDto = new StabilizersDto(keyboard.getStabilizer());
-        this.switchSetDto = new SwitchSetDto(keyboard.getSwitchSet());
+        this.caseDto = new PartItemDto(keyboard.getACase());
+        this.pcbDto = new PartItemDto(keyboard.getPcb());
+        this.stabilizersDto = new PartItemDto(keyboard.getStabilizer());
+        if(keyboard.getCable() != null)
+            this.cableDto = new PartItemDto(keyboard.getCable());
+        if(keyboard.getKeycapSet() != null)
+            this.keycapSetDto = new PartItemDto(keyboard.getKeycapSet());
+        if(keyboard.getPlate() != null)
+            this.plateDto = new PartItemDto(keyboard.getPlate());
+        if(keyboard.getSwitchSet() != null)
+            this.switchSetDto = new PartItemDto(keyboard.getSwitchSet());
+        this.price = keyboard.getPrice();
+        this.imageUrl = keyboard.getImageUrl();
+        this.quantity = keyboard.getQuantity();
     }
     
 }

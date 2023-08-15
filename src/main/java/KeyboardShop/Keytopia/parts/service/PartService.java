@@ -9,6 +9,7 @@ import KeyboardShop.Keytopia.parts.model.partData.Size;
 import KeyboardShop.Keytopia.parts.model.partData.Switch;
 import KeyboardShop.Keytopia.parts.model.parts.*;
 import KeyboardShop.Keytopia.parts.repository.part.*;
+import KeyboardShop.Keytopia.utils.excentions.partExceptions.keyboardExceptions.CantMakeKeyboardException;
 import KeyboardShop.Keytopia.utils.excentions.partExceptions.part.PartAlreadyExistsException;
 import KeyboardShop.Keytopia.utils.excentions.partExceptions.part.PartCantBeDeletedException;
 import KeyboardShop.Keytopia.utils.excentions.partExceptions.part.PartNotFoundException;
@@ -383,6 +384,12 @@ public class PartService {
         Part part = partRepository.findById(name).orElse(null);
         if (part == null) throw new PartNotFoundException("Part with name" + name + " not found!");
         return part;
+    }
+    public void decreasePartQuantity(String name, int quantityToTake ){
+        Part part = findOnePart(name);
+        if(part.getQuantity()-quantityToTake < 0) throw new CantMakeKeyboardException("Not enough part for keyboard: "+ name + "!");
+        part.setQuantity(part.getQuantity()-quantityToTake);
+        partRepository.save(part);
     }
     public void save(Part part){
         partRepository.save(part);
