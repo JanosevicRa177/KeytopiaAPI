@@ -40,6 +40,9 @@ public class DeliveryServiceService {
     public Page<DeliveryService> findAllDeliveryServices(int pageSize, int pageNumber){
         return deliveryServiceRepository.findAll(PageRequest.of(pageNumber, pageSize));
     }
+    public DeliveryService findOne(String name){
+        return deliveryServiceRepository.findById(name).orElse(null);
+    }
     public List<DeliveryService> findAllDeliveryServices(){
         return deliveryServiceRepository.findAll();
     }

@@ -11,10 +11,9 @@ import lombok.Setter;
 public class PartWithQuantityDto {
     private String name;
     private Integer quantity;
-    private boolean isKeyboard;
+    
     public PartWithQuantityDto(ProcurementPart part){
         this.name = part.getPart().getName();
         this.quantity = part.getQuantity();
-        this.isKeyboard = false;
     }
 }

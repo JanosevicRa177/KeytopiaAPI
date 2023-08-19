@@ -14,8 +14,8 @@ public class KeycapDto extends PartDto{
     private KeycapMaterial material;
     private String keycapProfile;
     private MultipartFile image;
-    public KeycapDto(Keycap keycap){
-        super(keycap);
+    public KeycapDto(Keycap keycap,boolean isAdmin){
+        super(keycap,isAdmin);
         this.material = keycap.getMaterial();
         this.keycapProfile = keycap.getKeycapProfile().getName();
     }

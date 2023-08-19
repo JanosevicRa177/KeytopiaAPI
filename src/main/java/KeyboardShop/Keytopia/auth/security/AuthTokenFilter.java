@@ -1,6 +1,11 @@
 package KeyboardShop.Keytopia.auth.security;
 
-import io.jsonwebtoken.ExpiredJwtException;
+import KeyboardShop.Keytopia.auth.model.Role;
+import KeyboardShop.Keytopia.auth.model.User;
+import KeyboardShop.Keytopia.auth.service.UserService;
+import KeyboardShop.Keytopia.utils.excentions.tokenExceptions.AuthTokenExpiredException;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,34 +20,37 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@NoArgsConstructor
 public class AuthTokenFilter extends OncePerRequestFilter {
+
 	@Autowired
-	private JwtUtils jwtUtils;
+	private  JwtUtils jwtUtils;
 	@Autowired
-	private UserDetailsServiceImpl userDetailsService;
+	private  UserDetailsServiceImpl userDetailsService;
+	@Autowired
+	private  UserService userService;
 
 	@Override
 	protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain filterChain)
 		throws ServletException, IOException {
-		try {
 			final String jwt = parseJwt(request);
-			if (jwt != null && jwtUtils.validateAuthToken(jwt)) {
+			if (jwt != null) {
 				final String username = jwtUtils.getEmailFromAuthToken(jwt);
+				User user = userService.findByEmail(username);
+				if(user.getRole() == Role.ADMIN && jwtUtils.isAuthTokenExpired(jwt))
+					throw new AuthTokenExpiredException();
+				if(jwtUtils.validateAuthToken(jwt)){
+					final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+					final UsernamePasswordAuthenticationToken authentication =
+							new UsernamePasswordAuthenticationToken(
+									userDetails,
+									null,
+									userDetails.getAuthorities());
+					authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-				final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-				final UsernamePasswordAuthenticationToken authentication =
-					new UsernamePasswordAuthenticationToken(
-						userDetails,
-						null,
-						userDetails.getAuthorities());
-				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-				SecurityContextHolder.getContext().setAuthentication(authentication);
+					SecurityContextHolder.getContext().setAuthentication(authentication);
+				}
 			}
-		} catch (final Exception e) {
-			System.out.println("Cannot set user authentication: " + e.getMessage());
-			return;
-		}
 		filterChain.doFilter(request, response);
 	}
 

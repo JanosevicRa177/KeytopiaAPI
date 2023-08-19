@@ -14,8 +14,8 @@ public class CaseDto extends  PartDto{
     private String color;
     private String size;
     private MultipartFile image;
-    public CaseDto(CaseEntity aCaseEntity){
-        super(aCaseEntity);
+    public CaseDto(CaseEntity aCaseEntity,boolean isAdmin){
+        super(aCaseEntity,isAdmin);
         this.material = aCaseEntity.getMaterial();
         this.color = aCaseEntity.getColor();
         this.size = aCaseEntity.getSize().getName();

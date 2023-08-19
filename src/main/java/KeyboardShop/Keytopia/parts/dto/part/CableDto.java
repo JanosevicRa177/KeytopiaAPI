@@ -20,8 +20,8 @@ public class CableDto extends PartDto {
     private Boolean isQuickRelease;
     private MultipartFile image;
     
-    public CableDto(Cable cable){
-        super(cable);
+    public CableDto(Cable cable,boolean isAdmin){
+        super(cable,isAdmin);
         this.material = cable.getMaterial();
         this.color = cable.getColor();
         this.length = cable.getLength();

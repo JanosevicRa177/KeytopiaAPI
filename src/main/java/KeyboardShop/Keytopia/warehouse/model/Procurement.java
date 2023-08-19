@@ -1,5 +1,6 @@
 package KeyboardShop.Keytopia.warehouse.model;
 
+import KeyboardShop.Keytopia.shared.model.PartItem;
 import KeyboardShop.Keytopia.warehouse.model.enums.ProcurementState;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

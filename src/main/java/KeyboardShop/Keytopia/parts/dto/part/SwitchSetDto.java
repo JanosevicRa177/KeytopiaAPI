@@ -16,8 +16,8 @@ public class SwitchSetDto extends PartDto {
     private String switchName;
     private Integer switchQuantity;
     private MultipartFile image;
-    public SwitchSetDto(SwitchSet switchSet){
-        super(switchSet);
+    public SwitchSetDto(SwitchSet switchSet,boolean isAdmin){
+        super(switchSet,isAdmin);
         this.aSwitch = new SwitchDto(switchSet.getASwitch());
         this.switchQuantity = switchSet.getSwitchQuantity();
     }

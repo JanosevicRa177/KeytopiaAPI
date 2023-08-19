@@ -1,6 +1,5 @@
 package KeyboardShop.Keytopia.parts.dto.keyboard;
 
-import KeyboardShop.Keytopia.parts.dto.part.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,4 +18,6 @@ public class CreateKeyboardDto {
     private String stabilizers;
     private String switchSet;
     private MultipartFile image;
+    private Boolean isAssembled;
+    private Boolean switchesLubed;
 }

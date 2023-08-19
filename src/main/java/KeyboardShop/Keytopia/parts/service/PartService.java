@@ -343,11 +343,11 @@ public class PartService {
 
     public Page<Part> findAllParts(PartType partType, String name, int minQuantity,
                                    int pageSize, int pageNumber, SortDirection direction, String value){
-        Sort sort = GetSort(direction,value);
+        Sort sort = getSort(direction,value);
         return partRepository.findAllParts(partType, name.toLowerCase(), minQuantity, PageRequest.of(pageNumber, pageSize,sort));
     }
 
-    private Sort GetSort(SortDirection direction,String value) {
+    private Sort getSort(SortDirection direction,String value) {
         Sort sort = Sort.unsorted();
         if(direction == SortDirection.ASC)
             sort = Sort.by(value).ascending();
@@ -382,8 +382,11 @@ public class PartService {
     }
     public Part findOnePart(String name){
         Part part = partRepository.findById(name).orElse(null);
-        if (part == null) throw new PartNotFoundException("Part with name" + name + " not found!");
+        if (part == null) throw new PartNotFoundException("Part with name " + name + " not found!");
         return part;
+    }
+    public Part findOnePartOrNull(String name){
+        return partRepository.findById(name).orElse(null);
     }
     public void decreasePartQuantity(String name, int quantityToTake ){
         Part part = findOnePart(name);

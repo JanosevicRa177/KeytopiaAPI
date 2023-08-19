@@ -21,8 +21,8 @@ public class KeycapSetDto extends  PartDto {
     private String color;
     private List<String> layouts;
     private MultipartFile image;
-    public KeycapSetDto(KeycapSet keycapSet){
-        super(keycapSet);
+    public KeycapSetDto(KeycapSet keycapSet,boolean isAdmin){
+        super(keycapSet,isAdmin);
         this.material = keycapSet.getMaterial();
         this.keycapProfile = keycapSet.getKeycapProfile().getName();
         this.language = keycapSet.getLanguage();

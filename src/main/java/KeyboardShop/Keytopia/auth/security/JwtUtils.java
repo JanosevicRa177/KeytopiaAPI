@@ -66,4 +66,15 @@ public class JwtUtils {
 		}
 		return false;
 	}
+	public boolean isAuthTokenExpired(final String authToken) {
+		try {
+			Jwts.parser().setSigningKey(authSecret).parseClaimsJws(authToken);
+			return false;
+		} catch (final ExpiredJwtException e) {
+			return true;
+		} catch (final Exception e) {
+			System.out.println("Unsupported token " + e.getMessage());
+		}
+		return false;
+	}
 }

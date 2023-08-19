@@ -8,7 +8,7 @@ import KeyboardShop.Keytopia.auth.security.JwtUtils;
 import KeyboardShop.Keytopia.utils.excentions.authExceptions.IncorrectPasswordException;
 import KeyboardShop.Keytopia.utils.excentions.authExceptions.InvalidConfirmPasswordException;
 import KeyboardShop.Keytopia.utils.excentions.tokenExceptions.InvalidTokenClaimsException;
-import KeyboardShop.Keytopia.utils.excentions.tokenExceptions.TokenExpiredException;
+import KeyboardShop.Keytopia.utils.excentions.tokenExceptions.ActivationTokenExpiredException;
 import KeyboardShop.Keytopia.utils.excentions.tokenExceptions.TokenInvalidException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -33,7 +33,7 @@ public class UserService {
             jwtUtils.validateActivationToken(activationToken);
             registerClaims = jwtUtils.getClaimsFromActivationToken(activationToken);
         }catch(final ExpiredJwtException e){
-            throw new TokenExpiredException("Your account link expired.");
+            throw new ActivationTokenExpiredException("Your account link expired.");
         }catch(final Exception e){
             throw new TokenInvalidException("Your account link invalid");
         }

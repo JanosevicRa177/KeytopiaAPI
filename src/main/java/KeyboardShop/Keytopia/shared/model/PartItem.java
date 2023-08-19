@@ -1,4 +1,4 @@
-package KeyboardShop.Keytopia.warehouse.model;
+package KeyboardShop.Keytopia.shared.model;
 
 import KeyboardShop.Keytopia.parts.model.parts.Part;
 import lombok.AllArgsConstructor;

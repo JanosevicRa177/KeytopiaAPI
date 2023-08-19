@@ -14,8 +14,8 @@ public class PlateDto extends PartDto {
     private String color;
     private String size;
     private MultipartFile image;
-    public PlateDto(Plate plate){
-        super(plate);
+    public PlateDto(Plate plate,boolean isAdmin){
+        super(plate,isAdmin);
         this.material = plate.getMaterial();
         this.color = plate.getColor();
         this.size = plate.getSize().getName();

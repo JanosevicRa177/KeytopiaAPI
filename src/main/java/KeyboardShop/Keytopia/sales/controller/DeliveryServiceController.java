@@ -42,9 +42,9 @@ public class DeliveryServiceController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<String>> findAll() {
         List<DeliveryService> deliveryServices = deliveryServiceService.findAllDeliveryServices();
-        List<String> keycapProfileNames = deliveryServices.stream()
+        List<String> deliveryServicesNames = deliveryServices.stream()
                 .map(DeliveryService::getName).toList();
-        return ResponseEntity.ok(keycapProfileNames);
+        return ResponseEntity.ok(deliveryServicesNames);
     }
     @GetMapping("/{pageSize}/{pageNumber}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")

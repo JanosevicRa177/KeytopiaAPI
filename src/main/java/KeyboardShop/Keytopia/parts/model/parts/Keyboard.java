@@ -57,7 +57,8 @@ public class Keyboard {
     private List<Product> products;
     
     public Keyboard(String name,boolean generatedByAdmin, int quantity, CaseEntity aCase, Cable cable, PCB pcb,
-                    Plate plate, Stabilizer stabilizer, SwitchSet switchSet, KeycapSet keycapSet){
+                    Plate plate, Stabilizer stabilizer, SwitchSet switchSet, KeycapSet keycapSet,boolean switchesLubed,
+                    boolean assembled){
         this.name = name;
         this.aCase = aCase;
         this.cable = cable;
@@ -67,6 +68,8 @@ public class Keyboard {
         this.switchSet = switchSet;
         this.keycapSet = keycapSet;
         this.quantity = quantity;
+        this.assembled = assembled;
+        this.switchesLubed = switchSet != null && switchesLubed;
         calculatePrice();
         this.generatedByAdmin = generatedByAdmin;
     }
@@ -85,6 +88,11 @@ public class Keyboard {
             price += switchSet.getPrice();
         if(keycapSet != null)
             price += keycapSet.getPrice();
+        
+        if(isAssembled())
+            price+= 20;
+        if(switchesLubed)
+            price+= 25;
 
         this.setPrice(price);
     }

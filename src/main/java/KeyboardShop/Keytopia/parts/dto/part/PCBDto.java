@@ -20,8 +20,8 @@ public class PCBDto extends PartDto{
     private PinType pinType;
     private StabilizerType stabilizerType;
     private MultipartFile image;
-    public PCBDto(PCB pcb){
-        super(pcb);
+    public PCBDto(PCB pcb,boolean isAdmin){
+        super(pcb,isAdmin);
         this.type = pcb.getType();
         this.btConnect = pcb.isBtConnect();
         this.size = pcb.getSize().getName();

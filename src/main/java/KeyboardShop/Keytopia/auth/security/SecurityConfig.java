@@ -62,6 +62,8 @@ public class SecurityConfig {
 					.authorizeRequests().antMatchers("/auth/login").permitAll().and()
 					.authorizeRequests().antMatchers(HttpMethod.GET, "/part/**").permitAll().and()
 					.authorizeRequests().antMatchers(HttpMethod.GET, "/part-data/size").permitAll().and()
+					.authorizeRequests().antMatchers(HttpMethod.GET, "/keyboard/**").permitAll().and()
+					.authorizeRequests().antMatchers("/keyboard/buyer").permitAll().and()
 					.authorizeRequests().antMatchers("/auth/register/buyer").permitAll()
 					.anyRequest().authenticated();
 

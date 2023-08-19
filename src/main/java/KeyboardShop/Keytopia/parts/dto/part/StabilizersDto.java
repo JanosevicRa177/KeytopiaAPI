@@ -13,8 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class StabilizersDto extends PartDto{
     private StabilizerType type;
     private MultipartFile image;
-    public StabilizersDto(Stabilizer stabilizer){
-        super(stabilizer);
+    public StabilizersDto(Stabilizer stabilizer,boolean isAdmin){
+        super(stabilizer,isAdmin);
         this.type = stabilizer.getType();
     }
 }

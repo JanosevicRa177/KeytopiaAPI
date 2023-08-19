@@ -18,9 +18,10 @@ public class PartDto {
     private String brand;
     private String supplier;
     private String imageUrl;
-    public PartDto(Part part){
+    public PartDto(Part part,boolean isAdmin){
         this.name = part.getName();
-        this.quantity = part.getQuantity();
+        if(isAdmin)
+            this.quantity = part.getQuantity();
         this.price = part.getPrice();
         this.priceWeight = part.getPriceWeight();
         this.imageUrl = part.getImageUrl();

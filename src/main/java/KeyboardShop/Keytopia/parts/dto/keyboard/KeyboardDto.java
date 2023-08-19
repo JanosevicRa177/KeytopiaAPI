@@ -20,9 +20,11 @@ public class KeyboardDto {
     private PartItemDto stabilizersDto;
     private String imageUrl;
     private Double price;
-    private int quantity;
+    private Integer quantity;
+    private boolean switchesLubed;
+    private boolean assembled;
     
-    public KeyboardDto(Keyboard keyboard){
+    public KeyboardDto(Keyboard keyboard,boolean isAdmin){
         this.name = keyboard.getName();
         this.caseDto = new PartItemDto(keyboard.getACase());
         this.pcbDto = new PartItemDto(keyboard.getPcb());
@@ -37,7 +39,10 @@ public class KeyboardDto {
             this.switchSetDto = new PartItemDto(keyboard.getSwitchSet());
         this.price = keyboard.getPrice();
         this.imageUrl = keyboard.getImageUrl();
-        this.quantity = keyboard.getQuantity();
-    }
+        if(isAdmin)
+            this.quantity = keyboard.getQuantity();
+        this.assembled = keyboard.isAssembled();
+        this.switchesLubed = keyboard.isSwitchesLubed();
+    }   
     
 }

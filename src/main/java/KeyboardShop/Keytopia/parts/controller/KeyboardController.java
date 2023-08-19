@@ -4,6 +4,7 @@ import KeyboardShop.Keytopia.auth.model.Role;
 import KeyboardShop.Keytopia.auth.model.User;
 import KeyboardShop.Keytopia.auth.security.JwtUtils;
 import KeyboardShop.Keytopia.auth.service.AuthService;
+import KeyboardShop.Keytopia.parts.dto.keyboard.CommercializeKeyboardDto;
 import KeyboardShop.Keytopia.parts.dto.keyboard.CreateKeyboardDto;
 import KeyboardShop.Keytopia.parts.dto.keyboard.KeyboardDto;
 import KeyboardShop.Keytopia.parts.dto.part.PartItemDto;
@@ -38,25 +39,33 @@ public class KeyboardController {
     }
 
     @PostMapping(value ="/buyer")
-    @PreAuthorize("isAuthenticated() and hasAuthority('BUYER')")
-    public ResponseEntity<Void> createKeyboardBuyer(@RequestBody final CreateKeyboardDto keyboardDto) {
-        keyboardService.createKeyboard(keyboardDto,false);
+    public ResponseEntity<PartItemDto> createKeyboardBuyer(@RequestBody final CreateKeyboardDto keyboardDto) {
+        Keyboard keyboard = keyboardService.createKeyboard(keyboardDto,false);
+        return ResponseEntity.ok(new PartItemDto(keyboard));
+    }
+
+    @DeleteMapping(value ="/unused")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
+    public ResponseEntity<Void> removeUnusedKeyboards() {
+        keyboardService.removeUnusedKeyboards();
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{name}")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
     public ResponseEntity<Void> deleteKeyboard(@PathVariable String name) {
         keyboardService.deleteKeyboard(name);
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("commercialize/{name}")
-    public ResponseEntity<Void> commercializeKeyboard(@PathVariable String name, @RequestBody final String newName) {
-        keyboardService.commercializeKeyboard(name, newName);
+    @PutMapping(value = "commercialize/{name}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> commercializeKeyboard(@PathVariable String name, @ModelAttribute final CommercializeKeyboardDto keyboardDto) {
+        keyboardService.commercializeKeyboard(name, keyboardDto.getNewName(),keyboardDto.getImage());
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("make/{name}/{quantity}")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
     public ResponseEntity<Void> makeKeyboard(@PathVariable String name, @PathVariable int quantity) {
         keyboardService.makeKeyboard(name, quantity);
         return ResponseEntity.ok().build();
@@ -85,8 +94,15 @@ public class KeyboardController {
     }
 
     @GetMapping("/{name}")
-    public ResponseEntity<KeyboardDto> findOneKeyboard(@PathVariable String name) {
+    public ResponseEntity<KeyboardDto> findOneKeyboard(@PathVariable String name, @RequestHeader(required = false, value = HttpHeaders.AUTHORIZATION) final String authHeader) {
+        boolean isAdmin = false;
+        if(authHeader != null){
+            User user = authService.getUserFromHeader(authHeader);
+            if(user.getRole() == Role.ADMIN){
+                isAdmin = true;
+            }
+        }
         Keyboard keyboard = keyboardService.findOneKeyboard(name);
-        return ResponseEntity.ok(new KeyboardDto(keyboard));
+        return ResponseEntity.ok(new KeyboardDto(keyboard,isAdmin));
     }
 }

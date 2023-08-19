@@ -8,7 +8,7 @@ import KeyboardShop.Keytopia.utils.excentions.warehouseExceptions.ProcurementInv
 import KeyboardShop.Keytopia.utils.excentions.warehouseExceptions.WarehouseEntityNotFoundException;
 import KeyboardShop.Keytopia.utils.model.SortDirection;
 import KeyboardShop.Keytopia.warehouse.dto.ProcurementDto;
-import KeyboardShop.Keytopia.warehouse.model.PartItem;
+import KeyboardShop.Keytopia.shared.model.PartItem;
 import KeyboardShop.Keytopia.warehouse.model.Procurement;
 import KeyboardShop.Keytopia.warehouse.model.Supplier;
 import KeyboardShop.Keytopia.warehouse.model.enums.ProcurementState;

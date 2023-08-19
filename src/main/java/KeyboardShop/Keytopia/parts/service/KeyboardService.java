@@ -6,6 +6,7 @@ import KeyboardShop.Keytopia.parts.repository.IKeyboardRepository;
 import KeyboardShop.Keytopia.utils.excentions.KeyboardExceptions.KeyboardNameNotPresentException;
 import KeyboardShop.Keytopia.utils.excentions.KeyboardExceptions.KeyboardPartNotPresentException;
 import KeyboardShop.Keytopia.utils.excentions.KeyboardExceptions.KeyboardWithNameAlreadyExistsException;
+import KeyboardShop.Keytopia.utils.excentions.partExceptions.keyboardExceptions.CantMakeKeyboardException;
 import KeyboardShop.Keytopia.utils.excentions.partExceptions.keyboardExceptions.KeyboardAlreadyExistsException;
 import KeyboardShop.Keytopia.utils.excentions.partExceptions.keyboardExceptions.KeyboardCantBeDeletedException;
 import KeyboardShop.Keytopia.utils.excentions.partExceptions.keyboardExceptions.KeyboardNotFoundException;
@@ -18,8 +19,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -34,13 +37,16 @@ public class KeyboardService {
         if (keyboard == null) throw new KeyboardNotFoundException("Keyboard with name " + name + " not found!.");
         return keyboard;
     }
+    public Keyboard findOneKeyboardOrNull(String name){
+        return keyboardRepository.findById(name).orElse(null);
+    }
 
-    public Page<Keyboard> findAllKeyboards( String name, int minQuantity, Boolean adminGenerated, int pageSize, int pageNumber, SortDirection direction, String value){
-        Sort sort = GetSort(direction,value);
+    public Page<Keyboard> findAllKeyboards(String name, int minQuantity, Boolean adminGenerated, int pageSize, int pageNumber, SortDirection direction, String value){
+        Sort sort = GetSort(direction, value);
         return keyboardRepository.findAllKeyboards(name.toLowerCase(), minQuantity, adminGenerated, PageRequest.of(pageNumber, pageSize,sort));
     }
 
-    public void deleteKeyboard(String name){
+    public void deleteKeyboard(String name) {
         Keyboard keyboard = keyboardRepository.findById(name).orElse(null);
         
         if (keyboard == null) throw new KeyboardNotFoundException("Keyboard not found.");
@@ -49,7 +55,7 @@ public class KeyboardService {
         keyboardRepository.delete(keyboard);
     }
 
-    public void commercializeKeyboard(String name,String newName){
+    public void commercializeKeyboard(String name, String newName, MultipartFile image){
         Keyboard keyboard = keyboardRepository.findById(newName).orElse(null);
         if (keyboard != null) throw new KeyboardAlreadyExistsException("Keyboard with this name already exists");
         
@@ -58,6 +64,8 @@ public class KeyboardService {
 
         keyboard.setGeneratedByAdmin(true);
         keyboard.setName(name);
+        String imageUrl = postImage(image);
+        keyboard.setImageUrl(imageUrl);
         
         keyboardRepository.save(keyboard);
     }
@@ -81,7 +89,7 @@ public class KeyboardService {
         keyboardRepository.save(keyboard);
     }
 
-    public void createKeyboard(CreateKeyboardDto keyboardDto,boolean createdByAdmin) {
+    public Keyboard createKeyboard(CreateKeyboardDto keyboardDto,boolean createdByAdmin) {
         
         if(keyboardDto.getCaseEntity() == null) throw new KeyboardPartNotPresentException("Case is not present!");
         CaseEntity aCase  = partService.findOneCase(keyboardDto.getCaseEntity());
@@ -115,22 +123,41 @@ public class KeyboardService {
             keycapSet  = partService.findOneKeycapSet(keyboardDto.getKeycapSet());
             if (keycapSet == null && keyboardDto.getKeycapSet() != null) throw new PartNotFoundException("Keycap set with name" + keyboardDto.getKeycapSet() + " not found!");
         }
-         
+        String name = !createdByAdmin ? UUID.randomUUID().toString() : keyboardDto.getName();
+        
+        Keyboard keyboard = new Keyboard(name, createdByAdmin, 0, aCase, cable, pcb,plate, stabilizer, switchSet,
+                keycapSet, keyboardDto.getSwitchesLubed(),keyboardDto.getIsAssembled());
+
         if(createdByAdmin){
             if(keyboardDto.getName() == null || keyboardDto.getName().equals("")) throw new KeyboardNameNotPresentException();
             if(keyboardRepository.findById(keyboardDto.getName()).orElse(null) != null) throw new KeyboardWithNameAlreadyExistsException();
-            String imageUrl;
-            try {
-                imageUrl = storageService.uploadFile(keyboardDto.getImage());
-            } catch (IOException e) {
-                throw new FileUploadException();
-            }
-            Keyboard keyboard = new Keyboard(keyboardDto.getName(), true, 0, aCase, cable, pcb, plate, stabilizer, switchSet, keycapSet);
+            String imageUrl = postImage(keyboardDto.getImage());
             keyboard.setImageUrl(imageUrl);
-            keyboardRepository.save(keyboard);
-            return;
         }
-        keyboardRepository.save(new Keyboard(UUID.randomUUID().toString(), false,0, aCase, cable, pcb, plate, stabilizer, switchSet, keycapSet));
+        keyboardRepository.save(keyboard);
+        return keyboard;
+    }
+
+    public void decreaseKeyboardQuantity(String name, int quantityToTake ){
+        Keyboard keyboard = findOneKeyboard(name);
+        if(keyboard.getQuantity()-quantityToTake < 0) throw new CantMakeKeyboardException("Not enough " + name + " keyboards!");
+        keyboard.setQuantity(keyboard.getQuantity()-quantityToTake);
+        keyboardRepository.save(keyboard);
+    }
+
+    public void removeUnusedKeyboards(){
+        List<Keyboard> unusedKeyboards = keyboardRepository.findAllUnusedKeyboards();
+        keyboardRepository.deleteAll(unusedKeyboards);
+    }
+
+    private String postImage(MultipartFile image) {
+        String imageUrl;
+        try {
+            imageUrl = storageService.uploadFile(image);
+        } catch (IOException e) {
+            throw new FileUploadException();
+        }
+        return imageUrl;
     }
 
     private Sort GetSort(SortDirection direction, String value) {
