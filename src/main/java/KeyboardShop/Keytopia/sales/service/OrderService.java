@@ -18,6 +18,7 @@ import KeyboardShop.Keytopia.warehouse.dto.PartWithQuantityDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -64,11 +65,13 @@ public class OrderService {
         Buyer buyer = buyerRepository.findByEmail(buyerEmail);
         if(buyer == null) throw new BuyerNotFoundException();
         Sort sort = getSortByDate(direction);
-        return orderRepository.findAllOrders(buyer, id, PageRequest.of(pageNumber, pageSize,sort));
+        String idString = id == null ? null : id.toString();
+        return orderRepository.findAllOrders(buyer, idString, PageRequest.of(pageNumber, pageSize,sort));
     };
     public Page<Order> GetOrders(SortDirection direction, UUID id, int pageSize, int pageNumber){
         Sort sort = getSortByDate(direction);
-        return orderRepository.findAllOrders(null, id, PageRequest.of(pageNumber, pageSize,sort));
+        String idString = id == null ? null : id.toString();
+        return orderRepository.findAllOrders(null, idString, PageRequest.of(pageNumber, pageSize,sort));
     };
     private Sort getSortByDate(SortDirection direction) {
         Sort sort = Sort.unsorted();

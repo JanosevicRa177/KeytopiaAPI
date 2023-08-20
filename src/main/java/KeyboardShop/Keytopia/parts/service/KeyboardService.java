@@ -3,6 +3,7 @@ package KeyboardShop.Keytopia.parts.service;
 import KeyboardShop.Keytopia.parts.dto.keyboard.CreateKeyboardDto;
 import KeyboardShop.Keytopia.parts.model.parts.*;
 import KeyboardShop.Keytopia.parts.repository.IKeyboardRepository;
+import KeyboardShop.Keytopia.utils.excentions.KeyboardExceptions.KeyboardAlreadyCommercializedException;
 import KeyboardShop.Keytopia.utils.excentions.KeyboardExceptions.KeyboardNameNotPresentException;
 import KeyboardShop.Keytopia.utils.excentions.KeyboardExceptions.KeyboardPartNotPresentException;
 import KeyboardShop.Keytopia.utils.excentions.KeyboardExceptions.KeyboardWithNameAlreadyExistsException;
@@ -61,12 +62,13 @@ public class KeyboardService {
         
         keyboard = keyboardRepository.findById(name).orElse(null);
         if (keyboard == null) throw new KeyboardNotFoundException("Keyboard not found.");
+        
+        if(keyboard.isGeneratedByAdmin()) throw new KeyboardAlreadyCommercializedException();
 
         keyboard.setGeneratedByAdmin(true);
-        keyboard.setName(name);
+        keyboard.setName(newName);
         String imageUrl = postImage(image);
         keyboard.setImageUrl(imageUrl);
-        
         keyboardRepository.save(keyboard);
     }
 

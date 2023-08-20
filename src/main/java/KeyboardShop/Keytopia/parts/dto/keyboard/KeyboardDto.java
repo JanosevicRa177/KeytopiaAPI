@@ -23,6 +23,7 @@ public class KeyboardDto {
     private Integer quantity;
     private boolean switchesLubed;
     private boolean assembled;
+    private boolean generatedByAdmin;
     
     public KeyboardDto(Keyboard keyboard,boolean isAdmin){
         this.name = keyboard.getName();
@@ -43,6 +44,7 @@ public class KeyboardDto {
             this.quantity = keyboard.getQuantity();
         this.assembled = keyboard.isAssembled();
         this.switchesLubed = keyboard.isSwitchesLubed();
+        this.generatedByAdmin = keyboard.isGeneratedByAdmin();
     }   
     
 }

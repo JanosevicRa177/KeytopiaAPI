@@ -30,8 +30,13 @@ public class OrderController {
     @GetMapping("admin/page")
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
     public ResponseEntity<Page<OrderWithBuyerDto>> findAllOrdersForAdmin(@RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam(required = false) SortDirection sortDirection,
-                                                                         @RequestParam String idString) {
-        UUID id = idString == null ? null : UUID.fromString(idString);
+                                                                         @RequestParam(required = false) String idString) {
+        UUID id = null;
+        try{
+            id = UUID.fromString(idString);   
+        }catch(Exception ignored){
+            
+        }
         Page<Order> orderPage = orderService.GetOrders(sortDirection, id, pageSize, pageNumber);
         List<OrderWithBuyerDto> orderDtos = new ArrayList<>();
         orderPage.getContent().forEach((order)-> orderDtos.add(new OrderWithBuyerDto(order)));
@@ -42,7 +47,12 @@ public class OrderController {
     @PreAuthorize("isAuthenticated() and hasAuthority('BUYER')")
     public ResponseEntity<Page<OrderDto>> findAllOrdersForBuyer(@RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam(required = false) SortDirection sortDirection,
                                                                          @RequestParam String idString, @RequestHeader(required = false, value = HttpHeaders.AUTHORIZATION) final String authHeader) {
-        UUID id = idString == null ? null : UUID.fromString(idString);
+        UUID id = null;
+        try{
+            id = UUID.fromString(idString);
+        }catch(Exception ignored){
+
+        }
         User user = authService.getUserFromHeader(authHeader);
         Page<Order> orderPage = orderService.GetBuyerOrders(user.getEmail(),sortDirection, id, pageSize, pageNumber);
         List<OrderDto> orderDtos = new ArrayList<>();

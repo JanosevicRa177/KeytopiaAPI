@@ -58,13 +58,13 @@ public class KeyboardController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping(value = "commercialize/{name}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PatchMapping(value = "commercialize/{name}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> commercializeKeyboard(@PathVariable String name, @ModelAttribute final CommercializeKeyboardDto keyboardDto) {
         keyboardService.commercializeKeyboard(name, keyboardDto.getNewName(),keyboardDto.getImage());
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("make/{name}/{quantity}")
+    @PatchMapping("make/{name}/{quantity}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
     public ResponseEntity<Void> makeKeyboard(@PathVariable String name, @PathVariable int quantity) {
         keyboardService.makeKeyboard(name, quantity);
