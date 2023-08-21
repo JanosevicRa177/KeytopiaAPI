@@ -7,6 +7,9 @@ import KeyboardShop.Keytopia.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 @Service
 @RequiredArgsConstructor
 public class UtilFunctions {
@@ -22,5 +25,17 @@ public class UtilFunctions {
             }
         }
         return minQuantity;
+    }
+    public static String convertDateFormat(String inputDate) {
+        try {
+            DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate date = LocalDate.parse(inputDate, inputFormatter);
+
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            return date.format(outputFormatter);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

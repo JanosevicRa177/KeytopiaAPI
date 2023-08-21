@@ -16,33 +16,53 @@ import java.util.UUID;
 @Entity(name = "product")
 public class Product {
     @Id
-    @Column(name="id_product")
+    @Column(name = "id_product")
     private UUID id;
-    @Column(name="sold_date")
+    @Column(name = "sold_date")
     private LocalDate soldDate;
     @ManyToOne
-    @JoinColumn(name="id_order")
+    @JoinColumn(name = "id_order")
     private Order order;
-    @Column(name="product_price")
+    @Column(name = "product_price")
     private double price;
     @ManyToOne
-    @JoinColumn(name="part_name")
+    @JoinColumn(name = "part_name")
     private Part part;
     @ManyToOne
-    @JoinColumn(name="keyboard_name")
+    @JoinColumn(name = "keyboard_name")
     private Keyboard keyboard;
-    public Product(Part part,Order order){
+
+    public Product(Part part, Order order) {
         this.part = part;
         this.price = part.getPrice();
         this.soldDate = LocalDate.now();
         this.id = UUID.randomUUID();
         this.order = order;
     }
-    public Product(Keyboard keyboard,Order order){
+
+    public Product(Keyboard keyboard, Order order) {
         this.keyboard = keyboard;
         this.price = keyboard.getPrice();
         this.soldDate = LocalDate.now();
         this.id = UUID.randomUUID();
         this.order = order;
+    }
+
+    public String getImage() {
+        if (part != null)
+            return part.getImageUrl();
+        else if (keyboard != null)
+            return keyboard.getImageUrl();
+        return null;
+    }
+    public String getName() {
+        if (part != null)
+            return part.getName();
+        else if (keyboard != null)
+            return keyboard.getName();
+        return null;
+    }
+    public boolean isImageNull(){
+        return getImage() == null;
     }
 }

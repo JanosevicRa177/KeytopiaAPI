@@ -10,6 +10,7 @@ import KeyboardShop.Keytopia.sales.model.DeliveryService;
 import KeyboardShop.Keytopia.sales.model.Order;
 import KeyboardShop.Keytopia.sales.model.Product;
 import KeyboardShop.Keytopia.sales.repository.IOrderRepository;
+import KeyboardShop.Keytopia.utils.email.IEmailService;
 import KeyboardShop.Keytopia.utils.excentions.authExceptions.BuyerNotFoundException;
 import KeyboardShop.Keytopia.utils.excentions.partExceptions.part.PartNotFoundException;
 import KeyboardShop.Keytopia.utils.excentions.salesExceptions.DeliveryServiceNotFoundException;
@@ -33,6 +34,7 @@ public class OrderService {
     private final IOrderRepository orderRepository;
     private final DeliveryServiceService deliveryServiceService;
     private final IBuyerRepository buyerRepository;
+    private final IEmailService emailService;
 
     public void makeOrder(String buyerEmail, List<PartWithQuantityDto> partDtos, String deliveryServiceName){
         Buyer buyer = buyerRepository.findByEmail(buyerEmail);
@@ -58,6 +60,7 @@ public class OrderService {
             keyboardService.decreaseKeyboardQuantity(keyboard.getName(),orderPartDto.getQuantity());
         } );
         order.calculatePrice();
+        emailService.sendOrderEmail(buyer,order);
         orderRepository.save(order);
     };
     

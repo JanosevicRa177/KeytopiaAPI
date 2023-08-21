@@ -26,4 +26,8 @@ public class Address {
     private String zipCode;
     @Column(name="country")
     private String country;
+    
+    public String getAsString(){
+        return street + " " + streetNumber + ", " + zipCode + " " + city + ", " + country;
+    }
 }
