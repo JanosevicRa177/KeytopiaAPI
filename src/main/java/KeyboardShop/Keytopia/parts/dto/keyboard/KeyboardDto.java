@@ -29,7 +29,7 @@ public class KeyboardDto {
         this.name = keyboard.getName();
         this.caseDto = new PartItemDto(keyboard.getACase());
         this.pcbDto = new PartItemDto(keyboard.getPcb());
-        this.stabilizersDto = new PartItemDto(keyboard.getStabilizer());
+        this.stabilizersDto = new PartItemDto(keyboard.getStabilizers());
         if(keyboard.getCable() != null)
             this.cableDto = new PartItemDto(keyboard.getCable());
         if(keyboard.getKeycapSet() != null)

@@ -13,6 +13,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -22,8 +23,7 @@ import java.util.List;
 public class Procurement {
     @Id
     @Column(name="id_procurement")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
     @Column(name="procurement_date")
     private LocalDate date;
     @Column(name="procurement_deadline")
@@ -38,13 +38,14 @@ public class Procurement {
     private Supplier supplier;
     
     public Procurement(List<PartItem> partItems, Supplier supplier){
+        this.id = UUID.randomUUID();
         this.state = ProcurementState.PENDING;
         this.supplier = supplier;
         this.date = LocalDate.now();
         this.deadline = LocalDate.now().plusDays(14);
         procurementParts = new ArrayList<>();
         partItems.forEach(partItem -> {
-            procurementParts.add(new ProcurementPart(0L,partItem.getQuantity(),this,partItem.getPart()));
+            procurementParts.add(new ProcurementPart(partItem.getQuantity(),this, partItem.getPart()));
         });
     }
 }

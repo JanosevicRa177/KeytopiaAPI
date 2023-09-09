@@ -178,7 +178,7 @@ public class PartService {
             throw new FileUploadException();
         }
         
-        stabilizerRepository.save(new Stabilizer(stabilizersDto,brand,imageUrl,supplier));
+        stabilizerRepository.save(new Stabilizers(stabilizersDto,brand,imageUrl,supplier));
     }
 
     public void createSwitchSet(SwitchSetDto switchSetDto) {
@@ -258,13 +258,13 @@ public class PartService {
         plateRepository.delete(plate);
     }
     public void deleteStabilizers(String name){
-        Stabilizer stabilizer = stabilizerRepository.findById(name).orElse(null);
-        if (stabilizer == null) throw new PartNotFoundException("Stabilizers not found.");
+        Stabilizers stabilizers = stabilizerRepository.findById(name).orElse(null);
+        if (stabilizers == null) throw new PartNotFoundException("Stabilizers not found.");
 
-        if(!stabilizer.getProcurementParts().isEmpty()) throw new PartCantBeDeletedException("Stabilizer cant be deleted because it has procurements connected to it!");
-        if(!stabilizer.getProducts().isEmpty()) throw new PartCantBeDeletedException("Stabilizer cant be deleted because it has products connected to it!");
+        if(!stabilizers.getProcurementParts().isEmpty()) throw new PartCantBeDeletedException("Stabilizer cant be deleted because it has procurements connected to it!");
+        if(!stabilizers.getProducts().isEmpty()) throw new PartCantBeDeletedException("Stabilizer cant be deleted because it has products connected to it!");
 
-        stabilizerRepository.delete(stabilizer);
+        stabilizerRepository.delete(stabilizers);
     }
     public void deleteSwitchSet(String name){
         SwitchSet switchSet = switchSetRepository.findById(name).orElse(null);
@@ -313,8 +313,8 @@ public class PartService {
                 size.getNeededNumberOfKeys(), switchType, name.toLowerCase(), minQuantity, PageRequest.of(pageNumber, pageSize));
     }
     
-    public Page<Stabilizer> findAllStabilizers(StabilizerType stabilizerType, String name, PriceWeight priceWeight,
-                                               int minQuantity, int pageSize, int pageNumber){
+    public Page<Stabilizers> findAllStabilizers(StabilizerType stabilizerType, String name, PriceWeight priceWeight,
+                                                int minQuantity, int pageSize, int pageNumber){
         return stabilizerRepository.findAllStabilizers(priceWeight, name.toLowerCase(), stabilizerType,
                 minQuantity, PageRequest.of(pageNumber, pageSize));
     }
@@ -374,7 +374,7 @@ public class PartService {
     public Plate findOnePlate(String name){
         return plateRepository.findById(name).orElse(null);
     }
-    public Stabilizer findOneStabilizers(String name){
+    public Stabilizers findOneStabilizers(String name){
         return stabilizerRepository.findById(name).orElse(null);
     }
     public SwitchSet findOneSwitchSet(String name){

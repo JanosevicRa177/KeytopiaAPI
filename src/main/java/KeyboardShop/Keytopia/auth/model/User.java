@@ -25,7 +25,7 @@ public class User {
     private String surname;
     @Column(name="user_phone")
     private String phone;
-    @Column(name="Role")
+    @Column(name="role")
     @Enumerated(EnumType.STRING)
     private Role role;
     @Column(name="email",unique = true)

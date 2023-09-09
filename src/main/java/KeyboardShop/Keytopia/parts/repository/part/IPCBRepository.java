@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface IPCBRepository extends JpaRepository<PCB, String> {
     @Query("SELECT p FROM pcb p WHERE " +
             "(:sizeName IS NULL OR p.size.name = :sizeName)  AND " +
-            "(p.quantity >= :minQuantity) AND " +
+            "(p.quantity >= :minQuantity) AND " + 
             "(:pcbName IS NULL OR LOWER(p.name) LIKE %:pcbName%) AND " +
             "(:priceWeight IS NULL OR p.priceWeight = :priceWeight) ")
     Page<PCB> findAllPCBs(PriceWeight priceWeight, String sizeName, String pcbName, int minQuantity, Pageable pageable);

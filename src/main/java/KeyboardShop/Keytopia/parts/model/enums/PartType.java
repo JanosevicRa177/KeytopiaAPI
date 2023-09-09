@@ -8,8 +8,7 @@ public enum PartType {
     PLATE("Plate"),
     STABILIZER("Stabilizer"),
     SWITCH_SET("Switch set"),
-    CASE("Case"),
-    KEYBOARD("Keyboard");
+    CASE("Case");
     private final String type;
 
     PartType(String type) {

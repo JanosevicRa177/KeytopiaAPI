@@ -7,7 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface IProcurementRepository extends JpaRepository<Procurement,Long> {
+import java.util.UUID;
+
+public interface IProcurementRepository extends JpaRepository<Procurement, UUID> {
 
     @Query("SELECT p FROM procurement p WHERE " +
             "(:state IS NULL OR p.state = :state)")

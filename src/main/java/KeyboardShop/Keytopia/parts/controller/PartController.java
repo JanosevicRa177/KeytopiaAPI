@@ -173,7 +173,7 @@ public class PartController {
     public ResponseEntity<Page<PartItemWithStabilizerTypeDto>> findAllStabilizers(@RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam(required = false) StabilizerType stabilizerType,
                                                                @RequestParam String name, @RequestParam(required = false) PriceWeight priceWeight, @RequestHeader(required = false, value = HttpHeaders.AUTHORIZATION) final String authHeader) {
         int minQuantity = utilFunctions.getMinQuantity(authHeader);
-        Page<Stabilizer> partPage = partService.findAllStabilizers(stabilizerType, name, priceWeight, minQuantity, pageSize, pageNumber);
+        Page<Stabilizers> partPage = partService.findAllStabilizers(stabilizerType, name, priceWeight, minQuantity, pageSize, pageNumber);
         List<PartItemWithStabilizerTypeDto> partDtos = new ArrayList<>();
         partPage.getContent().forEach((part)-> partDtos.add(new PartItemWithStabilizerTypeDto(part)));
         Page<PartItemWithStabilizerTypeDto> casePageDto = new PageImpl<>(partDtos, partPage.getPageable(),partPage.getTotalElements());
@@ -259,9 +259,9 @@ public class PartController {
             if (plate == null) throw new PartNotFoundException("Plate set with name" + name + " not found!");
             return ResponseEntity.ok(new PlateDto(plate,isAdmin));
         }else if(partType == PartType.STABILIZER){
-            Stabilizer stabilizer = partService.findOneStabilizers(name);
-            if (stabilizer == null) throw new PartNotFoundException("Stabilizer set with name" + name + " not found!");
-            return ResponseEntity.ok(new StabilizersDto(stabilizer,isAdmin));
+            Stabilizers stabilizers = partService.findOneStabilizers(name);
+            if (stabilizers == null) throw new PartNotFoundException("Stabilizer set with name" + name + " not found!");
+            return ResponseEntity.ok(new StabilizersDto(stabilizers,isAdmin));
         }else if(partType == PartType.SWITCH_SET){
             SwitchSet switchSet = partService.findOneSwitchSet(name);
             if (switchSet == null) throw new PartNotFoundException("Switch set with name" + name + " not found!");

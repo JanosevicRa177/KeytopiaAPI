@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static java.lang.Math.abs;
 
@@ -35,7 +36,7 @@ public class ProcurementService {
     private final IProcurementRepository procurementRepository;
     private  final IProcurementPartRepository procurementPartRepository;
     
-    public void realize(Long id){
+    public void realize(UUID id){
         Procurement procurement = procurementRepository.findById(id).orElse(null);
         if(procurement == null) throw new WarehouseEntityNotFoundException("Procurement not found!");
         if(procurement.getState() != ProcurementState.PENDING) throw new ProcurementActionInvalidException("Procurement is not pending");
@@ -48,7 +49,7 @@ public class ProcurementService {
         procurement.setState(ProcurementState.REALIZED);
         procurementRepository.save(procurement);
     }
-    public void penalize(Long id){
+    public void penalize(UUID id){
         Procurement procurement = procurementRepository.findById(id).orElse(null);
         if(procurement == null) throw new WarehouseEntityNotFoundException("Procurement not found!");
         if(procurement.getDeadline().isAfter(LocalDate.now())) throw new ProcurementDeadlineNotYetExpiredException();
@@ -62,7 +63,7 @@ public class ProcurementService {
         procurement.setState(ProcurementState.CANCELED);
         procurementRepository.save(procurement);
     }
-    public void delete(Long id){
+    public void delete(UUID id){
         Procurement procurement = procurementRepository.findById(id).orElse(null);
         if(procurement == null) throw new WarehouseEntityNotFoundException("Procurement not found!");
         if(procurement.getState() != ProcurementState.PENDING) throw new ProcurementActionInvalidException("Procurement is not pending");

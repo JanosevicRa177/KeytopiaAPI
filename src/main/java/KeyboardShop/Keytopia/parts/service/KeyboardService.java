@@ -78,7 +78,7 @@ public class KeyboardService {
 
         keyboard.make(quantity);
         partService.decreasePartQuantity(keyboard.getACase().getName(), quantity);
-        partService.decreasePartQuantity(keyboard.getStabilizer().getName(), quantity);
+        partService.decreasePartQuantity(keyboard.getStabilizers().getName(), quantity);
         partService.decreasePartQuantity(keyboard.getPcb().getName(), quantity);
         if(keyboard.getPlate() != null)
             partService.decreasePartQuantity(keyboard.getPlate().getName(), quantity);
@@ -102,8 +102,8 @@ public class KeyboardService {
         if (pcb == null) throw new PartNotFoundException("PCB with name" + keyboardDto.getPcb() + " not found!");
 
         if(keyboardDto.getStabilizers() == null) throw new KeyboardPartNotPresentException("Stabilizers is not present!");
-        Stabilizer stabilizer  = partService.findOneStabilizers(keyboardDto.getStabilizers());
-        if (stabilizer == null) throw new PartNotFoundException("Stabilizer with name" + keyboardDto.getStabilizers() + " not found!");
+        Stabilizers stabilizers = partService.findOneStabilizers(keyboardDto.getStabilizers());
+        if (stabilizers == null) throw new PartNotFoundException("Stabilizer with name" + keyboardDto.getStabilizers() + " not found!");
 
         Cable cable = null;
         if(keyboardDto.getCable() != null) {
@@ -127,7 +127,7 @@ public class KeyboardService {
         }
         String name = !createdByAdmin ? UUID.randomUUID().toString() : keyboardDto.getName();
         
-        Keyboard keyboard = new Keyboard(name, createdByAdmin, 0, aCase, cable, pcb,plate, stabilizer, switchSet,
+        Keyboard keyboard = new Keyboard(name, createdByAdmin, 0, aCase, cable, pcb,plate, stabilizers, switchSet,
                 keycapSet, keyboardDto.getSwitchesLubed(),keyboardDto.getIsAssembled());
 
         if(createdByAdmin){

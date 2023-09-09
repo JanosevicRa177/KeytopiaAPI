@@ -11,14 +11,14 @@ import java.util.List;
 @Getter
 @Setter
 public class GetProcurementDto {
-    private Long id;
+    private String id;
     private LocalDate date;
     private LocalDate deadline;
     private ProcurementState state;
     private List<PartWithQuantityDto> procurementParts;
     private String supplierName;   
     public GetProcurementDto(Procurement procurement){
-        this.id = procurement.getId();
+        this.id = procurement.getId().toString();
         this.date = procurement.getDate();
         this.deadline = procurement.getDeadline();
         this.state = procurement.getState();

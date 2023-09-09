@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/procurement")
@@ -32,20 +33,20 @@ public class ProcurementController {
     }
     @PatchMapping("/penalize/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> penalize(@PathVariable Long id) {
-        procurementService.penalize(id);
+    public ResponseEntity<Void> penalize(@PathVariable String id) {
+        procurementService.penalize(UUID.fromString(id));
         return ResponseEntity.ok().build();
     }
     @PatchMapping("/realize/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> realize(@PathVariable Long id) {
-        procurementService.realize(id);
+    public ResponseEntity<Void> realize(@PathVariable String id) {
+        procurementService.realize(UUID.fromString(id));
         return ResponseEntity.ok().build();
     }
     @DeleteMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ADMIN')")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        procurementService.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        procurementService.delete(UUID.fromString(id));
         return ResponseEntity.ok().build();
     }
     @GetMapping("page")

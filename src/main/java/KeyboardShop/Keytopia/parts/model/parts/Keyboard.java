@@ -8,6 +8,8 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 @Entity
@@ -40,8 +42,8 @@ public class Keyboard {
     @JoinColumn(name="case_name", nullable=false)
     private CaseEntity aCase;
     @ManyToOne
-    @JoinColumn(name="stabilizer_name", nullable=false)
-    private Stabilizer stabilizer;
+    @JoinColumn(name="stabilizers_name", nullable=false)
+    private Stabilizers stabilizers;
     @ManyToOne
     @JoinColumn(name="cable_name")
     private Cable cable;
@@ -56,15 +58,15 @@ public class Keyboard {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Product> products;
     
-    public Keyboard(String name,boolean generatedByAdmin, int quantity, CaseEntity aCase, Cable cable, PCB pcb,
-                    Plate plate, Stabilizer stabilizer, SwitchSet switchSet, KeycapSet keycapSet,boolean switchesLubed,
+    public Keyboard(String name, boolean generatedByAdmin, int quantity, CaseEntity aCase, Cable cable, PCB pcb,
+                    Plate plate, Stabilizers stabilizers, SwitchSet switchSet, KeycapSet keycapSet, boolean switchesLubed,
                     boolean assembled){
         this.name = name;
         this.aCase = aCase;
         this.cable = cable;
         this.pcb = pcb;
         this.plate = plate;
-        this.stabilizer = stabilizer;
+        this.stabilizers = stabilizers;
         this.switchSet = switchSet;
         this.keycapSet = keycapSet;
         this.quantity = quantity;
@@ -77,7 +79,7 @@ public class Keyboard {
         double price = 0;
         
         price += pcb.getPrice();
-        price += stabilizer.getPrice();
+        price += stabilizers.getPrice();
         price += aCase.getPrice();
 
         if(cable != null)
@@ -93,17 +95,19 @@ public class Keyboard {
             price+= 20;
         if(switchesLubed)
             price+= 25;
-
-        this.setPrice(price);
+        
+        BigDecimal moneyDecimal = BigDecimal.valueOf(price);
+        moneyDecimal = moneyDecimal.setScale(2, RoundingMode.HALF_UP);
+        this.setPrice(moneyDecimal.doubleValue());
     }
     public void make(int quantity){
         if((pcb.getQuantity()-quantity) < 0)
             throw new CantMakeKeyboardException("Not enough pcbs for keyboard "+ this.name + "!");
         pcb.setQuantity(pcb.getQuantity()-quantity);
         
-        if((stabilizer.getQuantity()-quantity) < 0)
+        if((stabilizers.getQuantity()-quantity) < 0)
             throw new CantMakeKeyboardException("Not enough Stabilizers for keyboard "+ this.name + "!");
-        stabilizer.setQuantity(stabilizer.getQuantity()-quantity);
+        stabilizers.setQuantity(stabilizers.getQuantity()-quantity);
         
         if((aCase.getQuantity()-quantity) < 0)
             throw new CantMakeKeyboardException("Not enough Cases for keyboard "+ this.name + "!");

@@ -1,7 +1,7 @@
 package KeyboardShop.Keytopia.parts.dto.part;
 
 import KeyboardShop.Keytopia.parts.model.enums.StabilizerType;
-import KeyboardShop.Keytopia.parts.model.parts.Stabilizer;
+import KeyboardShop.Keytopia.parts.model.parts.Stabilizers;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,8 +12,8 @@ import lombok.Setter;
 public class PartItemWithStabilizerTypeDto extends PartItemDto{
     private StabilizerType stabilizerType;
     
-    public PartItemWithStabilizerTypeDto(Stabilizer stabilizer){
-        super(stabilizer);
-        stabilizerType  = stabilizer.getType();
+    public PartItemWithStabilizerTypeDto(Stabilizers stabilizers){
+        super(stabilizers);
+        stabilizerType  = stabilizers.getType();
     }
 }

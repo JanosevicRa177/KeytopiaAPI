@@ -17,15 +17,15 @@ import java.util.List;
 @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
-@Entity(name = "stabilizer")
-public class Stabilizer extends Part {
-    @Column(name="stabilizer_type")
+@Entity(name = "stabilizers")
+public class Stabilizers extends Part {
+    @Column(name="stabilizers_type")
     @Enumerated(EnumType.STRING)
     private StabilizerType type;
-    @OneToMany(mappedBy = "stabilizer")
+    @OneToMany(mappedBy = "stabilizers")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Keyboard> keyboards;
-    public Stabilizer(StabilizersDto stabilizerDto, Brand brand, String imageUrl, Supplier supplier){
+    public Stabilizers(StabilizersDto stabilizerDto, Brand brand, String imageUrl, Supplier supplier){
         super(stabilizerDto.getName(), 0, stabilizerDto.getPrice(), PartType.STABILIZER, stabilizerDto.getPriceWeight(), new ArrayList<>(), new ArrayList<>(), brand, imageUrl, supplier);
         this.type = stabilizerDto.getType();
     }

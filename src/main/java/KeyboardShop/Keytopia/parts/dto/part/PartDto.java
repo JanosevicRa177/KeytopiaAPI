@@ -20,12 +20,13 @@ public class PartDto {
     private String imageUrl;
     public PartDto(Part part,boolean isAdmin){
         this.name = part.getName();
-        if(isAdmin)
+        if(isAdmin){
+            if(part.getSupplier() != null) this.setSupplier(part.getSupplier().getName());
+            if(part.getBrand() != null) this.setBrand(part.getBrand().getName());
             this.quantity = part.getQuantity();
+        }
         this.price = part.getPrice();
         this.priceWeight = part.getPriceWeight();
         this.imageUrl = part.getImageUrl();
-        if(part.getSupplier() != null) this.setSupplier(part.getSupplier().getName());
-        if(part.getBrand() != null) this.setBrand(part.getBrand().getName());
     }
 }

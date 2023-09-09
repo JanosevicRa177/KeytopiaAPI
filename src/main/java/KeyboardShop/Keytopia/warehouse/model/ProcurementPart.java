@@ -11,7 +11,6 @@ import javax.persistence.*;
 @Getter
 @Setter
 @RequiredArgsConstructor
-@AllArgsConstructor
 @Entity(name = "procurement_part")
 public class ProcurementPart {
     @Id
@@ -26,4 +25,9 @@ public class ProcurementPart {
     @ManyToOne
     @JoinColumn(name="part_name", nullable=false)
     private Part part;
+    public ProcurementPart(int quantity, Procurement procurement, Part part){
+        this.quantity = quantity;
+        this.part = part;
+        this.procurement = procurement;
+    }
 }
